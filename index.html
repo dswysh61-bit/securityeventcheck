@@ -6,38 +6,28 @@
 <title>טופס הערכת אבטחה לאירוע</title>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --navy:#0f2744;--navy2:#1a3a5c;--blue:#2563eb;--blue-light:#dbeafe;
-  --green:#16a34a;--amber:#d97706;--red:#dc2626;
-  --border:#e2e8f0;--bg:#f8fafc;--white:#ffffff;
-  --text:#1e293b;--muted:#64748b;--subtle:#94a3b8;
-}
+:root{--navy:#0f2744;--navy2:#1a3a5c;--blue:#2563eb;--blue-light:#dbeafe;--green:#16a34a;--amber:#d97706;--red:#dc2626;--border:#e2e8f0;--bg:#f8fafc;--text:#1e293b;--muted:#64748b;--subtle:#94a3b8}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;direction:rtl}
-.top-strip{background:var(--navy);color:white;text-align:center;padding:10px;font-size:12px;letter-spacing:0.05em}
+.top-strip{background:var(--navy);color:white;text-align:center;padding:10px;font-size:12px;letter-spacing:.05em}
 .page-header{background:var(--navy2);color:white;padding:2rem 1.5rem;text-align:center}
 .page-header h1{font-size:22px;font-weight:600;margin-bottom:6px}
-.page-header p{font-size:13px;opacity:0.8;max-width:520px;margin:0 auto;line-height:1.6}
+.page-header p{font-size:13px;opacity:.8;max-width:520px;margin:0 auto;line-height:1.6}
 .steps-bar{background:white;border-bottom:1px solid var(--border);display:flex;overflow-x:auto;position:sticky;top:0;z-index:10}
 .step-btn{flex:1;min-width:0;padding:12px 8px;font-size:12px;font-weight:500;font-family:'Heebo',sans-serif;color:var(--muted);border:none;border-bottom:3px solid transparent;background:none;cursor:pointer;white-space:nowrap;transition:all .2s}
 .step-btn.active{color:var(--navy2);border-bottom-color:var(--navy2);background:#f8fafc}
 .step-btn.done{color:var(--green)}
 .container{max-width:700px;margin:2rem auto;padding:0 1rem}
 .card{background:white;border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1rem}
-.section-title{font-size:13px;font-weight:600;color:var(--navy2);text-transform:uppercase;letter-spacing:0.06em;border-bottom:1px solid var(--border);padding-bottom:8px;margin:1.25rem 0 1rem}
+.section-title{font-size:13px;font-weight:600;color:var(--navy2);text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--border);padding-bottom:8px;margin:1.25rem 0 1rem}
 .section-title:first-child{margin-top:0}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.grid1{display:grid;grid-template-columns:1fr;gap:12px}
 @media(max-width:480px){.grid2{grid-template-columns:1fr}}
 .field{display:flex;flex-direction:column;gap:5px}
 .field label{font-size:12px;font-weight:600;color:var(--muted)}
 .field label .req{color:var(--red);margin-right:2px}
-.field input,.field select,.field textarea{
-  border:1px solid var(--border);border-radius:8px;padding:9px 12px;
-  font-size:13px;font-family:'Heebo',sans-serif;background:white;color:var(--text);
-  transition:border-color .15s;width:100%
-}
-.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--navy2);box-shadow:0 0 0 3px rgba(26,58,92,0.08)}
+.field input,.field select,.field textarea{border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:'Heebo',sans-serif;background:white;color:var(--text);transition:border-color .15s;width:100%}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--navy2);box-shadow:0 0 0 3px rgba(26,58,92,.08)}
 .field.error input,.field.error select{border-color:var(--red)}
 .field .err-msg{font-size:11px;color:var(--red);display:none}
 .field.error .err-msg{display:block}
@@ -53,7 +43,6 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
 .cb-item{display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer;padding:6px 10px;border:1px solid var(--border);border-radius:7px;transition:border-color .1s;background:white}
 .cb-item:hover{border-color:var(--navy2)}
 .cb-item input{accent-color:var(--navy2)}
-.hint{font-size:11px;color:var(--subtle);margin-top:3px;font-style:italic}
 .nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border)}
 .btn-next{background:var(--navy2);color:white;border:none;border-radius:8px;padding:10px 28px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Heebo',sans-serif;transition:background .15s}
 .btn-next:hover{background:var(--navy)}
@@ -62,20 +51,43 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
 .step-ind{font-size:12px;color:var(--muted)}
 .success{display:none;text-align:center;padding:3rem 2rem}
 .success.show{display:block}
-.success-icon{width:60px;height:60px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:28px}
-.ref-box{display:inline-block;background:var(--blue-light);color:var(--navy2);font-size:20px;font-weight:700;padding:8px 24px;border-radius:8px;letter-spacing:0.1em;margin:12px 0}
+.success-icon{width:64px;height:64px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:30px}
+.ref-box{display:inline-block;background:var(--blue-light);color:var(--navy2);font-size:20px;font-weight:700;padding:10px 28px;border-radius:8px;letter-spacing:.1em;margin:12px 0}
+.overlay{display:none;position:fixed;inset:0;background:rgba(255,255,255,.85);z-index:999;align-items:center;justify-content:center;flex-direction:column;gap:14px;font-size:14px;color:var(--navy2);font-weight:600}
+.overlay.show{display:flex}
+.spinner{width:38px;height:38px;border:4px solid var(--border);border-top-color:var(--navy2);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.fb-config-banner{background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:12px 16px;margin-bottom:1rem;font-size:12px;color:#92400e;line-height:1.6;display:none}
+.fb-config-banner.show{display:block}
+.fb-config-banner code{background:#fef3c7;padding:2px 6px;border-radius:4px;font-size:11px}
 </style>
 </head>
 <body>
 
-<div class="top-strip">מערכת הערכת סיכוני אבטחה — טופס מאובטח</div>
+<!-- ============================================================
+  🔥 הגדרת Firebase — שנה את הפרטים הבאים לפרויקט שלך
+  ============================================================
+  שלב 1: צור פרויקט ב- https://console.firebase.google.com
+  שלב 2: לך ל-Realtime Database → Create Database
+  שלב 3: בחר Rules והעתק:
+          { "rules": { ".read": false, ".write": true } }
+  שלב 4: העתק את ה-databaseURL והכנס כאן:
+  ============================================================ -->
+<script>
+  var FIREBASE_URL = 'https://YOUR-PROJECT-ID-default-rtdb.firebaseio.com';
+  // דוגמה: 'https://my-security-app-12345-default-rtdb.firebaseio.com'
+</script>
+
+<div class="overlay" id="overlay"><div class="spinner"></div><span>שולח טופס...</span></div>
+
+<div class="top-strip">🔒 מערכת הערכת סיכוני אבטחה — טופס מאובטח</div>
 
 <div class="page-header">
   <h1>טופס הערכת רמת אבטחה לאירוע</h1>
   <p>אנא מלא את הפרטים הבאים. המידע ישמש להערכת רמת האבטחה הנדרשת לאירועך.</p>
 </div>
 
-<div class="steps-bar" id="stepsBar">
+<div class="steps-bar">
   <button class="step-btn active" onclick="goToStep(0)">1 — פרטי ארגון</button>
   <button class="step-btn" onclick="goToStep(1)">2 — פרטי אירוע</button>
   <button class="step-btn" onclick="goToStep(2)">3 — קהל ופרסום</button>
@@ -85,14 +97,19 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
 
 <div class="container">
 
+<div class="fb-config-banner" id="configBanner">
+  ⚠️ <strong>Firebase לא מוגדר עדיין.</strong> הטופס יעבוד אך הנתונים לא יישמרו לשרת.<br>
+  כדי לחבר: ערוך את משתנה <code>FIREBASE_URL</code> בתחילת הקובץ.
+</div>
+
 <!-- STEP 0 -->
 <div id="step0">
   <div class="card">
     <div class="section-title">פרטי ארגון</div>
     <div class="grid2">
       <div class="field" id="f_org"><label><span class="req">*</span>שם הארגון</label><input id="org" type="text" placeholder="שם הארגון..."><span class="err-msg">שדה חובה</span></div>
-      <div class="field"><label>מספר זיהוי ארגון</label><input type="text" placeholder="אם ידוע..."></div>
-      <div class="field" style="grid-column:1/-1"><label>אתר האינטרנט</label><input type="text" placeholder="https://..."></div>
+      <div class="field"><label>מספר זיהוי ארגון</label><input id="orgid" type="text" placeholder="אם ידוע..."></div>
+      <div class="field" style="grid-column:1/-1"><label>אתר האינטרנט</label><input id="website" type="text" placeholder="https://..."></div>
     </div>
     <div class="section-title">פרטי איש קשר</div>
     <div class="grid2">
@@ -100,7 +117,7 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
       <div class="field" id="f_lname"><label><span class="req">*</span>שם משפחה</label><input id="lname" type="text"><span class="err-msg">שדה חובה</span></div>
       <div class="field" id="f_email"><label><span class="req">*</span>אימייל</label><input id="email" type="email" placeholder="name@org.com"><span class="err-msg">נדרש אימייל תקין</span></div>
       <div class="field" id="f_phone"><label><span class="req">*</span>טלפון</label><input id="phone" type="tel" placeholder="050-0000000"><span class="err-msg">שדה חובה</span></div>
-      <div class="field"><label>תפקיד</label><input type="text" placeholder="תפקיד / תואר..."></div>
+      <div class="field"><label>תפקיד</label><input id="role" type="text" placeholder="תפקיד / תואר..."></div>
     </div>
   </div>
   <div class="nav">
@@ -123,40 +140,28 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
       <div class="field" id="f_evcat"><label><span class="req">*</span>קטגוריית האירוע</label>
         <select id="evcat">
           <option value="">— בחר —</option>
-          <option>צדקה / גיוס כספים</option>
-          <option>אירוע קהילתי</option>
-          <option>אירוע פרטי</option>
-          <option>כנס מקצועי</option>
-          <option>אירוע דתי</option>
-          <option>אירוע ספורט</option>
-          <option>חגיגה / שמחה</option>
-          <option>אחר</option>
+          <option>צדקה / גיוס כספים</option><option>אירוע קהילתי</option><option>אירוע פרטי</option>
+          <option>כנס מקצועי</option><option>אירוע דתי</option><option>אירוע ספורט</option>
+          <option>חגיגה / שמחה</option><option>אחר</option>
         </select><span class="err-msg">שדה חובה</span>
       </div>
       <div class="field"><label>סוג האירוע</label>
         <select id="evtype">
           <option value="">— בחר —</option>
-          <option>ארוחה (ערב / צהריים)</option>
-          <option>כנס / ישיבה</option>
-          <option>אירוע דתי</option>
-          <option>תהלוכה / מצעד</option>
-          <option>עצרת / הפגנה</option>
-          <option>אירוע ספורט</option>
-          <option>הופעה / מופע</option>
-          <option>אחר</option>
+          <option>ארוחה (ערב / צהריים)</option><option>כנס / ישיבה</option><option>אירוע דתי</option>
+          <option>תהלוכה / מצעד</option><option>עצרת / הפגנה</option><option>אירוע ספורט</option>
+          <option>הופעה / מופע</option><option>אחר</option>
         </select>
       </div>
     </div>
     <div class="section-title">מיקום האירוע</div>
-    <div class="grid1">
-      <div class="field" id="f_venue"><label><span class="req">*</span>שם המקום / כתובת</label><input id="venue" type="text" placeholder="שם הויקום, רחוב, עיר..."><span class="err-msg">שדה חובה</span></div>
-    </div>
+    <div class="field" id="f_venue"><label><span class="req">*</span>שם המקום / כתובת</label><input id="venue" type="text" placeholder="שם המקום, רחוב, עיר..."><span class="err-msg">שדה חובה</span></div>
     <div class="grid2" style="margin-top:12px">
       <div class="field">
         <label>האם האירוע מתקיים בחוץ?</label>
         <div class="radio-group">
-          <label class="radio-opt" id="ro_outdoor_yes" onclick="setRadio('outdoor','כן',this,'cond_outdoor')"><input type="radio" name="outdoor" value="כן"> כן</label>
-          <label class="radio-opt" id="ro_outdoor_no" onclick="setRadio('outdoor','לא',this,'cond_outdoor')"><input type="radio" name="outdoor" value="לא"> לא</label>
+          <label class="radio-opt" onclick="setRadio('outdoor','כן',this,'cond_outdoor')"><input type="radio" name="outdoor" value="כן"> כן</label>
+          <label class="radio-opt" onclick="setRadio('outdoor','לא',this,'cond_outdoor')"><input type="radio" name="outdoor" value="לא"> לא</label>
         </div>
         <div class="cond" id="cond_outdoor">
           <div class="field"><label>האם יש גדר / הגבלה פיזית?</label>
@@ -170,15 +175,15 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
       <div class="field">
         <label>האם בשעות הלילה (אחרי 22:00)?</label>
         <div class="radio-group">
-          <label class="radio-opt" onclick="setRadio('latenight','כן',this); addScore('latenight',1)"><input type="radio" name="latenight" value="כן"> כן</label>
-          <label class="radio-opt" onclick="setRadio('latenight','לא',this); addScore('latenight',0)"><input type="radio" name="latenight" value="לא"> לא</label>
+          <label class="radio-opt" onclick="setRadio('latenight','כן',this);addScore('latenight',1)"><input type="radio" name="latenight" value="כן"> כן</label>
+          <label class="radio-opt" onclick="setRadio('latenight','לא',this);addScore('latenight',0)"><input type="radio" name="latenight" value="לא"> לא</label>
         </div>
       </div>
       <div class="field">
         <label>האם סמוך למוסד ממשלתי / רגיש?</label>
         <div class="radio-group">
-          <label class="radio-opt" onclick="setRadio('govprox','כן',this); addScore('govprox',1)"><input type="radio" name="govprox" value="כן"> כן</label>
-          <label class="radio-opt" onclick="setRadio('govprox','לא',this); addScore('govprox',0)"><input type="radio" name="govprox" value="לא"> לא</label>
+          <label class="radio-opt" onclick="setRadio('govprox','כן',this);addScore('govprox',1)"><input type="radio" name="govprox" value="כן"> כן</label>
+          <label class="radio-opt" onclick="setRadio('govprox','לא',this);addScore('govprox',0)"><input type="radio" name="govprox" value="לא"> לא</label>
         </div>
       </div>
     </div>
@@ -196,21 +201,17 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
     <div class="section-title">פרטי קהל</div>
     <div class="grid2">
       <div class="field" id="f_guestnum"><label><span class="req">*</span>מספר משתתפים צפוי</label>
-        <select id="guestnum" onchange="addScore('guestnum', this.value==='large'||this.value==='xlarge'?1:0)">
+        <select id="guestnum" onchange="addScore('guestnum',this.value==='large'||this.value==='xlarge'?1:0)">
           <option value="">— בחר —</option>
-          <option value="small">עד 100</option>
-          <option value="med">100–500</option>
-          <option value="large">500–1000</option>
-          <option value="xlarge">מעל 1000</option>
+          <option value="small">עד 100</option><option value="med">100–500</option>
+          <option value="large">500–1000</option><option value="xlarge">מעל 1000</option>
         </select><span class="err-msg">שדה חובה</span>
       </div>
       <div class="field"><label>סוג כניסה</label>
-        <select id="entrytype" onchange="addScore('openentry', this.value==='open'?1:0)">
+        <select id="entrytype" onchange="addScore('openentry',this.value==='open'?1:0)">
           <option value="">— בחר —</option>
-          <option value="invite">בהזמנה בלבד</option>
-          <option value="community">קהילתי</option>
-          <option value="ticketed">עם כרטיסים</option>
-          <option value="open">פתוח לציבור</option>
+          <option value="invite">בהזמנה בלבד</option><option value="community">קהילתי</option>
+          <option value="ticketed">עם כרטיסים</option><option value="open">פתוח לציבור</option>
         </select>
       </div>
     </div>
@@ -218,16 +219,16 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
       <div class="field">
         <label>האם האורחים עוברים סינון?</label>
         <div class="radio-group">
-          <label class="radio-opt" onclick="setRadio('vetted','כן',this,'cond_vetted'); addScore('notvetting',0)"><input type="radio" name="vetted" value="כן"> כן</label>
-          <label class="radio-opt" onclick="setRadio('vetted','לא',this,'cond_vetted'); addScore('notvetting',1)"><input type="radio" name="vetted" value="לא"> לא</label>
+          <label class="radio-opt" onclick="setRadio('vetted','כן',this,'cond_vetted');addScore('notvetting',0)"><input type="radio" name="vetted" value="כן"> כן</label>
+          <label class="radio-opt" onclick="setRadio('vetted','לא',this,'cond_vetted');addScore('notvetting',1)"><input type="radio" name="vetted" value="לא"> לא</label>
         </div>
         <div class="cond" id="cond_vetted"><div class="field"><label>פרט את שיטת הסינון</label><input type="text" id="vetting_detail" placeholder="כרטיסיות, רשימות, בדיקת ת.ז..."></div></div>
       </div>
       <div class="field">
         <label>האם האירוע כולל הגשת אלכוהול?</label>
         <div class="radio-group">
-          <label class="radio-opt" onclick="setRadio('alcohol','כן',this); addScore('alcohol',1)"><input type="radio" name="alcohol" value="כן"> כן</label>
-          <label class="radio-opt" onclick="setRadio('alcohol','לא',this); addScore('alcohol',0)"><input type="radio" name="alcohol" value="לא"> לא</label>
+          <label class="radio-opt" onclick="setRadio('alcohol','כן',this);addScore('alcohol',1)"><input type="radio" name="alcohol" value="כן"> כן</label>
+          <label class="radio-opt" onclick="setRadio('alcohol','לא',this);addScore('alcohol',0)"><input type="radio" name="alcohol" value="לא"> לא</label>
         </div>
       </div>
     </div>
@@ -235,8 +236,8 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
     <div class="field">
       <label>האם האירוע מפורסם לציבור?</label>
       <div class="radio-group">
-        <label class="radio-opt" onclick="setRadio('advertised','כן',this,'cond_adv'); addScore('advertised',1)"><input type="radio" name="advertised" value="כן"> כן</label>
-        <label class="radio-opt" onclick="setRadio('advertised','לא',this,'cond_adv'); addScore('advertised',0)"><input type="radio" name="advertised" value="לא"> לא</label>
+        <label class="radio-opt" onclick="setRadio('advertised','כן',this,'cond_adv');addScore('advertised',1)"><input type="radio" name="advertised" value="כן"> כן</label>
+        <label class="radio-opt" onclick="setRadio('advertised','לא',this,'cond_adv');addScore('advertised',0)"><input type="radio" name="advertised" value="לא"> לא</label>
       </div>
       <div class="cond" id="cond_adv">
         <div class="field"><label>ערוצי פרסום</label>
@@ -273,31 +274,31 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
       <div class="field">
         <label>האם יגיעו אישים בכירים / מוגנים?</label>
         <div class="radio-group">
-          <label class="radio-opt" onclick="setRadio('vip','כן',this,'cond_vip'); addScore('vip',1)"><input type="radio" name="vip" value="כן"> כן</label>
-          <label class="radio-opt" onclick="setRadio('vip','לא',this,'cond_vip'); addScore('vip',0)"><input type="radio" name="vip" value="לא"> לא</label>
+          <label class="radio-opt" onclick="setRadio('vip','כן',this,'cond_vip');addScore('vip',1)"><input type="radio" name="vip" value="כן"> כן</label>
+          <label class="radio-opt" onclick="setRadio('vip','לא',this,'cond_vip');addScore('vip',0)"><input type="radio" name="vip" value="לא"> לא</label>
         </div>
         <div class="cond" id="cond_vip"><div class="field"><label>פרט את האישים</label><input type="text" id="vip_detail" placeholder="שמות / תפקידים..."></div></div>
       </div>
       <div class="field">
         <label>האם צפויות הפגנות / מחאות?</label>
         <div class="radio-group">
-          <label class="radio-opt" onclick="setRadio('protest','כן',this); addScore('protest',1)"><input type="radio" name="protest" value="כן"> כן</label>
-          <label class="radio-opt" onclick="setRadio('protest','לא',this); addScore('protest',0)"><input type="radio" name="protest" value="לא"> לא</label>
+          <label class="radio-opt" onclick="setRadio('protest','כן',this);addScore('protest',1)"><input type="radio" name="protest" value="כן"> כן</label>
+          <label class="radio-opt" onclick="setRadio('protest','לא',this);addScore('protest',0)"><input type="radio" name="protest" value="לא"> לא</label>
           <label class="radio-opt" onclick="setRadio('protest','לא ידוע',this)"><input type="radio" name="protest" value="לא ידוע"> לא ידוע</label>
         </div>
       </div>
       <div class="field">
         <label>היסטוריה של אירועי אלימות דומים?</label>
         <div class="radio-group">
-          <label class="radio-opt" onclick="setRadio('history','כן',this); addScore('history',1)"><input type="radio" name="history" value="כן"> כן</label>
-          <label class="radio-opt" onclick="setRadio('history','לא',this); addScore('history',0)"><input type="radio" name="history" value="לא"> לא</label>
+          <label class="radio-opt" onclick="setRadio('history','כן',this);addScore('history',1)"><input type="radio" name="history" value="כן"> כן</label>
+          <label class="radio-opt" onclick="setRadio('history','לא',this);addScore('history',0)"><input type="radio" name="history" value="לא"> לא</label>
         </div>
       </div>
       <div class="field">
         <label>האם כולל פעילות ספורט מגע?</label>
         <div class="radio-group">
-          <label class="radio-opt" onclick="setRadio('contact','כן',this); addScore('contact',1)"><input type="radio" name="contact" value="כן"> כן</label>
-          <label class="radio-opt" onclick="setRadio('contact','לא',this); addScore('contact',0)"><input type="radio" name="contact" value="לא"> לא</label>
+          <label class="radio-opt" onclick="setRadio('contact','כן',this);addScore('contact',1)"><input type="radio" name="contact" value="כן"> כן</label>
+          <label class="radio-opt" onclick="setRadio('contact','לא',this);addScore('contact',0)"><input type="radio" name="contact" value="לא"> לא</label>
         </div>
       </div>
     </div>
@@ -336,10 +337,10 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
   </div>
 </div>
 
-<!-- STEP 4: REVIEW + SUBMIT -->
+<!-- STEP 4 -->
 <div id="step4" style="display:none">
   <div class="card" id="reviewCard"></div>
-  <div class="nav">
+  <div class="nav" id="step4Nav">
     <button class="btn-prev" onclick="prevStep(4)">→ הקודם</button>
     <span class="step-ind">שלב 5 מתוך 5</span>
     <button class="btn-next" id="submitBtn" onclick="submitForm()" style="background:#16a34a">שלח טופס ✓</button>
@@ -349,148 +350,214 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
     <h2 style="font-size:20px;margin-bottom:8px">הטופס נשלח בהצלחה!</h2>
     <p style="color:#64748b;font-size:13px;margin-bottom:12px">מספר אסמכתא לאירועך:</p>
     <div class="ref-box" id="refBox"></div>
-    <p style="font-size:12px;color:#94a3b8;margin-top:10px">שמור את המספר לכל תקשורת עם הצוות. נשלח אליך אישור במייל.</p>
+    <p style="font-size:12px;color:#94a3b8;margin-top:10px">שמור את המספר לתקשורת עם הצוות.</p>
+    <button onclick="location.reload()" style="margin-top:20px;padding:8px 20px;border:1px solid #e2e8f0;border-radius:8px;background:white;cursor:pointer;font-family:'Heebo',sans-serif;font-size:13px;color:#64748b">הגש טופס נוסף</button>
   </div>
 </div>
 
-</div>
+</div><!-- /container -->
 
 <script>
-var cur=0;
-var scoreMap={};
+/* =========================================================
+   🔥 FIREBASE JAVASCRIPT — חיבור ושמירת נתונים
+   ========================================================= */
 
-function getV(name){var r=document.querySelector('input[name="'+name+'"]:checked');return r?r.value:'';}
-function addScore(key,val){scoreMap[key]=val;}
+// בדוק אם Firebase מוגדר
+window.addEventListener('DOMContentLoaded', function() {
+  if (!FIREBASE_URL || FIREBASE_URL.includes('YOUR-PROJECT')) {
+    document.getElementById('configBanner').classList.add('show');
+  }
+});
 
-function setRadio(name,val,el,condId){
-  document.querySelectorAll('input[name="'+name+'"]').forEach(function(r){r.closest('.radio-opt').classList.remove('checked');});
-  if(el)el.classList.add('checked');
-  if(condId){var c=document.getElementById(condId);if(c)c.className='cond'+(val==='כן'?' show':'');}
+// REST API פונקציה לשמירה ב-Firebase
+function saveToFirebase(ref, data) {
+  return fetch(FIREBASE_URL + '/submissions/' + ref + '.json', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  }).then(function(res) {
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return res.json();
+  });
 }
 
-function calcScore(){
-  var s=0;
-  for(var k in scoreMap)s+=scoreMap[k];
-  return Math.min(s,10);
+/* =========================================================
+   לוגיקת טופס
+   ========================================================= */
+var cur = 0;
+var scoreMap = {};
+
+function gv(name) { var r = document.querySelector('input[name="'+name+'"]:checked'); return r ? r.value : ''; }
+function gi(id) { var el = document.getElementById(id); return el ? el.value : ''; }
+function addScore(k, v) { scoreMap[k] = v; }
+function calcScore() { var s=0; for(var k in scoreMap) s+=scoreMap[k]; return Math.min(s,10); }
+
+function setRadio(name, val, el, condId) {
+  document.querySelectorAll('input[name="'+name+'"]').forEach(function(r){ r.closest('.radio-opt').classList.remove('checked'); });
+  if (el) el.classList.add('checked');
+  if (condId) { var c=document.getElementById(condId); if(c) c.className='cond'+(val==='כן'?' show':''); }
 }
 
-function validateStep(s){
-  var ok=true;
-  function req(id,fid){var el=document.getElementById(id);var fw=document.getElementById(fid);if(!fw)return;if(!el||!el.value.trim()){fw.classList.add('error');ok=false;}else fw.classList.remove('error');}
-  if(s===0){req('org','f_org');req('fname','f_fname');req('lname','f_lname');req('phone','f_phone');
-    var em=document.getElementById('email');var fw=document.getElementById('f_email');
-    if(!em||!em.value||!em.value.includes('@')){fw.classList.add('error');ok=false;}else fw.classList.remove('error');}
-  if(s===1){req('evname','f_evname');req('evstart','f_evstart');req('evend','f_evend');req('venue','f_venue');
-    var ec=document.getElementById('evcat');var fw=document.getElementById('f_evcat');
-    if(!ec||!ec.value){fw.classList.add('error');ok=false;}else fw.classList.remove('error');}
-  if(s===2){var gn=document.getElementById('guestnum');var fw=document.getElementById('f_guestnum');
-    if(!gn||!gn.value){fw.classList.add('error');ok=false;}else fw.classList.remove('error');}
+function validateStep(s) {
+  var ok = true;
+  function req(id, fid) {
+    var el=document.getElementById(id), fw=document.getElementById(fid);
+    if (!fw) return;
+    if (!el || !el.value.trim()) { fw.classList.add('error'); ok=false; } else fw.classList.remove('error');
+  }
+  if (s===0) {
+    req('org','f_org'); req('fname','f_fname'); req('lname','f_lname'); req('phone','f_phone');
+    var em=document.getElementById('email'), fw=document.getElementById('f_email');
+    if (!em||!em.value||!em.value.includes('@')) { fw.classList.add('error'); ok=false; } else fw.classList.remove('error');
+  }
+  if (s===1) {
+    req('evname','f_evname'); req('evstart','f_evstart'); req('evend','f_evend'); req('venue','f_venue');
+    var ec=document.getElementById('evcat'), fw=document.getElementById('f_evcat');
+    if (!ec||!ec.value) { fw.classList.add('error'); ok=false; } else fw.classList.remove('error');
+  }
+  if (s===2) {
+    var gn=document.getElementById('guestnum'), fw=document.getElementById('f_guestnum');
+    if (!gn||!gn.value) { fw.classList.add('error'); ok=false; } else fw.classList.remove('error');
+  }
   return ok;
 }
 
-function showStep(n){
-  for(var i=0;i<5;i++){
-    var el=document.getElementById('step'+i);if(el)el.style.display=i===n?'block':'none';
+function showStep(n) {
+  for (var i=0; i<5; i++) {
+    var el=document.getElementById('step'+i); if(el) el.style.display=i===n?'block':'none';
     var tb=document.querySelectorAll('.step-btn')[i];
-    if(tb)tb.className='step-btn'+(i===n?' active':i<n?' done':'');
+    if (tb) tb.className='step-btn'+(i===n?' active':i<n?' done':'');
   }
-  if(n===4)buildReview();
+  if (n===4) buildReview();
 }
 
-function nextStep(s){if(!validateStep(s))return;cur=s+1;showStep(cur);}
-function prevStep(s){cur=s-1;showStep(cur);}
-function goToStep(n){if(n<=cur){cur=n;showStep(cur);}}
+function nextStep(s) { if(!validateStep(s)) return; cur=s+1; showStep(cur); window.scrollTo(0,0); }
+function prevStep(s) { cur=s-1; showStep(cur); window.scrollTo(0,0); }
+function goToStep(n) { if(n<=cur) { cur=n; showStep(cur); } }
 
-function guestLabel(){var m={small:'עד 100',med:'100–500',large:'500–1000',xlarge:'מעל 1000'};var gn=document.getElementById('guestnum');return gn&&m[gn.value]?m[gn.value]:'—';}
-function entryLabel(){var m={invite:'בהזמנה בלבד',community:'קהילתי',ticketed:'כרטיסים',open:'פתוח לציבור'};var et=document.getElementById('entrytype');return et&&m[et.value]?m[et.value]:'—';}
+function guestLabel() { return {small:'עד 100',med:'100–500',large:'500–1000',xlarge:'מעל 1000'}[gi('guestnum')]||'—'; }
+function entryLabel() { return {invite:'בהזמנה בלבד',community:'קהילתי',ticketed:'כרטיסים',open:'פתוח לציבור'}[gi('entrytype')]||'—'; }
 
-function row(label,val){
-  var display=val;
-  if(val==='כן')display='<span style="background:#dbeafe;color:#1e40af;padding:2px 9px;border-radius:12px;font-size:11px;font-weight:600">כן</span>';
-  else if(val==='לא')display='<span style="background:#f1f5f9;color:#64748b;padding:2px 9px;border-radius:12px;font-size:11px">לא</span>';
-  return '<tr><td style="padding:7px 10px;color:#64748b;font-size:12px;width:45%">'+label+'</td><td style="padding:7px 10px;font-size:13px">'+display+'</td></tr>';
+function row(label, val) {
+  var d=val||'—';
+  if(val==='כן') d='<span style="background:#dbeafe;color:#1e40af;padding:2px 9px;border-radius:12px;font-size:11px;font-weight:600">כן</span>';
+  else if(val==='לא') d='<span style="background:#f1f5f9;color:#64748b;padding:2px 9px;border-radius:12px;font-size:11px">לא</span>';
+  return '<tr><td style="padding:7px 10px;color:#64748b;font-size:12px;width:45%">'+label+'</td><td style="padding:7px 10px;font-size:13px">'+d+'</td></tr>';
 }
 
-function buildReview(){
+function buildReview() {
   var score=calcScore();
   var level,lcolor,lbg;
   if(score<=3){level='נמוכה';lcolor='#15803d';lbg='#dcfce7';}
   else if(score<=7){level='בינונית';lcolor='#92400e';lbg='#fef3c7';}
   else{level='גבוהה';lcolor='#991b1b';lbg='#fee2e2';}
-  var pct=Math.round((score/10)*100);
+  var pct=Math.round(score/10*100);
   var gfill=score<=3?'#16a34a':score<=7?'#d97706':'#dc2626';
-  var fname=document.getElementById('fname')?document.getElementById('fname').value:'';
-  var lname=document.getElementById('lname')?document.getElementById('lname').value:'';
   var html='<div style="padding-bottom:1rem;border-bottom:1px solid #e2e8f0;margin-bottom:1rem">';
   html+='<div style="font-size:11px;color:#94a3b8;margin-bottom:4px">ציון סיכון אוטומטי</div>';
   html+='<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">';
-  html+='<span style="font-size:40px;font-weight:700;color:'+lcolor+'">'+score+'</span>';
+  html+='<span style="font-size:42px;font-weight:700;color:'+lcolor+'">'+score+'</span>';
   html+='<div><div style="font-size:11px;color:#94a3b8">מתוך 10</div>';
-  html+='<span style="background:'+lbg+';color:'+lcolor+';padding:3px 12px;border-radius:20px;font-size:13px;font-weight:600">רמת אבטחה: '+level+'</span></div></div>';
-  html+='<div style="height:8px;background:#e2e8f0;border-radius:20px;overflow:hidden">';
-  html+='<div style="width:'+pct+'%;height:100%;background:'+gfill+';border-radius:20px;transition:width .6s"></div></div>';
-  html+='<div style="display:flex;justify-content:space-between;font-size:10px;color:#94a3b8;margin-top:3px"><span>נמוכה</span><span>בינונית</span><span>גבוהה</span></div>';
-  html+='</div>';
+  html+='<span style="background:'+lbg+';color:'+lcolor+';padding:3px 14px;border-radius:20px;font-size:13px;font-weight:600">רמת אבטחה: '+level+'</span></div></div>';
+  html+='<div style="height:8px;background:#e2e8f0;border-radius:20px;overflow:hidden"><div style="width:'+pct+'%;height:100%;background:'+gfill+';border-radius:20px;transition:width .6s"></div></div>';
+  html+='<div style="display:flex;justify-content:space-between;font-size:10px;color:#94a3b8;margin-top:3px"><span>נמוכה</span><span>בינונית</span><span>גבוהה</span></div></div>';
   html+='<div style="font-size:12px;font-weight:600;color:#0f2744;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em">סיכום פרטים</div>';
   html+='<table style="width:100%;border-collapse:collapse">';
-  html+=row('שם הארגון',document.getElementById('org')?document.getElementById('org').value||'—':'—');
-  html+=row('איש קשר',(fname+' '+lname).trim()||'—');
-  html+=row('שם האירוע',document.getElementById('evname')?document.getElementById('evname').value||'—':'—');
-  html+=row('תאריך',document.getElementById('evstart')?document.getElementById('evstart').value||'—':'—');
-  html+=row('מיקום',document.getElementById('venue')?document.getElementById('venue').value||'—':'—');
+  html+=row('שם הארגון',gi('org'));
+  html+=row('איש קשר',(gi('fname')+' '+gi('lname')).trim());
+  html+=row('שם האירוע',gi('evname'));
+  html+=row('תאריך',gi('evstart'));
+  html+=row('מיקום',gi('venue'));
   html+=row('קהל צפוי',guestLabel());
   html+=row('סוג כניסה',entryLabel());
-  html+=row('אלכוהול',getV('alcohol')||'—');
-  html+=row('אישים בכירים',getV('vip')||'—');
-  html+=row('הפגנות צפויות',getV('protest')||'—');
-  html+=row('שעות לילה',getV('latenight')||'—');
-  html+=row('ללא סינון קהל',getV('vetted')==='לא'?'כן':'לא');
+  html+=row('אלכוהול',gv('alcohol'));
+  html+=row('אישים בכירים',gv('vip'));
+  html+=row('הפגנות צפויות',gv('protest'));
+  html+=row('שעות לילה',gv('latenight'));
+  html+=row('ללא סינון קהל',gv('vetted')==='לא'?'כן':'לא');
   html+='</table>';
   document.getElementById('reviewCard').innerHTML=html;
   document.getElementById('submitBtn').style.display='inline-block';
   document.getElementById('successDiv').classList.remove('show');
+  document.getElementById('step4Nav').style.display='flex';
 }
 
-function submitForm(){
-  var data={
-    timestamp:new Date().toISOString(),
-    org:document.getElementById('org')?document.getElementById('org').value:'',
-    fname:document.getElementById('fname')?document.getElementById('fname').value:'',
-    lname:document.getElementById('lname')?document.getElementById('lname').value:'',
-    email:document.getElementById('email')?document.getElementById('email').value:'',
-    phone:document.getElementById('phone')?document.getElementById('phone').value:'',
-    evname:document.getElementById('evname')?document.getElementById('evname').value:'',
-    evstart:document.getElementById('evstart')?document.getElementById('evstart').value:'',
-    evend:document.getElementById('evend')?document.getElementById('evend').value:'',
-    venue:document.getElementById('venue')?document.getElementById('venue').value:'',
-    evcat:document.getElementById('evcat')?document.getElementById('evcat').value:'',
-    guestnum:document.getElementById('guestnum')?document.getElementById('guestnum').value:'',
-    entrytype:document.getElementById('entrytype')?document.getElementById('entrytype').value:'',
-    latenight:getV('latenight'),
-    govprox:getV('govprox'),
-    alcohol:getV('alcohol'),
-    advertised:getV('advertised'),
-    vip:getV('vip'),
-    vip_detail:document.getElementById('vip_detail')?document.getElementById('vip_detail').value:'',
-    protest:getV('protest'),
-    history:getV('history'),
-    contact:getV('contact'),
-    vetted:getV('vetted'),
-    police:getV('police'),
-    extra:document.getElementById('extra')?document.getElementById('extra').value:'',
-    score:calcScore()
+/* =========================================================
+   שליחה ל-Firebase
+   ========================================================= */
+function submitForm() {
+  var ref = 'SEC-' + Date.now().toString(36).toUpperCase().slice(-8);
+  var score = calcScore();
+  var level = score<=3?'נמוכה':score<=7?'בינונית':'גבוהה';
+
+  var data = {
+    ref: ref,
+    timestamp: new Date().toISOString(),
+    status: 'new',
+    score: score,
+    level: level,
+    // פרטי ארגון
+    org: gi('org'), orgid: gi('orgid'), website: gi('website'),
+    // איש קשר
+    fname: gi('fname'), lname: gi('lname'),
+    email: gi('email'), phone: gi('phone'), role: gi('role'),
+    // אירוע
+    evname: gi('evname'), evstart: gi('evstart'), evend: gi('evend'),
+    evstarttime: gi('evstarttime'), evendtime: gi('evendtime'),
+    evcat: gi('evcat'), evtype: gi('evtype'), venue: gi('venue'),
+    // פרטי סיכון
+    outdoor: gv('outdoor'), fence: gv('fence'),
+    latenight: gv('latenight'), govprox: gv('govprox'),
+    guestnum: gi('guestnum'), entrytype: gi('entrytype'),
+    vetted: gv('vetted'), vetting_detail: gi('vetting_detail'),
+    alcohol: gv('alcohol'), advertised: gv('advertised'), advloc: gv('advloc'),
+    vip: gv('vip'), vip_detail: gi('vip_detail'),
+    protest: gv('protest'), history: gv('history'),
+    contact: gv('contact'), police: gv('police'),
+    police_ref: gi('police_ref'), police_name: gi('police_name'),
+    extra: gi('extra'),
+    // ערוצי פרסום
+    advchan: Array.from(document.querySelectorAll('input[name="advchan"]:checked')).map(function(c){return c.value;}),
+    // אמצעי אבטחה
+    security: Array.from(document.querySelectorAll('input[name="security"]:checked')).map(function(c){return c.value;})
   };
-  var existing=JSON.parse(localStorage.getItem('securitySubmissions')||'[]');
-  var ref='SEC-'+Date.now().toString(36).toUpperCase().slice(-8);
-  data.ref=ref;
-  existing.push(data);
-  localStorage.setItem('securitySubmissions',JSON.stringify(existing));
-  document.getElementById('refBox').textContent=ref;
-  document.getElementById('reviewCard').style.display='none';
-  document.getElementById('submitBtn').style.display='none';
-  document.querySelector('#step4 .nav').style.display='none';
+
+  // אם Firebase לא מוגדר — שמור ב-localStorage כגיבוי
+  if (!FIREBASE_URL || FIREBASE_URL.includes('YOUR-PROJECT')) {
+    var existing = JSON.parse(localStorage.getItem('securitySubmissions')||'[]');
+    existing.push(data);
+    localStorage.setItem('securitySubmissions', JSON.stringify(existing));
+    showSuccess(ref);
+    return;
+  }
+
+  document.getElementById('overlay').classList.add('show');
+
+  saveToFirebase(ref, data)
+    .then(function() {
+      document.getElementById('overlay').classList.remove('show');
+      showSuccess(ref);
+    })
+    .catch(function(err) {
+      document.getElementById('overlay').classList.remove('show');
+      // גיבוי ב-localStorage אם Firebase נכשל
+      var existing = JSON.parse(localStorage.getItem('securitySubmissions')||'[]');
+      existing.push(data);
+      localStorage.setItem('securitySubmissions', JSON.stringify(existing));
+      console.error('Firebase error:', err);
+      alert('⚠️ שגיאה בחיבור ל-Firebase.\nהנתונים נשמרו בדפדפן כגיבוי.\n\nשגיאה: '+err.message);
+      showSuccess(ref);
+    });
+}
+
+function showSuccess(ref) {
+  document.getElementById('refBox').textContent = ref;
+  document.getElementById('reviewCard').style.display = 'none';
+  document.getElementById('step4Nav').style.display = 'none';
   document.getElementById('successDiv').classList.add('show');
 }
 </script>
 </body>
 </html>
+var FIREBASE_URL = https://security-event-check-default-rtdb.europe-west1.firebasedatabase.app/
+
