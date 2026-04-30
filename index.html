@@ -28,7 +28,7 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
 .field label .req{color:var(--red);margin-right:2px}
 .field input,.field select,.field textarea{border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:'Heebo',sans-serif;background:white;color:var(--text);transition:border-color .15s;width:100%}
 .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--navy2);box-shadow:0 0 0 3px rgba(26,58,92,.08)}
-.field.error input,.field.error select{border-color:var(--red)}
+.field.error input,.field.error select,.field.error textarea{border-color:var(--red)}
 .field .err-msg{font-size:11px;color:var(--red);display:none}
 .field.error .err-msg{display:block}
 .field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2364748b'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:left 12px center;padding-left:32px}
@@ -64,18 +64,8 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
 </head>
 <body>
 
-<!-- ============================================================
-  🔥 הגדרת Firebase — שנה את הפרטים הבאים לפרויקט שלך
-  ============================================================
-  שלב 1: צור פרויקט ב- https://console.firebase.google.com
-  שלב 2: לך ל-Realtime Database → Create Database
-  שלב 3: בחר Rules והעתק:
-          { "rules": { ".read": false, ".write": true } }
-  שלב 4: העתק את ה-databaseURL והכנס כאן:
-  ============================================================ -->
 <script>
   var FIREBASE_URL = 'https://security-event-check-default-rtdb.europe-west1.firebasedatabase.app';
-  // דוגמה: 'https://my-security-app-12345-default-rtdb.firebaseio.com'
 </script>
 
 <div class="overlay" id="overlay"><div class="spinner"></div><span>שולח טופס...</span></div>
@@ -102,22 +92,69 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
   כדי לחבר: ערוך את משתנה <code>FIREBASE_URL</code> בתחילת הקובץ.
 </div>
 
-<!-- STEP 0 -->
+<!-- ===== STEP 0 — פרטי ארגון ===== -->
 <div id="step0">
   <div class="card">
     <div class="section-title">פרטי ארגון</div>
     <div class="grid2">
-      <div class="field" id="f_org"><label><span class="req">*</span>שם הארגון</label><input id="org" type="text" placeholder="שם הארגון..."><span class="err-msg">שדה חובה</span></div>
-      <div class="field"><label>מספר זיהוי ארגון</label><input id="orgid" type="text" placeholder="אם ידוע..."></div>
-      <div class="field" style="grid-column:1/-1"><label>אתר האינטרנט</label><input id="website" type="text" placeholder="https://..."></div>
+      <div class="field" id="f_org">
+        <label><span class="req">*</span>בחסות</label>
+        <input id="org" type="text" placeholder="שם הגוף המארגן...">
+        <span class="err-msg">שדה חובה</span>
+      </div>
+      <div class="field">
+        <label>מספר זיהוי אישי</label>
+        <input id="personalid" type="text" placeholder="ממולא על ידי כל עובד...">
+      </div>
+      <div class="field" style="grid-column:1/-1">
+        <label>קישור הזמנה (אם זמין)</label>
+        <input id="invitelink" type="text" placeholder="https://...">
+      </div>
     </div>
+
+    <div class="field" style="margin-top:14px">
+      <label>האם המארגן ידוע ומוכר, או לא מוכר אישית?</label>
+      <div class="radio-group">
+        <label class="radio-opt" onclick="setRadio('orgknown','ידוע ומוכר',this,'cond_orgknown','ידוע ומוכר')">
+          <input type="radio" name="orgknown" value="ידוע ומוכר"> ידוע ומוכר
+        </label>
+        <label class="radio-opt" onclick="setRadio('orgknown','לא מוכר אישית',this,'cond_orgknown','ידוע ומוכר')">
+          <input type="radio" name="orgknown" value="לא מוכר אישית"> לא מוכר אישית
+        </label>
+      </div>
+      <div class="cond" id="cond_orgknown">
+        <div class="field">
+          <label>פרט</label>
+          <input type="text" id="orgknown_detail" placeholder="כיצד מוכר המארגן...">
+        </div>
+      </div>
+    </div>
+
     <div class="section-title">פרטי איש קשר</div>
     <div class="grid2">
-      <div class="field" id="f_fname"><label><span class="req">*</span>שם פרטי</label><input id="fname" type="text"><span class="err-msg">שדה חובה</span></div>
-      <div class="field" id="f_lname"><label><span class="req">*</span>שם משפחה</label><input id="lname" type="text"><span class="err-msg">שדה חובה</span></div>
-      <div class="field" id="f_email"><label><span class="req">*</span>אימייל</label><input id="email" type="email" placeholder="name@org.com"><span class="err-msg">נדרש אימייל תקין</span></div>
-      <div class="field" id="f_phone"><label><span class="req">*</span>טלפון</label><input id="phone" type="tel" placeholder="050-0000000"><span class="err-msg">שדה חובה</span></div>
-      <div class="field"><label>תפקיד</label><input id="role" type="text" placeholder="תפקיד / תואר..."></div>
+      <div class="field" id="f_fname">
+        <label><span class="req">*</span>שם פרטי</label>
+        <input id="fname" type="text">
+        <span class="err-msg">שדה חובה</span>
+      </div>
+      <div class="field" id="f_lname">
+        <label><span class="req">*</span>שם משפחה</label>
+        <input id="lname" type="text">
+        <span class="err-msg">שדה חובה</span>
+      </div>
+      <div class="field">
+        <label>אימייל</label>
+        <input id="email" type="email" placeholder="name@org.com">
+      </div>
+      <div class="field" id="f_phone">
+        <label><span class="req">*</span>טלפון</label>
+        <input id="phone" type="tel" placeholder="050-0000000">
+        <span class="err-msg">שדה חובה</span>
+      </div>
+      <div class="field">
+        <label>תפקיד</label>
+        <input id="role" type="text" placeholder="תפקיד / תואר...">
+      </div>
     </div>
   </div>
   <div class="nav">
@@ -127,63 +164,115 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
   </div>
 </div>
 
-<!-- STEP 1 -->
+<!-- ===== STEP 1 — פרטי אירוע ===== -->
 <div id="step1" style="display:none">
   <div class="card">
     <div class="section-title">פרטי האירוע</div>
     <div class="grid2">
-      <div class="field" style="grid-column:1/-1" id="f_evname"><label><span class="req">*</span>שם האירוע</label><input id="evname" type="text" placeholder="שם האירוע..."><span class="err-msg">שדה חובה</span></div>
-      <div class="field" id="f_evstart"><label><span class="req">*</span>תאריך התחלה</label><input id="evstart" type="date"><span class="err-msg">שדה חובה</span></div>
-      <div class="field" id="f_evend"><label><span class="req">*</span>תאריך סיום</label><input id="evend" type="date"><span class="err-msg">שדה חובה</span></div>
-      <div class="field"><label>שעת התחלה</label><input id="evstarttime" type="time"></div>
-      <div class="field"><label>שעת סיום</label><input id="evendtime" type="time"></div>
-      <div class="field" id="f_evcat"><label><span class="req">*</span>קטגוריית האירוע</label>
+      <div class="field" style="grid-column:1/-1" id="f_evname">
+        <label><span class="req">*</span>שם האירוע</label>
+        <input id="evname" type="text" placeholder="שם האירוע...">
+        <span class="err-msg">שדה חובה</span>
+      </div>
+      <div class="field" id="f_evstart">
+        <label><span class="req">*</span>תאריך התחלה</label>
+        <input id="evstart" type="date">
+        <span class="err-msg">שדה חובה</span>
+      </div>
+      <div class="field" id="f_evend">
+        <label><span class="req">*</span>תאריך סיום</label>
+        <input id="evend" type="date">
+        <span class="err-msg">שדה חובה</span>
+      </div>
+      <div class="field">
+        <label>שעת התחלה</label>
+        <input id="evstarttime" type="time">
+      </div>
+      <div class="field">
+        <label>שעת סיום</label>
+        <input id="evendtime" type="time">
+      </div>
+      <div class="field" id="f_evcat">
+        <label><span class="req">*</span>קטגוריית האירוע</label>
         <select id="evcat">
           <option value="">— בחר —</option>
-          <option>צדקה / גיוס כספים</option><option>אירוע קהילתי</option><option>אירוע פרטי</option>
-          <option>כנס מקצועי</option><option>אירוע דתי</option><option>אירוע ספורט</option>
-          <option>חגיגה / שמחה</option><option>אחר</option>
-        </select><span class="err-msg">שדה חובה</span>
+          <option>צדקה / גיוס כספים</option>
+          <option>אירוע פרטי</option>
+          <option>כנס מקצועי</option>
+          <option>אירוע דתי</option>
+          <option>חגיגה / שמחה</option>
+          <option>כנס / תערוכה</option>
+          <option>אחר</option>
+        </select>
+        <span class="err-msg">שדה חובה</span>
       </div>
-      <div class="field"><label>סוג האירוע</label>
+      <div class="field">
+        <label>סוג האירוע</label>
         <select id="evtype">
           <option value="">— בחר —</option>
-          <option>ארוחה (ערב / צהריים)</option><option>כנס / ישיבה</option><option>אירוע דתי</option>
-          <option>תהלוכה / מצעד</option><option>עצרת / הפגנה</option><option>אירוע ספורט</option>
-          <option>הופעה / מופע</option><option>אחר</option>
+          <option>ארוחה (ערב / צהריים)</option>
+          <option>כנס / ישיבה</option>
+          <option>אירוע דתי</option>
+          <option>תהלוכה / מצעד</option>
+          <option>עצרת / הפגנה</option>
+          <option>הופעה / מופע</option>
+          <option>אחר</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>האם זהו אירוע חוזר?</label>
+        <select id="recurring">
+          <option value="">— בחר —</option>
+          <option value="weekly">שבועי</option>
+          <option value="monthly">חודשי</option>
+          <option value="yearly">שנתי</option>
+          <option value="no">לא</option>
         </select>
       </div>
     </div>
+
     <div class="section-title">מיקום האירוע</div>
-    <div class="field" id="f_venue"><label><span class="req">*</span>שם המקום / כתובת</label><input id="venue" type="text" placeholder="שם המקום, רחוב, עיר..."><span class="err-msg">שדה חובה</span></div>
+    <div class="field" id="f_venue">
+      <label><span class="req">*</span>כתובת מקום / קישור Google Maps</label>
+      <input id="venue" type="text" placeholder="שם המקום, רחוב, עיר — או הדבק קישור Google Maps...">
+      <span class="err-msg">שדה חובה</span>
+    </div>
+
     <div class="grid2" style="margin-top:12px">
       <div class="field">
         <label>האם האירוע מתקיים בחוץ?</label>
         <div class="radio-group">
-          <label class="radio-opt" onclick="setRadio('outdoor','כן',this,'cond_outdoor')"><input type="radio" name="outdoor" value="כן"> כן</label>
-          <label class="radio-opt" onclick="setRadio('outdoor','לא',this,'cond_outdoor')"><input type="radio" name="outdoor" value="לא"> לא</label>
-        </div>
-        <div class="cond" id="cond_outdoor">
-          <div class="field"><label>האם יש גדר / הגבלה פיזית?</label>
-            <div class="radio-group">
-              <label class="radio-opt" onclick="setRadio('fence','כן',this)"><input type="radio" name="fence" value="כן"> כן</label>
-              <label class="radio-opt" onclick="setRadio('fence','לא',this)"><input type="radio" name="fence" value="לא"> לא</label>
-            </div>
-          </div>
+          <label class="radio-opt" onclick="setRadio('outdoor','כן',this)">
+            <input type="radio" name="outdoor" value="כן"> כן
+          </label>
+          <label class="radio-opt" onclick="setRadio('outdoor','לא',this)">
+            <input type="radio" name="outdoor" value="לא"> לא
+          </label>
         </div>
       </div>
       <div class="field">
-        <label>האם בשעות הלילה (אחרי 22:00)?</label>
+        <label>האם האירוע קשור לקהילה היהודית?</label>
         <div class="radio-group">
-          <label class="radio-opt" onclick="setRadio('latenight','כן',this);addScore('latenight',1)"><input type="radio" name="latenight" value="כן"> כן</label>
-          <label class="radio-opt" onclick="setRadio('latenight','לא',this);addScore('latenight',0)"><input type="radio" name="latenight" value="לא"> לא</label>
+          <label class="radio-opt" onclick="setRadio('jewishcommunity','כן',this)">
+            <input type="radio" name="jewishcommunity" value="כן"> כן
+          </label>
+          <label class="radio-opt" onclick="setRadio('jewishcommunity','לא',this)">
+            <input type="radio" name="jewishcommunity" value="לא"> לא
+          </label>
         </div>
       </div>
       <div class="field">
-        <label>האם סמוך למוסד ממשלתי / רגיש?</label>
+        <label>האם יתקיים במוסד ממשלתי?</label>
         <div class="radio-group">
-          <label class="radio-opt" onclick="setRadio('govprox','כן',this);addScore('govprox',1)"><input type="radio" name="govprox" value="כן"> כן</label>
-          <label class="radio-opt" onclick="setRadio('govprox','לא',this);addScore('govprox',0)"><input type="radio" name="govprox" value="לא"> לא</label>
+          <label class="radio-opt" onclick="setRadio('govprox','כן',this);addScore('govprox',1)">
+            <input type="radio" name="govprox" value="כן"> כן
+          </label>
+          <label class="radio-opt" onclick="setRadio('govprox','לא',this);addScore('govprox',0)">
+            <input type="radio" name="govprox" value="לא"> לא
+          </label>
+          <label class="radio-opt" onclick="setRadio('govprox','לא יודע',this)">
+            <input type="radio" name="govprox" value="לא יודע"> לא יודע
+          </label>
         </div>
       </div>
     </div>
@@ -195,52 +284,68 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
   </div>
 </div>
 
-<!-- STEP 2 -->
+<!-- ===== STEP 2 — קהל ופרסום ===== -->
 <div id="step2" style="display:none">
   <div class="card">
     <div class="section-title">פרטי קהל</div>
     <div class="grid2">
-      <div class="field" id="f_guestnum"><label><span class="req">*</span>מספר משתתפים צפוי</label>
-        <select id="guestnum" onchange="addScore('guestnum',this.value==='large'||this.value==='xlarge'?1:0)">
+      <div class="field">
+        <label>סוג כניסה</label>
+        <select id="entrytype" onchange="handleEntryType(this.value)">
           <option value="">— בחר —</option>
-          <option value="small">עד 100</option><option value="med">100–500</option>
-          <option value="large">500–1000</option><option value="xlarge">מעל 1000</option>
-        </select><span class="err-msg">שדה חובה</span>
-      </div>
-      <div class="field"><label>סוג כניסה</label>
-        <select id="entrytype" onchange="addScore('openentry',this.value==='open'?1:0)">
-          <option value="">— בחר —</option>
-          <option value="invite">בהזמנה בלבד</option><option value="community">קהילתי</option>
-          <option value="ticketed">עם כרטיסים</option><option value="open">פתוח לציבור</option>
+          <option value="invite">בהזמנה בלבד</option>
+          <option value="community">קהילתי</option>
+          <option value="ticketed">עם כרטיסים</option>
+          <option value="open">פתוח לציבור</option>
+          <option value="other">אחר</option>
+          <option value="unknown">לא יודע</option>
         </select>
+        <div class="cond" id="cond_entrytype_other">
+          <div class="field">
+            <label>פרט</label>
+            <input type="text" id="entrytype_other" placeholder="סוג הכניסה...">
+          </div>
+        </div>
       </div>
     </div>
+
     <div class="grid2" style="margin-top:12px">
       <div class="field">
         <label>האם האורחים עוברים סינון?</label>
         <div class="radio-group">
-          <label class="radio-opt" onclick="setRadio('vetted','כן',this,'cond_vetted');addScore('notvetting',0)"><input type="radio" name="vetted" value="כן"> כן</label>
-          <label class="radio-opt" onclick="setRadio('vetted','לא',this,'cond_vetted');addScore('notvetting',1)"><input type="radio" name="vetted" value="לא"> לא</label>
+          <label class="radio-opt" onclick="setRadio('vetted','כן',this,'cond_vetted');addScore('notvetting',0)">
+            <input type="radio" name="vetted" value="כן"> כן
+          </label>
+          <label class="radio-opt" onclick="setRadio('vetted','לא',this,'cond_vetted');addScore('notvetting',1)">
+            <input type="radio" name="vetted" value="לא"> לא
+          </label>
+          <label class="radio-opt" onclick="setRadio('vetted','לא יודע',this,'cond_vetted');addScore('notvetting',0)">
+            <input type="radio" name="vetted" value="לא יודע"> לא יודע
+          </label>
         </div>
-        <div class="cond" id="cond_vetted"><div class="field"><label>פרט את שיטת הסינון</label><input type="text" id="vetting_detail" placeholder="כרטיסיות, רשימות, בדיקת ת.ז..."></div></div>
-      </div>
-      <div class="field">
-        <label>האם האירוע כולל הגשת אלכוהול?</label>
-        <div class="radio-group">
-          <label class="radio-opt" onclick="setRadio('alcohol','כן',this);addScore('alcohol',1)"><input type="radio" name="alcohol" value="כן"> כן</label>
-          <label class="radio-opt" onclick="setRadio('alcohol','לא',this);addScore('alcohol',0)"><input type="radio" name="alcohol" value="לא"> לא</label>
+        <div class="cond" id="cond_vetted">
+          <div class="field">
+            <label>פרט את שיטת הסינון</label>
+            <input type="text" id="vetting_detail" placeholder="כרטיסיות, רשימות, בדיקת ת.ז...">
+          </div>
         </div>
       </div>
     </div>
+
     <div class="section-title">פרסום האירוע</div>
     <div class="field">
       <label>האם האירוע מפורסם לציבור?</label>
       <div class="radio-group">
-        <label class="radio-opt" onclick="setRadio('advertised','כן',this,'cond_adv');addScore('advertised',1)"><input type="radio" name="advertised" value="כן"> כן</label>
-        <label class="radio-opt" onclick="setRadio('advertised','לא',this,'cond_adv');addScore('advertised',0)"><input type="radio" name="advertised" value="לא"> לא</label>
+        <label class="radio-opt" onclick="setRadio('advertised','כן',this,'cond_adv');addScore('advertised',1)">
+          <input type="radio" name="advertised" value="כן"> כן
+        </label>
+        <label class="radio-opt" onclick="setRadio('advertised','לא',this,'cond_adv');addScore('advertised',0)">
+          <input type="radio" name="advertised" value="לא"> לא
+        </label>
       </div>
       <div class="cond" id="cond_adv">
-        <div class="field"><label>ערוצי פרסום</label>
+        <div class="field">
+          <label>ערוצי פרסום</label>
           <div class="cb-wrap">
             <label class="cb-item"><input type="checkbox" name="advchan" value="social_closed"> רשתות סגורות</label>
             <label class="cb-item"><input type="checkbox" name="advchan" value="social_open"> רשתות פתוחות</label>
@@ -248,12 +353,18 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
             <label class="cb-item"><input type="checkbox" name="advchan" value="press"> עיתונות</label>
             <label class="cb-item"><input type="checkbox" name="advchan" value="whatsapp"> WhatsApp</label>
             <label class="cb-item"><input type="checkbox" name="advchan" value="website"> אתר אינטרנט</label>
+            <label class="cb-item"><input type="checkbox" name="advchan" value="all"> הכל</label>
           </div>
         </div>
-        <div class="field" style="margin-top:8px"><label>האם המיקום מופיע בפרסום?</label>
+        <div class="field" style="margin-top:8px">
+          <label>האם המיקום מופיע בפרסום?</label>
           <div class="radio-group">
-            <label class="radio-opt" onclick="setRadio('advloc','כן',this)"><input type="radio" name="advloc" value="כן"> כן</label>
-            <label class="radio-opt" onclick="setRadio('advloc','לא',this)"><input type="radio" name="advloc" value="לא"> לא</label>
+            <label class="radio-opt" onclick="setRadio('advloc','כן',this)">
+              <input type="radio" name="advloc" value="כן"> כן
+            </label>
+            <label class="radio-opt" onclick="setRadio('advloc','לא',this)">
+              <input type="radio" name="advloc" value="לא"> לא
+            </label>
           </div>
         </div>
       </div>
@@ -266,7 +377,7 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
   </div>
 </div>
 
-<!-- STEP 3 -->
+<!-- ===== STEP 3 — סיכונים ואבטחה ===== -->
 <div id="step3" style="display:none">
   <div class="card">
     <div class="section-title">אישים ואיומים</div>
@@ -274,35 +385,68 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
       <div class="field">
         <label>האם יגיעו אישים בכירים / מוגנים?</label>
         <div class="radio-group">
-          <label class="radio-opt" onclick="setRadio('vip','כן',this,'cond_vip');addScore('vip',1)"><input type="radio" name="vip" value="כן"> כן</label>
-          <label class="radio-opt" onclick="setRadio('vip','לא',this,'cond_vip');addScore('vip',0)"><input type="radio" name="vip" value="לא"> לא</label>
+          <label class="radio-opt" onclick="setRadio('vip','כן',this,'cond_vip');addScore('vip',1)">
+            <input type="radio" name="vip" value="כן"> כן
+          </label>
+          <label class="radio-opt" onclick="setRadio('vip','לא',this,'cond_vip');addScore('vip',0)">
+            <input type="radio" name="vip" value="לא"> לא
+          </label>
+          <label class="radio-opt" onclick="setRadio('vip','לא יודע',this,'cond_vip');addScore('vip',0)">
+            <input type="radio" name="vip" value="לא יודע"> לא יודע
+          </label>
         </div>
-        <div class="cond" id="cond_vip"><div class="field"><label>פרט את האישים</label><input type="text" id="vip_detail" placeholder="שמות / תפקידים..."></div></div>
+        <div class="cond" id="cond_vip">
+          <div class="field">
+            <label>פרט את האישים</label>
+            <input type="text" id="vip_detail" placeholder="שמות / תפקידים...">
+          </div>
+        </div>
       </div>
       <div class="field">
         <label>האם צפויות הפגנות / מחאות?</label>
         <div class="radio-group">
-          <label class="radio-opt" onclick="setRadio('protest','כן',this);addScore('protest',1)"><input type="radio" name="protest" value="כן"> כן</label>
-          <label class="radio-opt" onclick="setRadio('protest','לא',this);addScore('protest',0)"><input type="radio" name="protest" value="לא"> לא</label>
-          <label class="radio-opt" onclick="setRadio('protest','לא ידוע',this)"><input type="radio" name="protest" value="לא ידוע"> לא ידוע</label>
-        </div>
-      </div>
-      <div class="field">
-        <label>היסטוריה של אירועי אלימות דומים?</label>
-        <div class="radio-group">
-          <label class="radio-opt" onclick="setRadio('history','כן',this);addScore('history',1)"><input type="radio" name="history" value="כן"> כן</label>
-          <label class="radio-opt" onclick="setRadio('history','לא',this);addScore('history',0)"><input type="radio" name="history" value="לא"> לא</label>
-        </div>
-      </div>
-      <div class="field">
-        <label>האם כולל פעילות ספורט מגע?</label>
-        <div class="radio-group">
-          <label class="radio-opt" onclick="setRadio('contact','כן',this);addScore('contact',1)"><input type="radio" name="contact" value="כן"> כן</label>
-          <label class="radio-opt" onclick="setRadio('contact','לא',this);addScore('contact',0)"><input type="radio" name="contact" value="לא"> לא</label>
+          <label class="radio-opt" onclick="setRadio('protest','כן',this);addScore('protest',1)">
+            <input type="radio" name="protest" value="כן"> כן
+          </label>
+          <label class="radio-opt" onclick="setRadio('protest','לא',this);addScore('protest',0)">
+            <input type="radio" name="protest" value="לא"> לא
+          </label>
+          <label class="radio-opt" onclick="setRadio('protest','לא ידוע',this)">
+            <input type="radio" name="protest" value="לא ידוע"> לא ידוע
+          </label>
         </div>
       </div>
     </div>
-    <div class="section-title">אבטחה קיימת ומשטרה</div>
+
+    <div class="field" style="margin-top:14px">
+      <label>מה תהיה תפקידך באירוע?</label>
+      <div class="radio-group">
+        <label class="radio-opt" onclick="setRadio('eventrole','אורח',this,'cond_eventrole','אחר')">
+          <input type="radio" name="eventrole" value="אורח"> אורח
+        </label>
+        <label class="radio-opt" onclick="setRadio('eventrole','דובר',this,'cond_eventrole','אחר')">
+          <input type="radio" name="eventrole" value="דובר"> דובר
+        </label>
+        <label class="radio-opt" onclick="setRadio('eventrole','מארח',this,'cond_eventrole','אחר')">
+          <input type="radio" name="eventrole" value="מארח"> מארח
+        </label>
+        <label class="radio-opt" onclick="setRadio('eventrole','מקבל פרס',this,'cond_eventrole','אחר')">
+          <input type="radio" name="eventrole" value="מקבל פרס"> מקבל פרס
+        </label>
+        <label class="radio-opt" onclick="setRadio('eventrole','אחר',this,'cond_eventrole','אחר')">
+          <input type="radio" name="eventrole" value="אחר"> אחר
+        </label>
+      </div>
+      <div class="cond" id="cond_eventrole">
+        <div class="field" id="f_eventrole_other">
+          <label><span class="req">*</span>פרט</label>
+          <input type="text" id="eventrole_other" placeholder="פרט את תפקידך...">
+          <span class="err-msg">שדה חובה</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">אבטחה קיימת</div>
     <div class="field">
       <label>אמצעי אבטחה קיימים</label>
       <div class="cb-wrap">
@@ -314,21 +458,12 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
         <label class="cb-item"><input type="checkbox" name="security" value="police"> משטרה מאושרת</label>
       </div>
     </div>
-    <div class="grid2" style="margin-top:12px">
-      <div class="field">
-        <label>האם הודעת למשטרה?</label>
-        <div class="radio-group">
-          <label class="radio-opt" onclick="setRadio('police','כן',this,'cond_police')"><input type="radio" name="police" value="כן"> כן</label>
-          <label class="radio-opt" onclick="setRadio('police','לא',this,'cond_police')"><input type="radio" name="police" value="לא"> לא</label>
-        </div>
-        <div class="cond" id="cond_police">
-          <div class="field"><label>מספר אסמכתא</label><input id="police_ref" type="text" placeholder="מספר פנייה..."></div>
-          <div class="field" style="margin-top:8px"><label>שם קצין קשר</label><input id="police_name" type="text" placeholder="שם..."></div>
-        </div>
-      </div>
-    </div>
+
     <div class="section-title">מידע נוסף</div>
-    <div class="field"><label>כל מידע רלוונטי נוסף</label><textarea id="extra" rows="3" placeholder="הוסף פרטים חשובים..."></textarea></div>
+    <div class="field">
+      <label>כל מידע רלוונטי נוסף</label>
+      <textarea id="extra" rows="3" placeholder="הוסף פרטים חשובים..."></textarea>
+    </div>
   </div>
   <div class="nav">
     <button class="btn-prev" onclick="prevStep(3)">→ הקודם</button>
@@ -337,7 +472,7 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
   </div>
 </div>
 
-<!-- STEP 4 -->
+<!-- ===== STEP 4 — סיכום ושליחה ===== -->
 <div id="step4" style="display:none">
   <div class="card" id="reviewCard"></div>
   <div class="nav" id="step4Nav">
@@ -358,18 +493,12 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
 </div><!-- /container -->
 
 <script>
-/* =========================================================
-   🔥 FIREBASE JAVASCRIPT — חיבור ושמירת נתונים
-   ========================================================= */
-
-// בדוק אם Firebase מוגדר
 window.addEventListener('DOMContentLoaded', function() {
   if (!FIREBASE_URL || FIREBASE_URL.includes('YOUR-PROJECT')) {
     document.getElementById('configBanner').classList.add('show');
   }
 });
 
-// REST API פונקציה לשמירה ב-Firebase
 function saveToFirebase(ref, data) {
   return fetch(FIREBASE_URL + '/submissions/' + ref + '.json', {
     method: 'PUT',
@@ -381,158 +510,168 @@ function saveToFirebase(ref, data) {
   });
 }
 
-/* =========================================================
-   לוגיקת טופס
-   ========================================================= */
 var cur = 0;
 var scoreMap = {};
 
 function gv(name) { var r = document.querySelector('input[name="'+name+'"]:checked'); return r ? r.value : ''; }
 function gi(id) { var el = document.getElementById(id); return el ? el.value : ''; }
 function addScore(k, v) { scoreMap[k] = v; }
-function calcScore() { var s=0; for(var k in scoreMap) s+=scoreMap[k]; return Math.min(s,10); }
+function calcScore() { var s = 0; for (var k in scoreMap) s += scoreMap[k]; return Math.min(s, 10); }
 
-function setRadio(name, val, el, condId) {
-  document.querySelectorAll('input[name="'+name+'"]').forEach(function(r){ r.closest('.radio-opt').classList.remove('checked'); });
+function setRadio(name, val, el, condId, triggerVal) {
+  document.querySelectorAll('input[name="'+name+'"]').forEach(function(r) {
+    r.closest('.radio-opt').classList.remove('checked');
+  });
   if (el) el.classList.add('checked');
-  if (condId) { var c=document.getElementById(condId); if(c) c.className='cond'+(val==='כן'?' show':''); }
+  if (condId) {
+    var c = document.getElementById(condId);
+    if (c) {
+      var trigger = triggerVal !== undefined ? triggerVal : 'כן';
+      c.className = 'cond' + (val === trigger ? ' show' : '');
+    }
+  }
+}
+
+function handleEntryType(val) {
+  addScore('openentry', val === 'open' ? 1 : 0);
+  var c = document.getElementById('cond_entrytype_other');
+  if (c) c.className = 'cond' + (val === 'other' ? ' show' : '');
 }
 
 function validateStep(s) {
   var ok = true;
   function req(id, fid) {
-    var el=document.getElementById(id), fw=document.getElementById(fid);
+    var el = document.getElementById(id), fw = document.getElementById(fid);
     if (!fw) return;
-    if (!el || !el.value.trim()) { fw.classList.add('error'); ok=false; } else fw.classList.remove('error');
+    if (!el || !el.value.trim()) { fw.classList.add('error'); ok = false; } else fw.classList.remove('error');
   }
-  if (s===0) {
-    req('org','f_org'); req('fname','f_fname'); req('lname','f_lname'); req('phone','f_phone');
-    var em=document.getElementById('email'), fw=document.getElementById('f_email');
-    if (!em||!em.value||!em.value.includes('@')) { fw.classList.add('error'); ok=false; } else fw.classList.remove('error');
+  if (s === 0) {
+    req('org', 'f_org');
+    req('fname', 'f_fname');
+    req('lname', 'f_lname');
+    req('phone', 'f_phone');
   }
-  if (s===1) {
-    req('evname','f_evname'); req('evstart','f_evstart'); req('evend','f_evend'); req('venue','f_venue');
-    var ec=document.getElementById('evcat'), fw=document.getElementById('f_evcat');
-    if (!ec||!ec.value) { fw.classList.add('error'); ok=false; } else fw.classList.remove('error');
+  if (s === 1) {
+    req('evname', 'f_evname');
+    req('evstart', 'f_evstart');
+    req('evend', 'f_evend');
+    req('venue', 'f_venue');
+    var ec = document.getElementById('evcat'), fw = document.getElementById('f_evcat');
+    if (!ec || !ec.value) { fw.classList.add('error'); ok = false; } else fw.classList.remove('error');
   }
-  if (s===2) {
-    var gn=document.getElementById('guestnum'), fw=document.getElementById('f_guestnum');
-    if (!gn||!gn.value) { fw.classList.add('error'); ok=false; } else fw.classList.remove('error');
+  if (s === 3) {
+    if (gv('eventrole') === 'אחר') {
+      req('eventrole_other', 'f_eventrole_other');
+    }
   }
   return ok;
 }
 
 function showStep(n) {
-  for (var i=0; i<5; i++) {
-    var el=document.getElementById('step'+i); if(el) el.style.display=i===n?'block':'none';
-    var tb=document.querySelectorAll('.step-btn')[i];
-    if (tb) tb.className='step-btn'+(i===n?' active':i<n?' done':'');
+  for (var i = 0; i < 5; i++) {
+    var el = document.getElementById('step' + i);
+    if (el) el.style.display = i === n ? 'block' : 'none';
+    var tb = document.querySelectorAll('.step-btn')[i];
+    if (tb) tb.className = 'step-btn' + (i === n ? ' active' : i < n ? ' done' : '');
   }
-  if (n===4) buildReview();
+  if (n === 4) buildReview();
 }
 
-function nextStep(s) { if(!validateStep(s)) return; cur=s+1; showStep(cur); window.scrollTo(0,0); }
-function prevStep(s) { cur=s-1; showStep(cur); window.scrollTo(0,0); }
-function goToStep(n) { if(n<=cur) { cur=n; showStep(cur); } }
+function nextStep(s) { if (!validateStep(s)) return; cur = s + 1; showStep(cur); window.scrollTo(0, 0); }
+function prevStep(s) { cur = s - 1; showStep(cur); window.scrollTo(0, 0); }
+function goToStep(n) { if (n <= cur) { cur = n; showStep(cur); } }
 
-function guestLabel() { return {small:'עד 100',med:'100–500',large:'500–1000',xlarge:'מעל 1000'}[gi('guestnum')]||'—'; }
-function entryLabel() { return {invite:'בהזמנה בלבד',community:'קהילתי',ticketed:'כרטיסים',open:'פתוח לציבור'}[gi('entrytype')]||'—'; }
+function entryLabel() {
+  var v = gi('entrytype');
+  var map = {
+    invite: 'בהזמנה בלבד', community: 'קהילתי', ticketed: 'כרטיסים',
+    open: 'פתוח לציבור', other: gi('entrytype_other') || 'אחר', unknown: 'לא יודע'
+  };
+  return map[v] || '—';
+}
+
+function recurringLabel() {
+  return { weekly: 'שבועי', monthly: 'חודשי', yearly: 'שנתי', no: 'לא' }[gi('recurring')] || '—';
+}
 
 function row(label, val) {
-  var d=val||'—';
-  if(val==='כן') d='<span style="background:#dbeafe;color:#1e40af;padding:2px 9px;border-radius:12px;font-size:11px;font-weight:600">כן</span>';
-  else if(val==='לא') d='<span style="background:#f1f5f9;color:#64748b;padding:2px 9px;border-radius:12px;font-size:11px">לא</span>';
+  var d = val || '—';
+  if (val === 'כן') d = '<span style="background:#dbeafe;color:#1e40af;padding:2px 9px;border-radius:12px;font-size:11px;font-weight:600">כן</span>';
+  else if (val === 'לא') d = '<span style="background:#f1f5f9;color:#64748b;padding:2px 9px;border-radius:12px;font-size:11px">לא</span>';
   return '<tr><td style="padding:7px 10px;color:#64748b;font-size:12px;width:45%">'+label+'</td><td style="padding:7px 10px;font-size:13px">'+d+'</td></tr>';
 }
 
 function buildReview() {
-  var score=calcScore();
-  var level,lcolor,lbg;
-  if(score<=3){level='נמוכה';lcolor='#15803d';lbg='#dcfce7';}
-  else if(score<=7){level='בינונית';lcolor='#92400e';lbg='#fef3c7';}
-  else{level='גבוהה';lcolor='#991b1b';lbg='#fee2e2';}
-  var pct=Math.round(score/10*100);
-  var gfill=score<=3?'#16a34a':score<=7?'#d97706':'#dc2626';
-  var html='<div style="padding-bottom:1rem;border-bottom:1px solid #e2e8f0;margin-bottom:1rem">';
-  html+='<div style="font-size:11px;color:#94a3b8;margin-bottom:4px">ציון סיכון אוטומטי</div>';
-  html+='<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">';
-  html+='<span style="font-size:42px;font-weight:700;color:'+lcolor+'">'+score+'</span>';
-  html+='<div><div style="font-size:11px;color:#94a3b8">מתוך 10</div>';
-  html+='<span style="background:'+lbg+';color:'+lcolor+';padding:3px 14px;border-radius:20px;font-size:13px;font-weight:600">רמת אבטחה: '+level+'</span></div></div>';
-  html+='<div style="height:8px;background:#e2e8f0;border-radius:20px;overflow:hidden"><div style="width:'+pct+'%;height:100%;background:'+gfill+';border-radius:20px;transition:width .6s"></div></div>';
-  html+='<div style="display:flex;justify-content:space-between;font-size:10px;color:#94a3b8;margin-top:3px"><span>נמוכה</span><span>בינונית</span><span>גבוהה</span></div></div>';
-  html+='<div style="font-size:12px;font-weight:600;color:#0f2744;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em">סיכום פרטים</div>';
-  html+='<table style="width:100%;border-collapse:collapse">';
-  html+=row('שם הארגון',gi('org'));
-  html+=row('איש קשר',(gi('fname')+' '+gi('lname')).trim());
-  html+=row('שם האירוע',gi('evname'));
-  html+=row('תאריך',gi('evstart'));
-  html+=row('מיקום',gi('venue'));
-  html+=row('קהל צפוי',guestLabel());
-  html+=row('סוג כניסה',entryLabel());
-  html+=row('אלכוהול',gv('alcohol'));
-  html+=row('אישים בכירים',gv('vip'));
-  html+=row('הפגנות צפויות',gv('protest'));
-  html+=row('שעות לילה',gv('latenight'));
-  html+=row('ללא סינון קהל',gv('vetted')==='לא'?'כן':'לא');
-  html+='</table>';
-  document.getElementById('reviewCard').innerHTML=html;
-  document.getElementById('submitBtn').style.display='inline-block';
+  var score = calcScore();
+  var level, lcolor, lbg;
+  if (score <= 3) { level = 'נמוכה'; lcolor = '#15803d'; lbg = '#dcfce7'; }
+  else if (score <= 7) { level = 'בינונית'; lcolor = '#92400e'; lbg = '#fef3c7'; }
+  else { level = 'גבוהה'; lcolor = '#991b1b'; lbg = '#fee2e2'; }
+  var pct = Math.round(score / 10 * 100);
+  var gfill = score <= 3 ? '#16a34a' : score <= 7 ? '#d97706' : '#dc2626';
+  var html = '<div style="padding-bottom:1rem;border-bottom:1px solid #e2e8f0;margin-bottom:1rem">';
+  html += '<div style="font-size:11px;color:#94a3b8;margin-bottom:4px">ציון סיכון אוטומטי</div>';
+  html += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">';
+  html += '<span style="font-size:42px;font-weight:700;color:'+lcolor+'">'+score+'</span>';
+  html += '<div><div style="font-size:11px;color:#94a3b8">מתוך 10</div>';
+  html += '<span style="background:'+lbg+';color:'+lcolor+';padding:3px 14px;border-radius:20px;font-size:13px;font-weight:600">רמת אבטחה: '+level+'</span></div></div>';
+  html += '<div style="height:8px;background:#e2e8f0;border-radius:20px;overflow:hidden"><div style="width:'+pct+'%;height:100%;background:'+gfill+';border-radius:20px;transition:width .6s"></div></div>';
+  html += '<div style="display:flex;justify-content:space-between;font-size:10px;color:#94a3b8;margin-top:3px"><span>נמוכה</span><span>בינונית</span><span>גבוהה</span></div></div>';
+  html += '<div style="font-size:12px;font-weight:600;color:#0f2744;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em">סיכום פרטים</div>';
+  html += '<table style="width:100%;border-collapse:collapse">';
+  html += row('בחסות', gi('org'));
+  html += row('מספר זיהוי אישי', gi('personalid'));
+  html += row('מארגן ידוע ומוכר', gv('orgknown'));
+  html += row('איש קשר', (gi('fname') + ' ' + gi('lname')).trim());
+  html += row('שם האירוע', gi('evname'));
+  html += row('תאריך', gi('evstart'));
+  html += row('מיקום', gi('venue'));
+  html += row('קהילה יהודית', gv('jewishcommunity'));
+  html += row('אירוע חוזר', recurringLabel());
+  html += row('סוג כניסה', entryLabel());
+  html += row('במוסד ממשלתי', gv('govprox'));
+  html += row('אישים בכירים', gv('vip'));
+  html += row('הפגנות צפויות', gv('protest'));
+  var roleVal = gv('eventrole') === 'אחר' ? (gi('eventrole_other') || 'אחר') : gv('eventrole');
+  html += row('תפקיד באירוע', roleVal);
+  html += '</table>';
+  document.getElementById('reviewCard').innerHTML = html;
+  document.getElementById('submitBtn').style.display = 'inline-block';
   document.getElementById('successDiv').classList.remove('show');
-  document.getElementById('step4Nav').style.display='flex';
+  document.getElementById('step4Nav').style.display = 'flex';
 }
 
-/* =========================================================
-   שליחה ל-Firebase
-   ========================================================= */
 function submitForm() {
   var ref = 'SEC-' + Date.now().toString(36).toUpperCase().slice(-8);
   var score = calcScore();
-  var level = score<=3?'נמוכה':score<=7?'בינונית':'גבוהה';
-
+  var level = score <= 3 ? 'נמוכה' : score <= 7 ? 'בינונית' : 'גבוהה';
   var data = {
-    ref: ref,
-    timestamp: new Date().toISOString(),
-    status: 'new',
-    score: score,
-    level: level,
-    // פרטי ארגון
-    org: gi('org'), orgid: gi('orgid'), website: gi('website'),
-    // איש קשר
-    fname: gi('fname'), lname: gi('lname'),
-    email: gi('email'), phone: gi('phone'), role: gi('role'),
-    // אירוע
+    ref: ref, timestamp: new Date().toISOString(), status: 'new', score: score, level: level,
+    org: gi('org'), personalid: gi('personalid'), invitelink: gi('invitelink'),
+    orgknown: gv('orgknown'), orgknown_detail: gi('orgknown_detail'),
+    fname: gi('fname'), lname: gi('lname'), email: gi('email'), phone: gi('phone'), role: gi('role'),
     evname: gi('evname'), evstart: gi('evstart'), evend: gi('evend'),
     evstarttime: gi('evstarttime'), evendtime: gi('evendtime'),
     evcat: gi('evcat'), evtype: gi('evtype'), venue: gi('venue'),
-    // פרטי סיכון
-    outdoor: gv('outdoor'), fence: gv('fence'),
-    latenight: gv('latenight'), govprox: gv('govprox'),
-    guestnum: gi('guestnum'), entrytype: gi('entrytype'),
+    jewishcommunity: gv('jewishcommunity'), recurring: gi('recurring'),
+    outdoor: gv('outdoor'), govprox: gv('govprox'),
+    entrytype: gi('entrytype'), entrytype_other: gi('entrytype_other'),
     vetted: gv('vetted'), vetting_detail: gi('vetting_detail'),
-    alcohol: gv('alcohol'), advertised: gv('advertised'), advloc: gv('advloc'),
-    vip: gv('vip'), vip_detail: gi('vip_detail'),
-    protest: gv('protest'), history: gv('history'),
-    contact: gv('contact'), police: gv('police'),
-    police_ref: gi('police_ref'), police_name: gi('police_name'),
+    advertised: gv('advertised'), advloc: gv('advloc'),
+    vip: gv('vip'), vip_detail: gi('vip_detail'), protest: gv('protest'),
+    eventrole: gv('eventrole'), eventrole_other: gi('eventrole_other'),
     extra: gi('extra'),
-    // ערוצי פרסום
-    advchan: Array.from(document.querySelectorAll('input[name="advchan"]:checked')).map(function(c){return c.value;}),
-    // אמצעי אבטחה
-    security: Array.from(document.querySelectorAll('input[name="security"]:checked')).map(function(c){return c.value;})
+    advchan: Array.from(document.querySelectorAll('input[name="advchan"]:checked')).map(function(c) { return c.value; }),
+    security: Array.from(document.querySelectorAll('input[name="security"]:checked')).map(function(c) { return c.value; })
   };
-
-  // אם Firebase לא מוגדר — שמור ב-localStorage כגיבוי
   if (!FIREBASE_URL || FIREBASE_URL.includes('YOUR-PROJECT')) {
-    var existing = JSON.parse(localStorage.getItem('securitySubmissions')||'[]');
+    var existing = JSON.parse(localStorage.getItem('securitySubmissions') || '[]');
     existing.push(data);
     localStorage.setItem('securitySubmissions', JSON.stringify(existing));
     showSuccess(ref);
     return;
   }
-
   document.getElementById('overlay').classList.add('show');
-
   saveToFirebase(ref, data)
     .then(function() {
       document.getElementById('overlay').classList.remove('show');
@@ -540,12 +679,10 @@ function submitForm() {
     })
     .catch(function(err) {
       document.getElementById('overlay').classList.remove('show');
-      // גיבוי ב-localStorage אם Firebase נכשל
-      var existing = JSON.parse(localStorage.getItem('securitySubmissions')||'[]');
+      var existing = JSON.parse(localStorage.getItem('securitySubmissions') || '[]');
       existing.push(data);
       localStorage.setItem('securitySubmissions', JSON.stringify(existing));
-      console.error('Firebase error:', err);
-      alert('⚠️ שגיאה בחיבור ל-Firebase.\nהנתונים נשמרו בדפדפן כגיבוי.\n\nשגיאה: '+err.message);
+      alert('⚠️ שגיאה בחיבור ל-Firebase.\nהנתונים נשמרו בדפדפן כגיבוי.\n\nשגיאה: ' + err.message);
       showSuccess(ref);
     });
 }
