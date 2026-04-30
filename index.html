@@ -102,9 +102,10 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
         <input id="org" type="text" placeholder="שם הגוף המארגן...">
         <span class="err-msg">שדה חובה</span>
       </div>
-      <div class="field">
-        <label>מספר זיהוי אישי</label>
+      <div class="field" id="f_personalid">
+        <label><span class="req">*</span>מספר זיהוי אישי</label>
         <input id="personalid" type="text" placeholder="ממולא על ידי כל עובד...">
+        <span class="err-msg">שדה חובה</span>
       </div>
       <div class="field" style="grid-column:1/-1">
         <label>קישור הזמנה (אם זמין)</label>
@@ -199,7 +200,6 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
           <option>צדקה / גיוס כספים</option>
           <option>אירוע פרטי</option>
           <option>כנס מקצועי</option>
-          <option>אירוע דתי</option>
           <option>חגיגה / שמחה</option>
           <option>כנס / תערוכה</option>
           <option>אחר</option>
@@ -212,7 +212,6 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
           <option value="">— בחר —</option>
           <option>ארוחה (ערב / צהריים)</option>
           <option>כנס / ישיבה</option>
-          <option>אירוע דתי</option>
           <option>תהלוכה / מצעד</option>
           <option>עצרת / הפגנה</option>
           <option>הופעה / מופע</option>
@@ -546,6 +545,7 @@ function validateStep(s) {
     if (!el || !el.value.trim()) { fw.classList.add('error'); ok = false; } else fw.classList.remove('error');
   }
   if (s === 0) {
+    req('personalid', 'f_personalid');
     req('org', 'f_org');
     req('fname', 'f_fname');
     req('lname', 'f_lname');
@@ -584,8 +584,12 @@ function goToStep(n) { if (n <= cur) { cur = n; showStep(cur); } }
 function entryLabel() {
   var v = gi('entrytype');
   var map = {
-    invite: 'בהזמנה בלבד', community: 'קהילתי', ticketed: 'כרטיסים',
-    open: 'פתוח לציבור', other: gi('entrytype_other') || 'אחר', unknown: 'לא יודע'
+    invite: 'בהזמנה בלבד',
+    community: 'קהילתי',
+    ticketed: 'כרטיסים',
+    open: 'פתוח לציבור',
+    other: gi('entrytype_other') || 'אחר',
+    unknown: 'לא יודע'
   };
   return map[v] || '—';
 }
@@ -609,6 +613,7 @@ function buildReview() {
   else { level = 'גבוהה'; lcolor = '#991b1b'; lbg = '#fee2e2'; }
   var pct = Math.round(score / 10 * 100);
   var gfill = score <= 3 ? '#16a34a' : score <= 7 ? '#d97706' : '#dc2626';
+
   var html = '<div style="padding-bottom:1rem;border-bottom:1px solid #e2e8f0;margin-bottom:1rem">';
   html += '<div style="font-size:11px;color:#94a3b8;margin-bottom:4px">ציון סיכון אוטומטי</div>';
   html += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">';
@@ -617,6 +622,7 @@ function buildReview() {
   html += '<span style="background:'+lbg+';color:'+lcolor+';padding:3px 14px;border-radius:20px;font-size:13px;font-weight:600">רמת אבטחה: '+level+'</span></div></div>';
   html += '<div style="height:8px;background:#e2e8f0;border-radius:20px;overflow:hidden"><div style="width:'+pct+'%;height:100%;background:'+gfill+';border-radius:20px;transition:width .6s"></div></div>';
   html += '<div style="display:flex;justify-content:space-between;font-size:10px;color:#94a3b8;margin-top:3px"><span>נמוכה</span><span>בינונית</span><span>גבוהה</span></div></div>';
+
   html += '<div style="font-size:12px;font-weight:600;color:#0f2744;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em">סיכום פרטים</div>';
   html += '<table style="width:100%;border-collapse:collapse">';
   html += row('בחסות', gi('org'));
@@ -635,6 +641,7 @@ function buildReview() {
   var roleVal = gv('eventrole') === 'אחר' ? (gi('eventrole_other') || 'אחר') : gv('eventrole');
   html += row('תפקיד באירוע', roleVal);
   html += '</table>';
+
   document.getElementById('reviewCard').innerHTML = html;
   document.getElementById('submitBtn').style.display = 'inline-block';
   document.getElementById('successDiv').classList.remove('show');
@@ -645,25 +652,38 @@ function submitForm() {
   var ref = 'SEC-' + Date.now().toString(36).toUpperCase().slice(-8);
   var score = calcScore();
   var level = score <= 3 ? 'נמוכה' : score <= 7 ? 'בינונית' : 'גבוהה';
+
   var data = {
-    ref: ref, timestamp: new Date().toISOString(), status: 'new', score: score, level: level,
-    org: gi('org'), personalid: gi('personalid'), invitelink: gi('invitelink'),
-    orgknown: gv('orgknown'), orgknown_detail: gi('orgknown_detail'),
-    fname: gi('fname'), lname: gi('lname'), email: gi('email'), phone: gi('phone'), role: gi('role'),
+    ref: ref,
+    timestamp: new Date().toISOString(),
+    status: 'new',
+    score: score,
+    level: level,
+    org: gi('org'),
+    personalid: gi('personalid'),
+    invitelink: gi('invitelink'),
+    orgknown: gv('orgknown'),
+    orgknown_detail: gi('orgknown_detail'),
+    fname: gi('fname'), lname: gi('lname'),
+    email: gi('email'), phone: gi('phone'), role: gi('role'),
     evname: gi('evname'), evstart: gi('evstart'), evend: gi('evend'),
     evstarttime: gi('evstarttime'), evendtime: gi('evendtime'),
     evcat: gi('evcat'), evtype: gi('evtype'), venue: gi('venue'),
-    jewishcommunity: gv('jewishcommunity'), recurring: gi('recurring'),
-    outdoor: gv('outdoor'), govprox: gv('govprox'),
+    jewishcommunity: gv('jewishcommunity'),
+    recurring: gi('recurring'),
+    outdoor: gv('outdoor'),
+    govprox: gv('govprox'),
     entrytype: gi('entrytype'), entrytype_other: gi('entrytype_other'),
     vetted: gv('vetted'), vetting_detail: gi('vetting_detail'),
     advertised: gv('advertised'), advloc: gv('advloc'),
-    vip: gv('vip'), vip_detail: gi('vip_detail'), protest: gv('protest'),
+    vip: gv('vip'), vip_detail: gi('vip_detail'),
+    protest: gv('protest'),
     eventrole: gv('eventrole'), eventrole_other: gi('eventrole_other'),
     extra: gi('extra'),
     advchan: Array.from(document.querySelectorAll('input[name="advchan"]:checked')).map(function(c) { return c.value; }),
     security: Array.from(document.querySelectorAll('input[name="security"]:checked')).map(function(c) { return c.value; })
   };
+
   if (!FIREBASE_URL || FIREBASE_URL.includes('YOUR-PROJECT')) {
     var existing = JSON.parse(localStorage.getItem('securitySubmissions') || '[]');
     existing.push(data);
@@ -671,7 +691,9 @@ function submitForm() {
     showSuccess(ref);
     return;
   }
+
   document.getElementById('overlay').classList.add('show');
+
   saveToFirebase(ref, data)
     .then(function() {
       document.getElementById('overlay').classList.remove('show');
@@ -682,6 +704,7 @@ function submitForm() {
       var existing = JSON.parse(localStorage.getItem('securitySubmissions') || '[]');
       existing.push(data);
       localStorage.setItem('securitySubmissions', JSON.stringify(existing));
+      console.error('Firebase error:', err);
       alert('⚠️ שגיאה בחיבור ל-Firebase.\nהנתונים נשמרו בדפדפן כגיבוי.\n\nשגיאה: ' + err.message);
       showSuccess(ref);
     });
@@ -696,4 +719,3 @@ function showSuccess(ref) {
 </script>
 </body>
 </html>
-
