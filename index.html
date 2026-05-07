@@ -37,6 +37,9 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
 .radio-opt:hover{border-color:var(--navy2)}
 .radio-opt input{accent-color:var(--navy2);width:15px;height:15px}
 .radio-opt.checked{border-color:var(--navy2);background:var(--blue-light);color:var(--navy2)}
+.radio-group.error .radio-opt{border-color:var(--red)}
+.radio-err{font-size:11px;color:var(--red);display:none;margin-top:4px}
+.radio-err.show{display:block}
 .cond{display:none;margin-top:10px;padding:12px;background:#f8fafc;border-radius:8px;border-right:3px solid var(--navy2)}
 .cond.show{display:block}
 .cb-wrap{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:6px;margin-top:6px}
@@ -60,6 +63,8 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
 .fb-config-banner{background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:12px 16px;margin-bottom:1rem;font-size:12px;color:#92400e;line-height:1.6;display:none}
 .fb-config-banner.show{display:block}
 .fb-config-banner code{background:#fef3c7;padding:2px 6px;border-radius:4px;font-size:11px}
+.err-shake{animation:shake .35s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
 </style>
 </head>
 <body>
@@ -113,9 +118,9 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
       </div>
     </div>
 
-    <div class="field" style="margin-top:14px">
-      <label>האם המארגן ידוע ומוכר, או לא מוכר אישית?</label>
-      <div class="radio-group">
+    <div class="field" style="margin-top:14px" id="f_orgknown_radio">
+      <label>האם המארגן ידוע ומוכר, או לא מוכר אישית? <span class="req">*</span></label>
+      <div class="radio-group" id="rg_orgknown">
         <label class="radio-opt" onclick="setRadio('orgknown','ידוע ומוכר',this,'cond_orgknown','ידוע ומוכר')">
           <input type="radio" name="orgknown" value="ידוע ומוכר"> ידוע ומוכר
         </label>
@@ -123,10 +128,12 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
           <input type="radio" name="orgknown" value="לא מוכר אישית"> לא מוכר אישית
         </label>
       </div>
+      <span class="radio-err" id="err_orgknown">יש לבחור אפשרות</span>
       <div class="cond" id="cond_orgknown">
-        <div class="field">
-          <label>פרט</label>
-          <input type="text" id="orgknown_detail" placeholder="כיצד מוכר המארגן...">
+        <div class="field" id="f_orgknown_detail">
+          <label><span class="req">*</span>פרט — כיצד ידוע המארגן?</label>
+          <input type="text" id="orgknown_detail" placeholder="כיצד מוכר המארגן, מאיזה הקשר...">
+          <span class="err-msg">שדה חובה כאשר המארגן ידוע ומוכר</span>
         </div>
       </div>
     </div>
@@ -531,6 +538,11 @@ function setRadio(name, val, el, condId, triggerVal) {
       c.className = 'cond' + (val === trigger ? ' show' : '');
     }
   }
+  /* נקה שגיאת radio אם קיימת */
+  var errEl = document.getElementById('err_' + name);
+  if (errEl) errEl.classList.remove('show');
+  var rg = document.getElementById('rg_' + name);
+  if (rg) rg.classList.remove('error');
 }
 
 function handleEntryType(val) {
@@ -539,33 +551,82 @@ function handleEntryType(val) {
   if (c) c.className = 'cond' + (val === 'other' ? ' show' : '');
 }
 
+/* =========================================================
+   וולידציה — מוודאת שדות חובה לפי שלב
+   ========================================================= */
 function validateStep(s) {
   var ok = true;
+  var firstErr = null;
+
   function req(id, fid) {
-    var el = document.getElementById(id), fw = document.getElementById(fid);
+    var el = document.getElementById(id);
+    var fw = document.getElementById(fid);
     if (!fw) return;
-    if (!el || !el.value.trim()) { fw.classList.add('error'); ok = false; } else fw.classList.remove('error');
+    if (!el || !el.value.trim()) {
+      fw.classList.add('error');
+      ok = false;
+      if (!firstErr) firstErr = fw;
+    } else {
+      fw.classList.remove('error');
+    }
   }
+
+  function reqRadio(name) {
+    var checked = document.querySelector('input[name="'+name+'"]:checked');
+    var errEl = document.getElementById('err_' + name);
+    var rg = document.getElementById('rg_' + name);
+    if (!checked) {
+      if (errEl) errEl.classList.add('show');
+      if (rg) { rg.classList.add('error'); if (!firstErr) firstErr = rg; }
+      ok = false;
+    } else {
+      if (errEl) errEl.classList.remove('show');
+      if (rg) rg.classList.remove('error');
+    }
+  }
+
   if (s === 0) {
     req('personalid', 'f_personalid');
     req('org', 'f_org');
     req('fname', 'f_fname');
     req('lname', 'f_lname');
     req('phone', 'f_phone');
+    reqRadio('orgknown');
+    /* אם בחר "ידוע ומוכר" — חובה לפרט */
+    if (gv('orgknown') === 'ידוע ומוכר') {
+      req('orgknown_detail', 'f_orgknown_detail');
+    }
   }
+
   if (s === 1) {
     req('evname', 'f_evname');
     req('evstart', 'f_evstart');
     req('evend', 'f_evend');
     req('venue', 'f_venue');
-    var ec = document.getElementById('evcat'), fw = document.getElementById('f_evcat');
-    if (!ec || !ec.value) { fw.classList.add('error'); ok = false; } else fw.classList.remove('error');
+    var ec = document.getElementById('evcat');
+    var fw = document.getElementById('f_evcat');
+    if (!ec || !ec.value) {
+      fw.classList.add('error');
+      ok = false;
+      if (!firstErr) firstErr = fw;
+    } else {
+      fw.classList.remove('error');
+    }
   }
+
   if (s === 3) {
     if (gv('eventrole') === 'אחר') {
       req('eventrole_other', 'f_eventrole_other');
     }
   }
+
+  /* גלול לשדה השגוי הראשון */
+  if (!ok && firstErr) {
+    firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    firstErr.classList.add('err-shake');
+    setTimeout(function() { firstErr.classList.remove('err-shake'); }, 400);
+  }
+
   return ok;
 }
 
@@ -579,19 +640,20 @@ function showStep(n) {
   if (n === 4) buildReview();
 }
 
-function nextStep(s) { if (!validateStep(s)) return; cur = s + 1; showStep(cur); window.scrollTo(0, 0); }
+function nextStep(s) {
+  if (!validateStep(s)) return;
+  cur = s + 1;
+  showStep(cur);
+  window.scrollTo(0, 0);
+}
 function prevStep(s) { cur = s - 1; showStep(cur); window.scrollTo(0, 0); }
 function goToStep(n) { if (n <= cur) { cur = n; showStep(cur); } }
 
 function entryLabel() {
   var v = gi('entrytype');
   var map = {
-    invite: 'בהזמנה בלבד',
-    community: 'קהילתי',
-    ticketed: 'כרטיסים',
-    open: 'פתוח לציבור',
-    other: gi('entrytype_other') || 'אחר',
-    unknown: 'לא יודע'
+    invite: 'בהזמנה בלבד', community: 'קהילתי', ticketed: 'כרטיסים',
+    open: 'פתוח לציבור', other: gi('entrytype_other') || 'אחר', unknown: 'לא יודע'
   };
   return map[v] || '—';
 }
@@ -629,7 +691,8 @@ function buildReview() {
   html += '<table style="width:100%;border-collapse:collapse">';
   html += row('בחסות', gi('org'));
   html += row('מספר זיהוי אישי', gi('personalid'));
-  html += row('מארגן ידוע ומוכר', gv('orgknown'));
+  html += row('מארגן', gv('orgknown'));
+  if (gv('orgknown') === 'ידוע ומוכר') html += row('פירוט מארגן', gi('orgknown_detail'));
   html += row('איש קשר', (gi('fname') + ' ' + gi('lname')).trim());
   html += row('שם האירוע', gi('evname'));
   html += row('תאריך', gi('evstart'));
