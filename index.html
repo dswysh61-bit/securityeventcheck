@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>טופס הערכת אבטחה לאירוע</title>
+<title>◊ò◊ï◊§◊° ◊î◊¢◊®◊õ◊™ ◊ê◊ë◊ò◊ó◊î</title>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--navy:#0f2744;--navy2:#1a3a5c;--blue:#2563eb;--blue-light:#dbeafe;--green:#16a34a;--amber:#d97706;--red:#dc2626;--border:#e2e8f0;--bg:#f8fafc;--text:#1e293b;--muted:#64748b;--subtle:#94a3b8}
@@ -65,6 +65,16 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
 .fb-config-banner code{background:#fef3c7;padding:2px 6px;border-radius:4px;font-size:11px}
 .err-shake{animation:shake .35s ease}
 @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+/* ===== ◊ë◊ï◊®◊® ◊°◊ï◊í ◊ò◊ï◊§◊°: ◊ê◊ô◊®◊ï◊¢ / ◊§◊í◊ô◊©◊î ===== */
+.type-chooser{max-width:700px;margin:2.5rem auto;padding:0 1rem}
+.tc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:480px){.tc-grid{grid-template-columns:1fr}}
+.tc-card{background:white;border:2px solid var(--border);border-radius:14px;padding:2rem 1.5rem;text-align:center;cursor:pointer;transition:all .15s}
+.tc-card:hover{border-color:var(--navy2);box-shadow:0 6px 18px rgba(26,58,92,.12);transform:translateY(-2px)}
+.tc-card .ic{font-size:42px;margin-bottom:12px}
+.tc-card h3{font-size:18px;color:var(--navy2);margin-bottom:6px}
+.tc-card p{font-size:12px;color:var(--muted);line-height:1.5}
+.tc-hint{text-align:center;font-size:12px;color:var(--subtle);margin-bottom:1rem}
 </style>
 </head>
 <body>
@@ -73,245 +83,267 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
   var FIREBASE_URL = 'https://security-event-check-default-rtdb.europe-west1.firebasedatabase.app';
 </script>
 
-<div class="overlay" id="overlay"><div class="spinner"></div><span>שולח טופס...</span></div>
+<div class="overlay" id="overlay"><div class="spinner"></div><span>◊©◊ï◊ú◊ó ◊ò◊ï◊§◊°...</span></div>
 
-<div class="top-strip">🔒 מערכת הערכת סיכוני אבטחה — טופס מאובטח</div>
+<div class="top-strip">üîí ◊û◊¢◊®◊õ◊™ ◊î◊¢◊®◊õ◊™ ◊°◊ô◊õ◊ï◊†◊ô ◊ê◊ë◊ò◊ó◊î ‚Äî ◊ò◊ï◊§◊° ◊û◊ê◊ï◊ë◊ò◊ó</div>
 
 <div class="page-header">
-  <h1>טופס הערכת רמת אבטחה לאירוע</h1>
-  <p>אנא מלא את הפרטים הבאים. המידע ישמש להערכת רמת האבטחה הנדרשת לאירועך.</p>
+  <h1 id="pageTitleH">◊ò◊ï◊§◊° ◊î◊¢◊®◊õ◊™ ◊ê◊ë◊ò◊ó◊î</h1>
+  <p id="pageSubH">◊ë◊ó◊® ◊ê◊™ ◊°◊ï◊í ◊î◊ò◊ï◊§◊° ◊î◊û◊™◊ê◊ô◊ù: ◊ê◊ô◊®◊ï◊¢ (◊ò◊ï◊§◊° ◊û◊ú◊ê) ◊ê◊ï ◊§◊í◊ô◊©◊î (◊ò◊ï◊§◊° ◊ß◊¶◊®).</p>
 </div>
 
+<!-- ===== ◊ë◊ï◊®◊® ◊°◊ï◊í ◊ò◊ï◊§◊° ===== -->
+<div class="type-chooser" id="typeChooser">
+  <div class="tc-hint">◊û◊î ◊™◊®◊¶◊î ◊ú◊û◊ú◊ê?</div>
+  <div class="tc-grid">
+    <div class="tc-card" onclick="chooseType('event')">
+      <div class="ic">üìÖ</div>
+      <h3>◊ê◊ô◊®◊ï◊¢</h3>
+      <p>◊ò◊ï◊§◊° ◊û◊ú◊ê ◊ú◊î◊¢◊®◊õ◊™ ◊®◊û◊™ ◊ê◊ë◊ò◊ó◊î ◊ú◊ê◊ô◊®◊ï◊¢ ‚Äî ◊ê◊®◊í◊ï◊ü, ◊§◊®◊ò◊ô ◊ê◊ô◊®◊ï◊¢, ◊ß◊î◊ú, ◊°◊ô◊õ◊ï◊†◊ô◊ù ◊ï◊ê◊ë◊ò◊ó◊î.</p>
+    </div>
+    <div class="tc-card" onclick="chooseType('meeting')">
+      <div class="ic">ü§ù</div>
+      <h3>◊§◊í◊ô◊©◊î</h3>
+      <p>◊ò◊ï◊§◊° ◊ß◊¶◊® ◊ú◊§◊í◊ô◊©◊î ◊ê◊ô◊©◊ô◊™ ‚Äî ◊§◊®◊ò◊ô ◊î◊ê◊ì◊ù, ◊®◊û◊™ ◊î◊ô◊õ◊®◊ï◊™, ◊û◊ô◊ß◊ï◊ù ◊ï◊î◊¢◊®◊ï◊™.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ===== ◊ñ◊®◊ô◊û◊™ ◊ê◊ô◊®◊ï◊¢ (◊ò◊ï◊§◊° ◊û◊ú◊ê) ===== -->
+<!-- ============================================================ -->
+<div id="eventFlow" style="display:none">
+
 <div class="steps-bar">
-  <button class="step-btn active" onclick="goToStep(0)">1 — פרטי ארגון</button>
-  <button class="step-btn" onclick="goToStep(1)">2 — פרטי אירוע</button>
-  <button class="step-btn" onclick="goToStep(2)">3 — קהל ופרסום</button>
-  <button class="step-btn" onclick="goToStep(3)">4 — סיכונים ואבטחה</button>
-  <button class="step-btn" onclick="goToStep(4)">5 — שליחה</button>
+  <button class="step-btn active" onclick="goToStep(0)">1 ‚Äî ◊§◊®◊ò◊ô ◊ê◊®◊í◊ï◊ü</button>
+  <button class="step-btn" onclick="goToStep(1)">2 ‚Äî ◊§◊®◊ò◊ô ◊ê◊ô◊®◊ï◊¢</button>
+  <button class="step-btn" onclick="goToStep(2)">3 ‚Äî ◊ß◊î◊ú ◊ï◊§◊®◊°◊ï◊ù</button>
+  <button class="step-btn" onclick="goToStep(3)">4 ‚Äî ◊°◊ô◊õ◊ï◊†◊ô◊ù ◊ï◊ê◊ë◊ò◊ó◊î</button>
+  <button class="step-btn" onclick="goToStep(4)">5 ‚Äî ◊©◊ú◊ô◊ó◊î</button>
 </div>
 
 <div class="container">
 
 <div class="fb-config-banner" id="configBanner">
-  ⚠️ <strong>Firebase לא מוגדר עדיין.</strong> הטופס יעבוד אך הנתונים לא יישמרו לשרת.<br>
-  כדי לחבר: ערוך את משתנה <code>FIREBASE_URL</code> בתחילת הקובץ.
+  ‚ö†Ô∏è <strong>Firebase ◊ú◊ê ◊û◊ï◊í◊ì◊® ◊¢◊ì◊ô◊ô◊ü.</strong> ◊î◊ò◊ï◊§◊° ◊ô◊¢◊ë◊ï◊ì ◊ê◊ö ◊î◊†◊™◊ï◊†◊ô◊ù ◊ú◊ê ◊ô◊ô◊©◊û◊®◊ï ◊ú◊©◊®◊™.<br>
+  ◊õ◊ì◊ô ◊ú◊ó◊ë◊®: ◊¢◊®◊ï◊ö ◊ê◊™ ◊û◊©◊™◊†◊î <code>FIREBASE_URL</code> ◊ë◊™◊ó◊ô◊ú◊™ ◊î◊ß◊ï◊ë◊•.
 </div>
 
-<!-- ===== STEP 0 — פרטי ארגון ===== -->
+<!-- ===== STEP 0 ‚Äî ◊§◊®◊ò◊ô ◊ê◊®◊í◊ï◊ü ===== -->
 <div id="step0">
   <div class="card">
-    <div class="section-title">פרטי ארגון</div>
+    <div class="section-title">◊§◊®◊ò◊ô ◊ê◊®◊í◊ï◊ü</div>
     <div class="grid2">
       <div class="field" id="f_org">
-        <label><span class="req">*</span>בחסות</label>
-        <input id="org" type="text" placeholder="שם הגוף המארגן...">
-        <span class="err-msg">שדה חובה</span>
+        <label><span class="req">*</span>◊ë◊ó◊°◊ï◊™</label>
+        <input id="org" type="text" placeholder="◊©◊ù ◊î◊í◊ï◊£ ◊î◊û◊ê◊®◊í◊ü...">
+        <span class="err-msg">◊©◊ì◊î ◊ó◊ï◊ë◊î</span>
       </div>
       <div class="field" id="f_personalid">
-        <label><span class="req">*</span>מספר זיהוי אישי</label>
-        <input id="personalid" type="text" placeholder="ממולא על ידי כל עובד...">
-        <span class="err-msg">שדה חובה</span>
+        <label><span class="req">*</span>◊û◊°◊§◊® ◊ñ◊ô◊î◊ï◊ô ◊ê◊ô◊©◊ô</label>
+        <input id="personalid" type="text" placeholder="◊û◊û◊ï◊ú◊ê ◊¢◊ú ◊ô◊ì◊ô ◊õ◊ú ◊¢◊ï◊ë◊ì...">
+        <span class="err-msg">◊©◊ì◊î ◊ó◊ï◊ë◊î</span>
       </div>
       <div class="field" style="grid-column:1/-1">
-        <label>קישור הזמנה (אם זמין)</label>
+        <label>◊ß◊ô◊©◊ï◊® ◊î◊ñ◊û◊†◊î (◊ê◊ù ◊ñ◊û◊ô◊ü)</label>
         <input id="invitelink" type="text" placeholder="https://...">
       </div>
     </div>
 
     <div class="field" style="margin-top:14px" id="f_orgknown_radio">
-      <label>האם המארגן ידוע ומוכר, או לא מוכר אישית? <span class="req">*</span></label>
+      <label>◊î◊ê◊ù ◊î◊û◊ê◊®◊í◊ü ◊ô◊ì◊ï◊¢ ◊ï◊û◊ï◊õ◊®, ◊ê◊ï ◊ú◊ê ◊û◊ï◊õ◊® ◊ê◊ô◊©◊ô◊™? <span class="req">*</span></label>
       <div class="radio-group" id="rg_orgknown">
-        <label class="radio-opt" onclick="setRadio('orgknown','ידוע ומוכר',this,'cond_orgknown','ידוע ומוכר')">
-          <input type="radio" name="orgknown" value="ידוע ומוכר"> ידוע ומוכר
+        <label class="radio-opt" onclick="setRadio('orgknown','◊ô◊ì◊ï◊¢ ◊ï◊û◊ï◊õ◊®',this,'cond_orgknown','◊ô◊ì◊ï◊¢ ◊ï◊û◊ï◊õ◊®')">
+          <input type="radio" name="orgknown" value="◊ô◊ì◊ï◊¢ ◊ï◊û◊ï◊õ◊®"> ◊ô◊ì◊ï◊¢ ◊ï◊û◊ï◊õ◊®
         </label>
-        <label class="radio-opt" onclick="setRadio('orgknown','לא מוכר אישית',this,'cond_orgknown','ידוע ומוכר')">
-          <input type="radio" name="orgknown" value="לא מוכר אישית"> לא מוכר אישית
+        <label class="radio-opt" onclick="setRadio('orgknown','◊ú◊ê ◊û◊ï◊õ◊® ◊ê◊ô◊©◊ô◊™',this,'cond_orgknown','◊ô◊ì◊ï◊¢ ◊ï◊û◊ï◊õ◊®')">
+          <input type="radio" name="orgknown" value="◊ú◊ê ◊û◊ï◊õ◊® ◊ê◊ô◊©◊ô◊™"> ◊ú◊ê ◊û◊ï◊õ◊® ◊ê◊ô◊©◊ô◊™
         </label>
       </div>
-      <span class="radio-err" id="err_orgknown">יש לבחור אפשרות</span>
+      <span class="radio-err" id="err_orgknown">◊ô◊© ◊ú◊ë◊ó◊ï◊® ◊ê◊§◊©◊®◊ï◊™</span>
       <div class="cond" id="cond_orgknown">
         <div class="field" id="f_orgknown_detail">
-          <label><span class="req">*</span>פרט — כיצד ידוע המארגן?</label>
-          <input type="text" id="orgknown_detail" placeholder="כיצד מוכר המארגן, מאיזה הקשר...">
-          <span class="err-msg">שדה חובה כאשר המארגן ידוע ומוכר</span>
+          <label><span class="req">*</span>◊§◊®◊ò ‚Äî ◊õ◊ô◊¶◊ì ◊ô◊ì◊ï◊¢ ◊î◊û◊ê◊®◊í◊ü?</label>
+          <input type="text" id="orgknown_detail" placeholder="◊õ◊ô◊¶◊ì ◊û◊ï◊õ◊® ◊î◊û◊ê◊®◊í◊ü, ◊û◊ê◊ô◊ñ◊î ◊î◊ß◊©◊®...">
+          <span class="err-msg">◊©◊ì◊î ◊ó◊ï◊ë◊î ◊õ◊ê◊©◊® ◊î◊û◊ê◊®◊í◊ü ◊ô◊ì◊ï◊¢ ◊ï◊û◊ï◊õ◊®</span>
         </div>
       </div>
     </div>
 
-    <div class="section-title">פרטי איש קשר</div>
+    <div class="section-title">◊§◊®◊ò◊ô ◊ê◊ô◊© ◊ß◊©◊®</div>
     <div class="grid2">
       <div class="field" id="f_fname">
-        <label><span class="req">*</span>שם פרטי</label>
+        <label><span class="req">*</span>◊©◊ù ◊§◊®◊ò◊ô</label>
         <input id="fname" type="text">
-        <span class="err-msg">שדה חובה</span>
+        <span class="err-msg">◊©◊ì◊î ◊ó◊ï◊ë◊î</span>
       </div>
       <div class="field" id="f_lname">
-        <label><span class="req">*</span>שם משפחה</label>
+        <label><span class="req">*</span>◊©◊ù ◊û◊©◊§◊ó◊î</label>
         <input id="lname" type="text">
-        <span class="err-msg">שדה חובה</span>
+        <span class="err-msg">◊©◊ì◊î ◊ó◊ï◊ë◊î</span>
       </div>
       <div class="field">
-        <label>אימייל</label>
+        <label>◊ê◊ô◊û◊ô◊ô◊ú</label>
         <input id="email" type="email" placeholder="name@org.com">
       </div>
       <div class="field" id="f_phone">
-        <label><span class="req">*</span>טלפון</label>
+        <label><span class="req">*</span>◊ò◊ú◊§◊ï◊ü</label>
         <input id="phone" type="tel" placeholder="050-0000000">
-        <span class="err-msg">שדה חובה</span>
+        <span class="err-msg">◊©◊ì◊î ◊ó◊ï◊ë◊î</span>
       </div>
       <div class="field">
-        <label>תפקיד</label>
-        <input id="role" type="text" placeholder="תפקיד / תואר...">
+        <label>◊™◊§◊ß◊ô◊ì</label>
+        <input id="role" type="text" placeholder="◊™◊§◊ß◊ô◊ì / ◊™◊ï◊ê◊®...">
       </div>
     </div>
   </div>
   <div class="nav">
-    <button class="btn-prev" disabled>→ הקודם</button>
-    <span class="step-ind">שלב 1 מתוך 5</span>
-    <button class="btn-next" onclick="nextStep(0)">הבא ←</button>
+    <button class="btn-prev" onclick="backToChooser()">‚Üí ◊ó◊ñ◊®◊î ◊ú◊ë◊ó◊ô◊®◊î</button>
+    <span class="step-ind">◊©◊ú◊ë 1 ◊û◊™◊ï◊ö 5</span>
+    <button class="btn-next" onclick="nextStep(0)">◊î◊ë◊ê ‚Üê</button>
   </div>
 </div>
 
-<!-- ===== STEP 1 — פרטי אירוע ===== -->
+<!-- ===== STEP 1 ‚Äî ◊§◊®◊ò◊ô ◊ê◊ô◊®◊ï◊¢ ===== -->
 <div id="step1" style="display:none">
   <div class="card">
-    <div class="section-title">פרטי האירוע</div>
+    <div class="section-title">◊§◊®◊ò◊ô ◊î◊ê◊ô◊®◊ï◊¢</div>
     <div class="grid2">
       <div class="field" style="grid-column:1/-1" id="f_evname">
-        <label><span class="req">*</span>שם האירוע</label>
-        <input id="evname" type="text" placeholder="שם האירוע...">
-        <span class="err-msg">שדה חובה</span>
+        <label><span class="req">*</span>◊©◊ù ◊î◊ê◊ô◊®◊ï◊¢</label>
+        <input id="evname" type="text" placeholder="◊©◊ù ◊î◊ê◊ô◊®◊ï◊¢...">
+        <span class="err-msg">◊©◊ì◊î ◊ó◊ï◊ë◊î</span>
       </div>
       <div class="field" id="f_evstart">
-        <label><span class="req">*</span>תאריך התחלה</label>
+        <label><span class="req">*</span>◊™◊ê◊®◊ô◊ö ◊î◊™◊ó◊ú◊î</label>
         <input id="evstart" type="date">
-        <span class="err-msg">שדה חובה</span>
+        <span class="err-msg">◊©◊ì◊î ◊ó◊ï◊ë◊î</span>
       </div>
       <div class="field" id="f_evend">
-        <label><span class="req">*</span>תאריך סיום</label>
+        <label><span class="req">*</span>◊™◊ê◊®◊ô◊ö ◊°◊ô◊ï◊ù</label>
         <input id="evend" type="date">
-        <span class="err-msg">שדה חובה</span>
+        <span class="err-msg">◊©◊ì◊î ◊ó◊ï◊ë◊î</span>
       </div>
       <div class="field">
-        <label>שעת התחלה</label>
+        <label>◊©◊¢◊™ ◊î◊™◊ó◊ú◊î</label>
         <input id="evstarttime" type="time">
       </div>
       <div class="field">
-        <label>שעת סיום</label>
+        <label>◊©◊¢◊™ ◊°◊ô◊ï◊ù</label>
         <input id="evendtime" type="time">
       </div>
       <div class="field" id="f_evcat">
-        <label><span class="req">*</span>קטגוריית האירוע</label>
+        <label><span class="req">*</span>◊ß◊ò◊í◊ï◊®◊ô◊ô◊™ ◊î◊ê◊ô◊®◊ï◊¢</label>
         <select id="evcat">
-          <option value="">— בחר —</option>
-          <option>צדקה / גיוס כספים</option>
-          <option>אירוע פרטי</option>
-          <option>כנס מקצועי</option>
-          <option>חגיגה / שמחה</option>
-          <option>כנס / תערוכה</option>
-          <option>אירוע דיפלומטי</option>
-          <option>אחר</option>
+          <option value="">‚Äî ◊ë◊ó◊® ‚Äî</option>
+          <option>◊¶◊ì◊ß◊î / ◊í◊ô◊ï◊° ◊õ◊°◊§◊ô◊ù</option>
+          <option>◊ê◊ô◊®◊ï◊¢ ◊§◊®◊ò◊ô</option>
+          <option>◊õ◊†◊° ◊û◊ß◊¶◊ï◊¢◊ô</option>
+          <option>◊ó◊í◊ô◊í◊î / ◊©◊û◊ó◊î</option>
+          <option>◊õ◊†◊° / ◊™◊¢◊®◊ï◊õ◊î</option>
+          <option>◊ê◊ô◊®◊ï◊¢ ◊ì◊ô◊§◊ú◊ï◊û◊ò◊ô</option>
+          <option>◊ê◊ó◊®</option>
         </select>
-        <span class="err-msg">שדה חובה</span>
+        <span class="err-msg">◊©◊ì◊î ◊ó◊ï◊ë◊î</span>
       </div>
       <div class="field">
-        <label>סוג האירוע</label>
+        <label>◊°◊ï◊í ◊î◊ê◊ô◊®◊ï◊¢</label>
         <select id="evtype">
-          <option value="">— בחר —</option>
-          <option>ארוחה (ערב / צהריים)</option>
-          <option>קבלת פנים</option>
-          <option>כנס / ישיבה</option>
-          <option>תהלוכה / מצעד</option>
-          <option>עצרת / הפגנה</option>
-          <option>הופעה / מופע</option>
-          <option>אחר</option>
+          <option value="">‚Äî ◊ë◊ó◊® ‚Äî</option>
+          <option>◊ê◊®◊ï◊ó◊î (◊¢◊®◊ë / ◊¶◊î◊®◊ô◊ô◊ù)</option>
+          <option>◊ß◊ë◊ú◊™ ◊§◊†◊ô◊ù</option>
+          <option>◊õ◊†◊° / ◊ô◊©◊ô◊ë◊î</option>
+          <option>◊™◊î◊ú◊ï◊õ◊î / ◊û◊¶◊¢◊ì</option>
+          <option>◊¢◊¶◊®◊™ / ◊î◊§◊í◊†◊î</option>
+          <option>◊î◊ï◊§◊¢◊î / ◊û◊ï◊§◊¢</option>
+          <option>◊ê◊ó◊®</option>
         </select>
       </div>
       <div class="field">
-        <label>האם זהו אירוע חוזר?</label>
+        <label>◊î◊ê◊ù ◊ñ◊î◊ï ◊ê◊ô◊®◊ï◊¢ ◊ó◊ï◊ñ◊®?</label>
         <select id="recurring">
-          <option value="">— בחר —</option>
-          <option value="weekly">שבועי</option>
-          <option value="monthly">חודשי</option>
-          <option value="yearly">שנתי</option>
-          <option value="no">לא</option>
+          <option value="">‚Äî ◊ë◊ó◊® ‚Äî</option>
+          <option value="weekly">◊©◊ë◊ï◊¢◊ô</option>
+          <option value="monthly">◊ó◊ï◊ì◊©◊ô</option>
+          <option value="yearly">◊©◊†◊™◊ô</option>
+          <option value="no">◊ú◊ê</option>
         </select>
       </div>
     </div>
 
-    <div class="section-title">מיקום האירוע</div>
+    <div class="section-title">◊û◊ô◊ß◊ï◊ù ◊î◊ê◊ô◊®◊ï◊¢</div>
     <div class="field" id="f_venue">
-      <label><span class="req">*</span>כתובת מקום / קישור Google Maps</label>
-      <input id="venue" type="text" placeholder="שם המקום, רחוב, עיר — או הדבק קישור Google Maps...">
-      <span class="err-msg">שדה חובה</span>
+      <label><span class="req">*</span>◊õ◊™◊ï◊ë◊™ ◊û◊ß◊ï◊ù / ◊ß◊ô◊©◊ï◊® Google Maps</label>
+      <input id="venue" type="text" placeholder="◊©◊ù ◊î◊û◊ß◊ï◊ù, ◊®◊ó◊ï◊ë, ◊¢◊ô◊® ‚Äî ◊ê◊ï ◊î◊ì◊ë◊ß ◊ß◊ô◊©◊ï◊® Google Maps...">
+      <span class="err-msg">◊©◊ì◊î ◊ó◊ï◊ë◊î</span>
     </div>
 
     <div class="grid2" style="margin-top:12px">
       <div class="field">
-        <label>האם האירוע מתקיים בחוץ?</label>
+        <label>◊î◊ê◊ù ◊î◊ê◊ô◊®◊ï◊¢ ◊û◊™◊ß◊ô◊ô◊ù ◊ë◊ó◊ï◊•?</label>
         <div class="radio-group">
-          <label class="radio-opt" onclick="setRadio('outdoor','כן',this)">
-            <input type="radio" name="outdoor" value="כן"> כן
+          <label class="radio-opt" onclick="setRadio('outdoor','◊õ◊ü',this)">
+            <input type="radio" name="outdoor" value="◊õ◊ü"> ◊õ◊ü
           </label>
-          <label class="radio-opt" onclick="setRadio('outdoor','לא',this)">
-            <input type="radio" name="outdoor" value="לא"> לא
+          <label class="radio-opt" onclick="setRadio('outdoor','◊ú◊ê',this)">
+            <input type="radio" name="outdoor" value="◊ú◊ê"> ◊ú◊ê
           </label>
         </div>
       </div>
       <div class="field">
-        <label>האם האירוע קשור לקהילה היהודית?</label>
+        <label>◊î◊ê◊ù ◊î◊ê◊ô◊®◊ï◊¢ ◊ß◊©◊ï◊® ◊ú◊ß◊î◊ô◊ú◊î ◊î◊ô◊î◊ï◊ì◊ô◊™?</label>
         <div class="radio-group">
-          <label class="radio-opt" onclick="setRadio('jewishcommunity','כן',this)">
-            <input type="radio" name="jewishcommunity" value="כן"> כן
+          <label class="radio-opt" onclick="setRadio('jewishcommunity','◊õ◊ü',this)">
+            <input type="radio" name="jewishcommunity" value="◊õ◊ü"> ◊õ◊ü
           </label>
-          <label class="radio-opt" onclick="setRadio('jewishcommunity','לא',this)">
-            <input type="radio" name="jewishcommunity" value="לא"> לא
+          <label class="radio-opt" onclick="setRadio('jewishcommunity','◊ú◊ê',this)">
+            <input type="radio" name="jewishcommunity" value="◊ú◊ê"> ◊ú◊ê
           </label>
         </div>
       </div>
       <div class="field">
-        <label>האם יתקיים במוסד ממשלתי?</label>
+        <label>◊î◊ê◊ù ◊ô◊™◊ß◊ô◊ô◊ù ◊ë◊û◊ï◊°◊ì ◊û◊û◊©◊ú◊™◊ô?</label>
         <div class="radio-group">
-          <label class="radio-opt" onclick="setRadio('govprox','כן',this);addScore('govprox',1)">
-            <input type="radio" name="govprox" value="כן"> כן
+          <label class="radio-opt" onclick="setRadio('govprox','◊õ◊ü',this);addScore('govprox',1)">
+            <input type="radio" name="govprox" value="◊õ◊ü"> ◊õ◊ü
           </label>
-          <label class="radio-opt" onclick="setRadio('govprox','לא',this);addScore('govprox',0)">
-            <input type="radio" name="govprox" value="לא"> לא
+          <label class="radio-opt" onclick="setRadio('govprox','◊ú◊ê',this);addScore('govprox',0)">
+            <input type="radio" name="govprox" value="◊ú◊ê"> ◊ú◊ê
           </label>
-          <label class="radio-opt" onclick="setRadio('govprox','לא יודע',this)">
-            <input type="radio" name="govprox" value="לא יודע"> לא יודע
+          <label class="radio-opt" onclick="setRadio('govprox','◊ú◊ê ◊ô◊ï◊ì◊¢',this)">
+            <input type="radio" name="govprox" value="◊ú◊ê ◊ô◊ï◊ì◊¢"> ◊ú◊ê ◊ô◊ï◊ì◊¢
           </label>
         </div>
       </div>
     </div>
   </div>
   <div class="nav">
-    <button class="btn-prev" onclick="prevStep(1)">→ הקודם</button>
-    <span class="step-ind">שלב 2 מתוך 5</span>
-    <button class="btn-next" onclick="nextStep(1)">הבא ←</button>
+    <button class="btn-prev" onclick="prevStep(1)">‚Üí ◊î◊ß◊ï◊ì◊ù</button>
+    <span class="step-ind">◊©◊ú◊ë 2 ◊û◊™◊ï◊ö 5</span>
+    <button class="btn-next" onclick="nextStep(1)">◊î◊ë◊ê ‚Üê</button>
   </div>
 </div>
 
-<!-- ===== STEP 2 — קהל ופרסום ===== -->
+<!-- ===== STEP 2 ‚Äî ◊ß◊î◊ú ◊ï◊§◊®◊°◊ï◊ù ===== -->
 <div id="step2" style="display:none">
   <div class="card">
-    <div class="section-title">פרטי קהל</div>
+    <div class="section-title">◊§◊®◊ò◊ô ◊ß◊î◊ú</div>
     <div class="grid2">
       <div class="field">
-        <label>סוג כניסה</label>
+        <label>◊°◊ï◊í ◊õ◊†◊ô◊°◊î</label>
         <select id="entrytype" onchange="handleEntryType(this.value)">
-          <option value="">— בחר —</option>
-          <option value="invite">בהזמנה בלבד</option>
-          <option value="community">קהילתי</option>
-          <option value="ticketed">עם כרטיסים</option>
-          <option value="open">פתוח לציבור</option>
-          <option value="other">אחר</option>
-          <option value="unknown">לא יודע</option>
+          <option value="">‚Äî ◊ë◊ó◊® ‚Äî</option>
+          <option value="invite">◊ë◊î◊ñ◊û◊†◊î ◊ë◊ú◊ë◊ì</option>
+          <option value="community">◊ß◊î◊ô◊ú◊™◊ô</option>
+          <option value="ticketed">◊¢◊ù ◊õ◊®◊ò◊ô◊°◊ô◊ù</option>
+          <option value="open">◊§◊™◊ï◊ó ◊ú◊¶◊ô◊ë◊ï◊®</option>
+          <option value="other">◊ê◊ó◊®</option>
+          <option value="unknown">◊ú◊ê ◊ô◊ï◊ì◊¢</option>
         </select>
         <div class="cond" id="cond_entrytype_other">
           <div class="field">
-            <label>פרט</label>
-            <input type="text" id="entrytype_other" placeholder="סוג הכניסה...">
+            <label>◊§◊®◊ò</label>
+            <input type="text" id="entrytype_other" placeholder="◊°◊ï◊í ◊î◊õ◊†◊ô◊°◊î...">
           </div>
         </div>
       </div>
@@ -319,59 +351,59 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
 
     <div class="grid2" style="margin-top:12px">
       <div class="field">
-        <label>האם האורחים עוברים סינון?</label>
+        <label>◊î◊ê◊ù ◊î◊ê◊ï◊®◊ó◊ô◊ù ◊¢◊ï◊ë◊®◊ô◊ù ◊°◊ô◊†◊ï◊ü?</label>
         <div class="radio-group">
-          <label class="radio-opt" onclick="setRadio('vetted','כן',this,'cond_vetted');addScore('notvetting',0)">
-            <input type="radio" name="vetted" value="כן"> כן
+          <label class="radio-opt" onclick="setRadio('vetted','◊õ◊ü',this,'cond_vetted');addScore('notvetting',0)">
+            <input type="radio" name="vetted" value="◊õ◊ü"> ◊õ◊ü
           </label>
-          <label class="radio-opt" onclick="setRadio('vetted','לא',this,'cond_vetted');addScore('notvetting',1)">
-            <input type="radio" name="vetted" value="לא"> לא
+          <label class="radio-opt" onclick="setRadio('vetted','◊ú◊ê',this,'cond_vetted');addScore('notvetting',1)">
+            <input type="radio" name="vetted" value="◊ú◊ê"> ◊ú◊ê
           </label>
-          <label class="radio-opt" onclick="setRadio('vetted','לא יודע',this,'cond_vetted');addScore('notvetting',0)">
-            <input type="radio" name="vetted" value="לא יודע"> לא יודע
+          <label class="radio-opt" onclick="setRadio('vetted','◊ú◊ê ◊ô◊ï◊ì◊¢',this,'cond_vetted');addScore('notvetting',0)">
+            <input type="radio" name="vetted" value="◊ú◊ê ◊ô◊ï◊ì◊¢"> ◊ú◊ê ◊ô◊ï◊ì◊¢
           </label>
         </div>
         <div class="cond" id="cond_vetted">
           <div class="field">
-            <label>פרט את שיטת הסינון</label>
-            <input type="text" id="vetting_detail" placeholder="כרטיסיות, רשימות, בדיקת ת.ז...">
+            <label>◊§◊®◊ò ◊ê◊™ ◊©◊ô◊ò◊™ ◊î◊°◊ô◊†◊ï◊ü</label>
+            <input type="text" id="vetting_detail" placeholder="◊õ◊®◊ò◊ô◊°◊ô◊ï◊™, ◊®◊©◊ô◊û◊ï◊™, ◊ë◊ì◊ô◊ß◊™ ◊™.◊ñ...">
           </div>
         </div>
       </div>
     </div>
 
-    <div class="section-title">פרסום האירוע</div>
+    <div class="section-title">◊§◊®◊°◊ï◊ù ◊î◊ê◊ô◊®◊ï◊¢</div>
     <div class="field">
-      <label>האם האירוע מפורסם לציבור?</label>
+      <label>◊î◊ê◊ù ◊î◊ê◊ô◊®◊ï◊¢ ◊û◊§◊ï◊®◊°◊ù ◊ú◊¶◊ô◊ë◊ï◊®?</label>
       <div class="radio-group">
-        <label class="radio-opt" onclick="setRadio('advertised','כן',this,'cond_adv');addScore('advertised',1)">
-          <input type="radio" name="advertised" value="כן"> כן
+        <label class="radio-opt" onclick="setRadio('advertised','◊õ◊ü',this,'cond_adv');addScore('advertised',1)">
+          <input type="radio" name="advertised" value="◊õ◊ü"> ◊õ◊ü
         </label>
-        <label class="radio-opt" onclick="setRadio('advertised','לא',this,'cond_adv');addScore('advertised',0)">
-          <input type="radio" name="advertised" value="לא"> לא
+        <label class="radio-opt" onclick="setRadio('advertised','◊ú◊ê',this,'cond_adv');addScore('advertised',0)">
+          <input type="radio" name="advertised" value="◊ú◊ê"> ◊ú◊ê
         </label>
       </div>
       <div class="cond" id="cond_adv">
         <div class="field">
-          <label>ערוצי פרסום</label>
+          <label>◊¢◊®◊ï◊¶◊ô ◊§◊®◊°◊ï◊ù</label>
           <div class="cb-wrap">
-            <label class="cb-item"><input type="checkbox" name="advchan" value="social_closed"> רשתות סגורות</label>
-            <label class="cb-item"><input type="checkbox" name="advchan" value="social_open"> רשתות פתוחות</label>
-            <label class="cb-item"><input type="checkbox" name="advchan" value="email"> אימייל</label>
-            <label class="cb-item"><input type="checkbox" name="advchan" value="press"> עיתונות</label>
+            <label class="cb-item"><input type="checkbox" name="advchan" value="social_closed"> ◊®◊©◊™◊ï◊™ ◊°◊í◊ï◊®◊ï◊™</label>
+            <label class="cb-item"><input type="checkbox" name="advchan" value="social_open"> ◊®◊©◊™◊ï◊™ ◊§◊™◊ï◊ó◊ï◊™</label>
+            <label class="cb-item"><input type="checkbox" name="advchan" value="email"> ◊ê◊ô◊û◊ô◊ô◊ú</label>
+            <label class="cb-item"><input type="checkbox" name="advchan" value="press"> ◊¢◊ô◊™◊ï◊†◊ï◊™</label>
             <label class="cb-item"><input type="checkbox" name="advchan" value="whatsapp"> WhatsApp</label>
-            <label class="cb-item"><input type="checkbox" name="advchan" value="website"> אתר אינטרנט</label>
-            <label class="cb-item"><input type="checkbox" name="advchan" value="all"> הכל</label>
+            <label class="cb-item"><input type="checkbox" name="advchan" value="website"> ◊ê◊™◊® ◊ê◊ô◊†◊ò◊®◊†◊ò</label>
+            <label class="cb-item"><input type="checkbox" name="advchan" value="all"> ◊î◊õ◊ú</label>
           </div>
         </div>
         <div class="field" style="margin-top:8px">
-          <label>האם המיקום מופיע בפרסום?</label>
+          <label>◊î◊ê◊ù ◊î◊û◊ô◊ß◊ï◊ù ◊û◊ï◊§◊ô◊¢ ◊ë◊§◊®◊°◊ï◊ù?</label>
           <div class="radio-group">
-            <label class="radio-opt" onclick="setRadio('advloc','כן',this)">
-              <input type="radio" name="advloc" value="כן"> כן
+            <label class="radio-opt" onclick="setRadio('advloc','◊õ◊ü',this)">
+              <input type="radio" name="advloc" value="◊õ◊ü"> ◊õ◊ü
             </label>
-            <label class="radio-opt" onclick="setRadio('advloc','לא',this)">
-              <input type="radio" name="advloc" value="לא"> לא
+            <label class="radio-opt" onclick="setRadio('advloc','◊ú◊ê',this)">
+              <input type="radio" name="advloc" value="◊ú◊ê"> ◊ú◊ê
             </label>
           </div>
         </div>
@@ -379,126 +411,232 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
     </div>
   </div>
   <div class="nav">
-    <button class="btn-prev" onclick="prevStep(2)">→ הקודם</button>
-    <span class="step-ind">שלב 3 מתוך 5</span>
-    <button class="btn-next" onclick="nextStep(2)">הבא ←</button>
+    <button class="btn-prev" onclick="prevStep(2)">‚Üí ◊î◊ß◊ï◊ì◊ù</button>
+    <span class="step-ind">◊©◊ú◊ë 3 ◊û◊™◊ï◊ö 5</span>
+    <button class="btn-next" onclick="nextStep(2)">◊î◊ë◊ê ‚Üê</button>
   </div>
 </div>
 
-<!-- ===== STEP 3 — סיכונים ואבטחה ===== -->
+<!-- ===== STEP 3 ‚Äî ◊°◊ô◊õ◊ï◊†◊ô◊ù ◊ï◊ê◊ë◊ò◊ó◊î ===== -->
 <div id="step3" style="display:none">
   <div class="card">
-    <div class="section-title">אישים ואיומים</div>
+    <div class="section-title">◊ê◊ô◊©◊ô◊ù ◊ï◊ê◊ô◊ï◊û◊ô◊ù</div>
     <div class="grid2">
       <div class="field">
-        <label>האם יגיעו אישים בכירים / מוגנים?</label>
+        <label>◊î◊ê◊ù ◊ô◊í◊ô◊¢◊ï ◊ê◊ô◊©◊ô◊ù ◊ë◊õ◊ô◊®◊ô◊ù / ◊û◊ï◊í◊†◊ô◊ù?</label>
         <div class="radio-group">
-          <label class="radio-opt" onclick="setRadio('vip','כן',this,'cond_vip');addScore('vip',1)">
-            <input type="radio" name="vip" value="כן"> כן
+          <label class="radio-opt" onclick="setRadio('vip','◊õ◊ü',this,'cond_vip');addScore('vip',1)">
+            <input type="radio" name="vip" value="◊õ◊ü"> ◊õ◊ü
           </label>
-          <label class="radio-opt" onclick="setRadio('vip','לא',this,'cond_vip');addScore('vip',0)">
-            <input type="radio" name="vip" value="לא"> לא
+          <label class="radio-opt" onclick="setRadio('vip','◊ú◊ê',this,'cond_vip');addScore('vip',0)">
+            <input type="radio" name="vip" value="◊ú◊ê"> ◊ú◊ê
           </label>
-          <label class="radio-opt" onclick="setRadio('vip','לא יודע',this,'cond_vip');addScore('vip',0)">
-            <input type="radio" name="vip" value="לא יודע"> לא יודע
+          <label class="radio-opt" onclick="setRadio('vip','◊ú◊ê ◊ô◊ï◊ì◊¢',this,'cond_vip');addScore('vip',0)">
+            <input type="radio" name="vip" value="◊ú◊ê ◊ô◊ï◊ì◊¢"> ◊ú◊ê ◊ô◊ï◊ì◊¢
           </label>
         </div>
         <div class="cond" id="cond_vip">
           <div class="field">
-            <label>פרט את האישים</label>
-            <input type="text" id="vip_detail" placeholder="שמות / תפקידים...">
+            <label>◊§◊®◊ò ◊ê◊™ ◊î◊ê◊ô◊©◊ô◊ù</label>
+            <input type="text" id="vip_detail" placeholder="◊©◊û◊ï◊™ / ◊™◊§◊ß◊ô◊ì◊ô◊ù...">
           </div>
         </div>
       </div>
       <div class="field">
-        <label>האם צפויות הפגנות / מחאות?</label>
+        <label>◊î◊ê◊ù ◊¶◊§◊ï◊ô◊ï◊™ ◊î◊§◊í◊†◊ï◊™ / ◊û◊ó◊ê◊ï◊™?</label>
         <div class="radio-group">
-          <label class="radio-opt" onclick="setRadio('protest','כן',this);addScore('protest',1)">
-            <input type="radio" name="protest" value="כן"> כן
+          <label class="radio-opt" onclick="setRadio('protest','◊õ◊ü',this);addScore('protest',1)">
+            <input type="radio" name="protest" value="◊õ◊ü"> ◊õ◊ü
           </label>
-          <label class="radio-opt" onclick="setRadio('protest','לא',this);addScore('protest',0)">
-            <input type="radio" name="protest" value="לא"> לא
+          <label class="radio-opt" onclick="setRadio('protest','◊ú◊ê',this);addScore('protest',0)">
+            <input type="radio" name="protest" value="◊ú◊ê"> ◊ú◊ê
           </label>
-          <label class="radio-opt" onclick="setRadio('protest','לא ידוע',this)">
-            <input type="radio" name="protest" value="לא ידוע"> לא ידוע
+          <label class="radio-opt" onclick="setRadio('protest','◊ú◊ê ◊ô◊ì◊ï◊¢',this)">
+            <input type="radio" name="protest" value="◊ú◊ê ◊ô◊ì◊ï◊¢"> ◊ú◊ê ◊ô◊ì◊ï◊¢
           </label>
         </div>
       </div>
     </div>
 
     <div class="field" style="margin-top:14px">
-      <label>מה תהיה תפקידך באירוע?</label>
+      <label>◊û◊î ◊™◊î◊ô◊î ◊™◊§◊ß◊ô◊ì◊ö ◊ë◊ê◊ô◊®◊ï◊¢?</label>
       <div class="radio-group">
-        <label class="radio-opt" onclick="setRadio('eventrole','אורח',this,'cond_eventrole','אחר')">
-          <input type="radio" name="eventrole" value="אורח"> אורח
+        <label class="radio-opt" onclick="setRadio('eventrole','◊ê◊ï◊®◊ó',this,'cond_eventrole','◊ê◊ó◊®')">
+          <input type="radio" name="eventrole" value="◊ê◊ï◊®◊ó"> ◊ê◊ï◊®◊ó
         </label>
-        <label class="radio-opt" onclick="setRadio('eventrole','דובר',this,'cond_eventrole','אחר')">
-          <input type="radio" name="eventrole" value="דובר"> דובר
+        <label class="radio-opt" onclick="setRadio('eventrole','◊ì◊ï◊ë◊®',this,'cond_eventrole','◊ê◊ó◊®')">
+          <input type="radio" name="eventrole" value="◊ì◊ï◊ë◊®"> ◊ì◊ï◊ë◊®
         </label>
-        <label class="radio-opt" onclick="setRadio('eventrole','מארח',this,'cond_eventrole','אחר')">
-          <input type="radio" name="eventrole" value="מארח"> מארח
+        <label class="radio-opt" onclick="setRadio('eventrole','◊û◊ê◊®◊ó',this,'cond_eventrole','◊ê◊ó◊®')">
+          <input type="radio" name="eventrole" value="◊û◊ê◊®◊ó"> ◊û◊ê◊®◊ó
         </label>
-        <label class="radio-opt" onclick="setRadio('eventrole','מקבל פרס',this,'cond_eventrole','אחר')">
-          <input type="radio" name="eventrole" value="מקבל פרס"> מקבל פרס
+        <label class="radio-opt" onclick="setRadio('eventrole','◊û◊ß◊ë◊ú ◊§◊®◊°',this,'cond_eventrole','◊ê◊ó◊®')">
+          <input type="radio" name="eventrole" value="◊û◊ß◊ë◊ú ◊§◊®◊°"> ◊û◊ß◊ë◊ú ◊§◊®◊°
         </label>
-        <label class="radio-opt" onclick="setRadio('eventrole','אחר',this,'cond_eventrole','אחר')">
-          <input type="radio" name="eventrole" value="אחר"> אחר
+        <label class="radio-opt" onclick="setRadio('eventrole','◊ê◊ó◊®',this,'cond_eventrole','◊ê◊ó◊®')">
+          <input type="radio" name="eventrole" value="◊ê◊ó◊®"> ◊ê◊ó◊®
         </label>
       </div>
       <div class="cond" id="cond_eventrole">
         <div class="field" id="f_eventrole_other">
-          <label><span class="req">*</span>פרט</label>
-          <input type="text" id="eventrole_other" placeholder="פרט את תפקידך...">
-          <span class="err-msg">שדה חובה</span>
+          <label><span class="req">*</span>◊§◊®◊ò</label>
+          <input type="text" id="eventrole_other" placeholder="◊§◊®◊ò ◊ê◊™ ◊™◊§◊ß◊ô◊ì◊ö...">
+          <span class="err-msg">◊©◊ì◊î ◊ó◊ï◊ë◊î</span>
         </div>
       </div>
     </div>
 
-    <div class="section-title">אבטחה קיימת</div>
+    <div class="section-title">◊ê◊ë◊ò◊ó◊î ◊ß◊ô◊ô◊û◊™</div>
     <div class="field">
-      <label>אמצעי אבטחה קיימים</label>
+      <label>◊ê◊û◊¶◊¢◊ô ◊ê◊ë◊ò◊ó◊î ◊ß◊ô◊ô◊û◊ô◊ù</label>
       <div class="cb-wrap">
-        <label class="cb-item"><input type="checkbox" name="security" value="none"> אין אבטחה</label>
-        <label class="cb-item"><input type="checkbox" name="security" value="venue"> אבטחת מקום</label>
-        <label class="cb-item"><input type="checkbox" name="security" value="commercial"> חברת אבטחה</label>
-        <label class="cb-item"><input type="checkbox" name="security" value="community"> אבטחה קהילתית</label>
-        <label class="cb-item"><input type="checkbox" name="security" value="marshalls"> סדרנים</label>
-        <label class="cb-item"><input type="checkbox" name="security" value="police"> משטרה מאושרת</label>
+        <label class="cb-item"><input type="checkbox" name="security" value="none"> ◊ê◊ô◊ü ◊ê◊ë◊ò◊ó◊î</label>
+        <label class="cb-item"><input type="checkbox" name="security" value="venue"> ◊ê◊ë◊ò◊ó◊™ ◊û◊ß◊ï◊ù</label>
+        <label class="cb-item"><input type="checkbox" name="security" value="commercial"> ◊ó◊ë◊®◊™ ◊ê◊ë◊ò◊ó◊î</label>
+        <label class="cb-item"><input type="checkbox" name="security" value="community"> ◊ê◊ë◊ò◊ó◊î ◊ß◊î◊ô◊ú◊™◊ô◊™</label>
+        <label class="cb-item"><input type="checkbox" name="security" value="marshalls"> ◊°◊ì◊®◊†◊ô◊ù</label>
+        <label class="cb-item"><input type="checkbox" name="security" value="police"> ◊û◊©◊ò◊®◊î ◊û◊ê◊ï◊©◊®◊™</label>
       </div>
     </div>
 
-    <div class="section-title">מידע נוסף</div>
+    <div class="section-title">◊û◊ô◊ì◊¢ ◊†◊ï◊°◊£</div>
     <div class="field">
-      <label>כל מידע רלוונטי נוסף</label>
-      <textarea id="extra" rows="3" placeholder="הוסף פרטים חשובים..."></textarea>
+      <label>◊õ◊ú ◊û◊ô◊ì◊¢ ◊®◊ú◊ï◊ï◊†◊ò◊ô ◊†◊ï◊°◊£</label>
+      <textarea id="extra" rows="3" placeholder="◊î◊ï◊°◊£ ◊§◊®◊ò◊ô◊ù ◊ó◊©◊ï◊ë◊ô◊ù..."></textarea>
     </div>
   </div>
   <div class="nav">
-    <button class="btn-prev" onclick="prevStep(3)">→ הקודם</button>
-    <span class="step-ind">שלב 4 מתוך 5</span>
-    <button class="btn-next" onclick="nextStep(3)">המשך לסיכום ←</button>
+    <button class="btn-prev" onclick="prevStep(3)">‚Üí ◊î◊ß◊ï◊ì◊ù</button>
+    <span class="step-ind">◊©◊ú◊ë 4 ◊û◊™◊ï◊ö 5</span>
+    <button class="btn-next" onclick="nextStep(3)">◊î◊û◊©◊ö ◊ú◊°◊ô◊õ◊ï◊ù ‚Üê</button>
   </div>
 </div>
 
-<!-- ===== STEP 4 — סיכום ושליחה ===== -->
+<!-- ===== STEP 4 ‚Äî ◊°◊ô◊õ◊ï◊ù ◊ï◊©◊ú◊ô◊ó◊î ===== -->
 <div id="step4" style="display:none">
   <div class="card" id="reviewCard"></div>
   <div class="nav" id="step4Nav">
-    <button class="btn-prev" onclick="prevStep(4)">→ הקודם</button>
-    <span class="step-ind">שלב 5 מתוך 5</span>
-    <button class="btn-next" id="submitBtn" onclick="submitForm()" style="background:#16a34a">שלח טופס ✓</button>
+    <button class="btn-prev" onclick="prevStep(4)">‚Üí ◊î◊ß◊ï◊ì◊ù</button>
+    <span class="step-ind">◊©◊ú◊ë 5 ◊û◊™◊ï◊ö 5</span>
+    <button class="btn-next" id="submitBtn" onclick="submitForm()" style="background:#16a34a">◊©◊ú◊ó ◊ò◊ï◊§◊° ‚úì</button>
   </div>
   <div class="success" id="successDiv">
-    <div class="success-icon">✓</div>
-    <h2 style="font-size:20px;margin-bottom:8px">הטופס נשלח בהצלחה!</h2>
-    <p style="color:#64748b;font-size:13px;margin-bottom:12px">מספר אסמכתא לאירועך:</p>
+    <div class="success-icon">‚úì</div>
+    <h2 style="font-size:20px;margin-bottom:8px">◊î◊ò◊ï◊§◊° ◊†◊©◊ú◊ó ◊ë◊î◊¶◊ú◊ó◊î!</h2>
+    <p style="color:#64748b;font-size:13px;margin-bottom:12px">◊û◊°◊§◊® ◊ê◊°◊û◊õ◊™◊ê ◊ú◊ê◊ô◊®◊ï◊¢◊ö:</p>
     <div class="ref-box" id="refBox"></div>
-    <p style="font-size:12px;color:#94a3b8;margin-top:10px">שמור את המספר לתקשורת עם הצוות.</p>
-    <button onclick="location.reload()" style="margin-top:20px;padding:8px 20px;border:1px solid #e2e8f0;border-radius:8px;background:white;cursor:pointer;font-family:'Heebo',sans-serif;font-size:13px;color:#64748b">הגש טופס נוסף</button>
+    <p style="font-size:12px;color:#94a3b8;margin-top:10px">◊©◊û◊ï◊® ◊ê◊™ ◊î◊û◊°◊§◊® ◊ú◊™◊ß◊©◊ï◊®◊™ ◊¢◊ù ◊î◊¶◊ï◊ï◊™.</p>
+    <button onclick="location.reload()" style="margin-top:20px;padding:8px 20px;border:1px solid #e2e8f0;border-radius:8px;background:white;cursor:pointer;font-family:'Heebo',sans-serif;font-size:13px;color:#64748b">◊î◊í◊© ◊ò◊ï◊§◊° ◊†◊ï◊°◊£</button>
   </div>
 </div>
 
 </div><!-- /container -->
+</div><!-- /eventFlow -->
+
+<!-- ============================================================ -->
+<!-- ===== ◊ñ◊®◊ô◊û◊™ ◊§◊í◊ô◊©◊î (◊ò◊ï◊§◊° ◊ß◊¶◊®) ===== -->
+<!-- ============================================================ -->
+<div id="meetingFlow" style="display:none">
+  <div class="container">
+    <div class="card">
+      <div class="section-title">◊§◊®◊ò◊ô ◊§◊í◊ô◊©◊î</div>
+      <div class="grid2">
+        <div class="field" id="mf_personalid">
+          <label><span class="req">*</span>◊û◊°◊§◊® ◊ñ◊ô◊î◊ï◊ô ◊ê◊ô◊©◊ô</label>
+          <input id="m_personalid" type="text" placeholder="◊û◊û◊ï◊ú◊ê ◊¢◊ú ◊ô◊ì◊ô ◊õ◊ú ◊¢◊ï◊ë◊ì...">
+          <span class="err-msg">◊©◊ì◊î ◊ó◊ï◊ë◊î</span>
+        </div>
+        <div class="field" id="mf_personname">
+          <label><span class="req">*</span>◊©◊ù ◊î◊ê◊ì◊ù</label>
+          <input id="m_personname" type="text" placeholder="◊©◊ù ◊î◊ê◊ì◊ù ◊©◊†◊§◊í◊©◊ô◊ù ◊ê◊ô◊™◊ï...">
+          <span class="err-msg">◊©◊ì◊î ◊ó◊ï◊ë◊î</span>
+        </div>
+        <div class="field" id="mf_personrole">
+          <label><span class="req">*</span>◊™◊§◊ß◊ô◊ì ◊î◊ê◊ì◊ù</label>
+          <input id="m_personrole" type="text" placeholder="◊™◊§◊ß◊ô◊ì / ◊™◊ï◊ê◊®...">
+          <span class="err-msg">◊©◊ì◊î ◊ó◊ï◊ë◊î</span>
+        </div>
+      </div>
+
+      <div class="field" style="margin-top:14px" id="mf_acq_radio">
+        <label>◊®◊û◊™ ◊î◊ô◊õ◊®◊ï◊™ <span class="req">*</span></label>
+        <div class="radio-group" id="rg_macq">
+          <label class="radio-opt" onclick="setRadio('macq','◊î◊ô◊õ◊®◊ï◊™ ◊§◊í◊ô◊©◊î ◊®◊ê◊©◊ï◊†◊î ◊¢◊ì ◊©◊ú◊ô◊©◊ô◊™',this,'cond_macq','◊û◊ï◊õ◊® ◊ï◊û◊î◊ô◊û◊ü ◊¢◊ú ◊ô◊ì◊ô')">
+            <input type="radio" name="macq" value="◊î◊ô◊õ◊®◊ï◊™ ◊§◊í◊ô◊©◊î ◊®◊ê◊©◊ï◊†◊î ◊¢◊ì ◊©◊ú◊ô◊©◊ô◊™"> ◊î◊ô◊õ◊®◊ï◊™ (◊§◊í◊ô◊©◊î ◊®◊ê◊©◊ï◊†◊î‚Äì◊©◊ú◊ô◊©◊ô◊™)
+          </label>
+          <label class="radio-opt" onclick="setRadio('macq','◊†◊§◊í◊©◊†◊ï ◊ë◊¢◊ë◊®',this,'cond_macq','◊û◊ï◊õ◊® ◊ï◊û◊î◊ô◊û◊ü ◊¢◊ú ◊ô◊ì◊ô')">
+            <input type="radio" name="macq" value="◊†◊§◊í◊©◊†◊ï ◊ë◊¢◊ë◊®"> ◊†◊§◊í◊©◊†◊ï ◊ë◊¢◊ë◊®
+          </label>
+          <label class="radio-opt" onclick="setRadio('macq','◊û◊ï◊õ◊® ◊ï◊û◊î◊ô◊û◊ü ◊¢◊ú ◊ô◊ì◊ô',this,'cond_macq','◊û◊ï◊õ◊® ◊ï◊û◊î◊ô◊û◊ü ◊¢◊ú ◊ô◊ì◊ô')">
+            <input type="radio" name="macq" value="◊û◊ï◊õ◊® ◊ï◊û◊î◊ô◊û◊ü ◊¢◊ú ◊ô◊ì◊ô"> ◊û◊ï◊õ◊® ◊ï◊û◊î◊ô◊û◊ü ◊¢◊ú ◊ô◊ì◊ô
+          </label>
+        </div>
+        <span class="radio-err" id="err_macq">◊ô◊© ◊ú◊ë◊ó◊ï◊® ◊ê◊§◊©◊®◊ï◊™</span>
+        <div class="cond" id="cond_macq">
+          <div class="field" id="mf_acqby">
+            <label><span class="req">*</span>◊¢◊ú ◊ô◊ì◊ô ◊û◊ô?</label>
+            <input type="text" id="m_acqby" placeholder="◊©◊ù ◊î◊û◊û◊ú◊ô◊• / ◊î◊í◊ï◊®◊ù ◊î◊¢◊®◊ë...">
+            <span class="err-msg">◊©◊ì◊î ◊ó◊ï◊ë◊î</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="field" style="margin-top:14px" id="mf_address">
+        <label><span class="req">*</span>◊õ◊™◊ï◊ë◊™ ◊î◊§◊í◊ô◊©◊î</label>
+        <input id="m_address" type="text" placeholder="◊î◊ñ◊ü ◊õ◊™◊ï◊ë◊™ ◊û◊ú◊ê◊î ‚Äî ◊®◊ó◊ï◊ë, ◊û◊°◊§◊®, ◊¢◊ô◊®...">
+        <span class="err-msg">◊©◊ì◊î ◊ó◊ï◊ë◊î</span>
+      </div>
+
+      <div class="field" style="margin-top:14px" id="mf_loc_radio">
+        <label>◊û◊ô◊ß◊ï◊ù ◊î◊§◊í◊ô◊©◊î <span class="req">*</span></label>
+        <div class="radio-group" id="rg_mloc">
+          <label class="radio-opt" onclick="setRadio('mloc','◊û◊©◊®◊ì◊ô◊ù',this,'cond_mloc','◊ê◊ó◊®')">
+            <input type="radio" name="mloc" value="◊û◊©◊®◊ì◊ô◊ù"> ◊û◊©◊®◊ì◊ô◊ù
+          </label>
+          <label class="radio-opt" onclick="setRadio('mloc','◊û◊°◊¢◊ì◊î',this,'cond_mloc','◊ê◊ó◊®')">
+            <input type="radio" name="mloc" value="◊û◊°◊¢◊ì◊î"> ◊û◊°◊¢◊ì◊î
+          </label>
+          <label class="radio-opt" onclick="setRadio('mloc','◊ë◊ô◊™ ◊ß◊§◊î',this,'cond_mloc','◊ê◊ó◊®')">
+            <input type="radio" name="mloc" value="◊ë◊ô◊™ ◊ß◊§◊î"> ◊ë◊ô◊™ ◊ß◊§◊î
+          </label>
+          <label class="radio-opt" onclick="setRadio('mloc','◊û◊ï◊°◊ì ◊û◊û◊©◊ú◊™◊ô',this,'cond_mloc','◊ê◊ó◊®')">
+            <input type="radio" name="mloc" value="◊û◊ï◊°◊ì ◊û◊û◊©◊ú◊™◊ô"> ◊û◊ï◊°◊ì ◊û◊û◊©◊ú◊™◊ô
+          </label>
+          <label class="radio-opt" onclick="setRadio('mloc','◊ê◊ó◊®',this,'cond_mloc','◊ê◊ó◊®')">
+            <input type="radio" name="mloc" value="◊ê◊ó◊®"> ◊ê◊ó◊®
+          </label>
+        </div>
+        <span class="radio-err" id="err_mloc">◊ô◊© ◊ú◊ë◊ó◊ï◊® ◊ê◊§◊©◊®◊ï◊™</span>
+        <div class="cond" id="cond_mloc">
+          <div class="field" id="mf_loc_other">
+            <label><span class="req">*</span>◊§◊®◊ò</label>
+            <input type="text" id="m_loc_other" placeholder="◊§◊®◊ò ◊ê◊™ ◊î◊û◊ô◊ß◊ï◊ù...">
+            <span class="err-msg">◊©◊ì◊î ◊ó◊ï◊ë◊î</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">◊î◊¢◊®◊ï◊™</div>
+      <div class="field">
+        <label>◊î◊¢◊®◊ï◊™ ◊ú◊í◊ë◊ô ◊î◊ê◊ì◊ù ◊©◊†◊§◊í◊©◊ô◊ù ◊ê◊ô◊™◊ï</label>
+        <textarea id="m_notes" rows="3" placeholder="◊õ◊ú ◊û◊ô◊ì◊¢ ◊®◊ú◊ï◊ï◊†◊ò◊ô ◊ú◊í◊ë◊ô ◊î◊ê◊ì◊ù ◊ï◊î◊§◊í◊ô◊©◊î..."></textarea>
+      </div>
+    </div>
+    <div class="nav" id="meetingNav">
+      <button class="btn-prev" onclick="backToChooser()">‚Üí ◊ó◊ñ◊®◊î ◊ú◊ë◊ó◊ô◊®◊î</button>
+      <span class="step-ind">◊ò◊ï◊§◊° ◊§◊í◊ô◊©◊î</span>
+      <button class="btn-next" id="mSubmitBtn" onclick="submitMeeting()" style="background:#16a34a">◊©◊ú◊ó ◊ò◊ï◊§◊° ‚úì</button>
+    </div>
+    <div class="success" id="mSuccessDiv">
+      <div class="success-icon">‚úì</div>
+      <h2 style="font-size:20px;margin-bottom:8px">◊î◊ò◊ï◊§◊° ◊†◊©◊ú◊ó ◊ë◊î◊¶◊ú◊ó◊î!</h2>
+      <p style="color:#64748b;font-size:13px;margin-bottom:12px">◊û◊°◊§◊® ◊ê◊°◊û◊õ◊™◊ê ◊ú◊§◊í◊ô◊©◊î:</p>
+      <div class="ref-box" id="mRefBox"></div>
+      <p style="font-size:12px;color:#94a3b8;margin-top:10px">◊©◊û◊ï◊® ◊ê◊™ ◊î◊û◊°◊§◊® ◊ú◊™◊ß◊©◊ï◊®◊™ ◊¢◊ù ◊î◊¶◊ï◊ï◊™.</p>
+      <button onclick="location.reload()" style="margin-top:20px;padding:8px 20px;border:1px solid #e2e8f0;border-radius:8px;background:white;cursor:pointer;font-family:'Heebo',sans-serif;font-size:13px;color:#64748b">◊î◊í◊© ◊ò◊ï◊§◊° ◊†◊ï◊°◊£</button>
+    </div>
+  </div>
+</div><!-- /meetingFlow -->
 
 <script>
 window.addEventListener('DOMContentLoaded', function() {
@@ -506,6 +644,32 @@ window.addEventListener('DOMContentLoaded', function() {
     document.getElementById('configBanner').classList.add('show');
   }
 });
+
+/* ===== ◊ë◊ó◊ô◊®◊™ ◊°◊ï◊í ◊ò◊ï◊§◊° ===== */
+function chooseType(t) {
+  document.getElementById('typeChooser').style.display = 'none';
+  if (t === 'event') {
+    document.getElementById('eventFlow').style.display = 'block';
+    document.getElementById('meetingFlow').style.display = 'none';
+    document.getElementById('pageTitleH').textContent = '◊ò◊ï◊§◊° ◊î◊¢◊®◊õ◊™ ◊®◊û◊™ ◊ê◊ë◊ò◊ó◊î ◊ú◊ê◊ô◊®◊ï◊¢';
+    document.getElementById('pageSubH').textContent = '◊ê◊†◊ê ◊û◊ú◊ê ◊ê◊™ ◊î◊§◊®◊ò◊ô◊ù ◊î◊ë◊ê◊ô◊ù. ◊î◊û◊ô◊ì◊¢ ◊ô◊©◊û◊© ◊ú◊î◊¢◊®◊õ◊™ ◊®◊û◊™ ◊î◊ê◊ë◊ò◊ó◊î ◊î◊†◊ì◊®◊©◊™ ◊ú◊ê◊ô◊®◊ï◊¢◊ö.';
+    cur = 0; showStep(0);
+  } else {
+    document.getElementById('eventFlow').style.display = 'none';
+    document.getElementById('meetingFlow').style.display = 'block';
+    document.getElementById('pageTitleH').textContent = '◊ò◊ï◊§◊° ◊§◊í◊ô◊©◊î';
+    document.getElementById('pageSubH').textContent = '◊ò◊ï◊§◊° ◊ß◊¶◊® ◊ú◊™◊ô◊¢◊ï◊ì ◊§◊í◊ô◊©◊î ◊ê◊ô◊©◊ô◊™ ◊ï◊î◊¢◊®◊õ◊™ ◊®◊û◊™ ◊î◊î◊ô◊õ◊®◊ï◊™.';
+  }
+  window.scrollTo(0, 0);
+}
+function backToChooser() {
+  document.getElementById('eventFlow').style.display = 'none';
+  document.getElementById('meetingFlow').style.display = 'none';
+  document.getElementById('typeChooser').style.display = 'block';
+  document.getElementById('pageTitleH').textContent = '◊ò◊ï◊§◊° ◊î◊¢◊®◊õ◊™ ◊ê◊ë◊ò◊ó◊î';
+  document.getElementById('pageSubH').textContent = '◊ë◊ó◊® ◊ê◊™ ◊°◊ï◊í ◊î◊ò◊ï◊§◊° ◊î◊û◊™◊ê◊ô◊ù: ◊ê◊ô◊®◊ï◊¢ (◊ò◊ï◊§◊° ◊û◊ú◊ê) ◊ê◊ï ◊§◊í◊ô◊©◊î (◊ò◊ï◊§◊° ◊ß◊¶◊®).';
+  window.scrollTo(0, 0);
+}
 
 function saveToFirebase(ref, data) {
   return fetch(FIREBASE_URL + '/submissions/' + ref + '.json', {
@@ -534,11 +698,11 @@ function setRadio(name, val, el, condId, triggerVal) {
   if (condId) {
     var c = document.getElementById(condId);
     if (c) {
-      var trigger = triggerVal !== undefined ? triggerVal : 'כן';
+      var trigger = triggerVal !== undefined ? triggerVal : '◊õ◊ü';
       c.className = 'cond' + (val === trigger ? ' show' : '');
     }
   }
-  /* נקה שגיאת radio אם קיימת */
+  /* ◊†◊ß◊î ◊©◊í◊ô◊ê◊™ radio ◊ê◊ù ◊ß◊ô◊ô◊û◊™ */
   var errEl = document.getElementById('err_' + name);
   if (errEl) errEl.classList.remove('show');
   var rg = document.getElementById('rg_' + name);
@@ -552,7 +716,7 @@ function handleEntryType(val) {
 }
 
 /* =========================================================
-   וולידציה — מוודאת שדות חובה לפי שלב
+   ◊ï◊ï◊ú◊ô◊ì◊¶◊ô◊î ‚Äî ◊û◊ï◊ï◊ì◊ê◊™ ◊©◊ì◊ï◊™ ◊ó◊ï◊ë◊î ◊ú◊§◊ô ◊©◊ú◊ë
    ========================================================= */
 function validateStep(s) {
   var ok = true;
@@ -592,8 +756,7 @@ function validateStep(s) {
     req('lname', 'f_lname');
     req('phone', 'f_phone');
     reqRadio('orgknown');
-    /* אם בחר "ידוע ומוכר" — חובה לפרט */
-    if (gv('orgknown') === 'ידוע ומוכר') {
+    if (gv('orgknown') === '◊ô◊ì◊ï◊¢ ◊ï◊û◊ï◊õ◊®') {
       req('orgknown_detail', 'f_orgknown_detail');
     }
   }
@@ -615,12 +778,11 @@ function validateStep(s) {
   }
 
   if (s === 3) {
-    if (gv('eventrole') === 'אחר') {
+    if (gv('eventrole') === '◊ê◊ó◊®') {
       req('eventrole_other', 'f_eventrole_other');
     }
   }
 
-  /* גלול לשדה השגוי הראשון */
   if (!ok && firstErr) {
     firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
     firstErr.classList.add('err-shake');
@@ -652,59 +814,59 @@ function goToStep(n) { if (n <= cur) { cur = n; showStep(cur); } }
 function entryLabel() {
   var v = gi('entrytype');
   var map = {
-    invite: 'בהזמנה בלבד', community: 'קהילתי', ticketed: 'כרטיסים',
-    open: 'פתוח לציבור', other: gi('entrytype_other') || 'אחר', unknown: 'לא יודע'
+    invite: '◊ë◊î◊ñ◊û◊†◊î ◊ë◊ú◊ë◊ì', community: '◊ß◊î◊ô◊ú◊™◊ô', ticketed: '◊õ◊®◊ò◊ô◊°◊ô◊ù',
+    open: '◊§◊™◊ï◊ó ◊ú◊¶◊ô◊ë◊ï◊®', other: gi('entrytype_other') || '◊ê◊ó◊®', unknown: '◊ú◊ê ◊ô◊ï◊ì◊¢'
   };
-  return map[v] || '—';
+  return map[v] || '‚Äî';
 }
 
 function recurringLabel() {
-  return { weekly: 'שבועי', monthly: 'חודשי', yearly: 'שנתי', no: 'לא' }[gi('recurring')] || '—';
+  return { weekly: '◊©◊ë◊ï◊¢◊ô', monthly: '◊ó◊ï◊ì◊©◊ô', yearly: '◊©◊†◊™◊ô', no: '◊ú◊ê' }[gi('recurring')] || '‚Äî';
 }
 
 function row(label, val) {
-  var d = val || '—';
-  if (val === 'כן') d = '<span style="background:#dbeafe;color:#1e40af;padding:2px 9px;border-radius:12px;font-size:11px;font-weight:600">כן</span>';
-  else if (val === 'לא') d = '<span style="background:#f1f5f9;color:#64748b;padding:2px 9px;border-radius:12px;font-size:11px">לא</span>';
+  var d = val || '‚Äî';
+  if (val === '◊õ◊ü') d = '<span style="background:#dbeafe;color:#1e40af;padding:2px 9px;border-radius:12px;font-size:11px;font-weight:600">◊õ◊ü</span>';
+  else if (val === '◊ú◊ê') d = '<span style="background:#f1f5f9;color:#64748b;padding:2px 9px;border-radius:12px;font-size:11px">◊ú◊ê</span>';
   return '<tr><td style="padding:7px 10px;color:#64748b;font-size:12px;width:45%">'+label+'</td><td style="padding:7px 10px;font-size:13px">'+d+'</td></tr>';
 }
 
 function buildReview() {
   var score = calcScore();
   var level, lcolor, lbg;
-  if (score <= 3) { level = 'נמוכה'; lcolor = '#15803d'; lbg = '#dcfce7'; }
-  else if (score <= 7) { level = 'בינונית'; lcolor = '#92400e'; lbg = '#fef3c7'; }
-  else { level = 'גבוהה'; lcolor = '#991b1b'; lbg = '#fee2e2'; }
+  if (score <= 3) { level = '◊†◊û◊ï◊õ◊î'; lcolor = '#15803d'; lbg = '#dcfce7'; }
+  else if (score <= 7) { level = '◊ë◊ô◊†◊ï◊†◊ô◊™'; lcolor = '#92400e'; lbg = '#fef3c7'; }
+  else { level = '◊í◊ë◊ï◊î◊î'; lcolor = '#991b1b'; lbg = '#fee2e2'; }
   var pct = Math.round(score / 10 * 100);
   var gfill = score <= 3 ? '#16a34a' : score <= 7 ? '#d97706' : '#dc2626';
 
   var html = '<div style="padding-bottom:1rem;border-bottom:1px solid #e2e8f0;margin-bottom:1rem">';
-  html += '<div style="font-size:11px;color:#94a3b8;margin-bottom:4px">ציון סיכון אוטומטי</div>';
+  html += '<div style="font-size:11px;color:#94a3b8;margin-bottom:4px">◊¶◊ô◊ï◊ü ◊°◊ô◊õ◊ï◊ü ◊ê◊ï◊ò◊ï◊û◊ò◊ô</div>';
   html += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">';
   html += '<span style="font-size:42px;font-weight:700;color:'+lcolor+'">'+score+'</span>';
-  html += '<div><div style="font-size:11px;color:#94a3b8">מתוך 10</div>';
-  html += '<span style="background:'+lbg+';color:'+lcolor+';padding:3px 14px;border-radius:20px;font-size:13px;font-weight:600">רמת אבטחה: '+level+'</span></div></div>';
+  html += '<div><div style="font-size:11px;color:#94a3b8">◊û◊™◊ï◊ö 10</div>';
+  html += '<span style="background:'+lbg+';color:'+lcolor+';padding:3px 14px;border-radius:20px;font-size:13px;font-weight:600">◊®◊û◊™ ◊ê◊ë◊ò◊ó◊î: '+level+'</span></div></div>';
   html += '<div style="height:8px;background:#e2e8f0;border-radius:20px;overflow:hidden"><div style="width:'+pct+'%;height:100%;background:'+gfill+';border-radius:20px;transition:width .6s"></div></div>';
-  html += '<div style="display:flex;justify-content:space-between;font-size:10px;color:#94a3b8;margin-top:3px"><span>נמוכה</span><span>בינונית</span><span>גבוהה</span></div></div>';
+  html += '<div style="display:flex;justify-content:space-between;font-size:10px;color:#94a3b8;margin-top:3px"><span>◊†◊û◊ï◊õ◊î</span><span>◊ë◊ô◊†◊ï◊†◊ô◊™</span><span>◊í◊ë◊ï◊î◊î</span></div></div>';
 
-  html += '<div style="font-size:12px;font-weight:600;color:#0f2744;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em">סיכום פרטים</div>';
+  html += '<div style="font-size:12px;font-weight:600;color:#0f2744;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em">◊°◊ô◊õ◊ï◊ù ◊§◊®◊ò◊ô◊ù</div>';
   html += '<table style="width:100%;border-collapse:collapse">';
-  html += row('בחסות', gi('org'));
-  html += row('מספר זיהוי אישי', gi('personalid'));
-  html += row('מארגן', gv('orgknown'));
-  if (gv('orgknown') === 'ידוע ומוכר') html += row('פירוט מארגן', gi('orgknown_detail'));
-  html += row('איש קשר', (gi('fname') + ' ' + gi('lname')).trim());
-  html += row('שם האירוע', gi('evname'));
-  html += row('תאריך', gi('evstart'));
-  html += row('מיקום', gi('venue'));
-  html += row('קהילה יהודית', gv('jewishcommunity'));
-  html += row('אירוע חוזר', recurringLabel());
-  html += row('סוג כניסה', entryLabel());
-  html += row('במוסד ממשלתי', gv('govprox'));
-  html += row('אישים בכירים', gv('vip'));
-  html += row('הפגנות צפויות', gv('protest'));
-  var roleVal = gv('eventrole') === 'אחר' ? (gi('eventrole_other') || 'אחר') : gv('eventrole');
-  html += row('תפקיד באירוע', roleVal);
+  html += row('◊ë◊ó◊°◊ï◊™', gi('org'));
+  html += row('◊û◊°◊§◊® ◊ñ◊ô◊î◊ï◊ô ◊ê◊ô◊©◊ô', gi('personalid'));
+  html += row('◊û◊ê◊®◊í◊ü', gv('orgknown'));
+  if (gv('orgknown') === '◊ô◊ì◊ï◊¢ ◊ï◊û◊ï◊õ◊®') html += row('◊§◊ô◊®◊ï◊ò ◊û◊ê◊®◊í◊ü', gi('orgknown_detail'));
+  html += row('◊ê◊ô◊© ◊ß◊©◊®', (gi('fname') + ' ' + gi('lname')).trim());
+  html += row('◊©◊ù ◊î◊ê◊ô◊®◊ï◊¢', gi('evname'));
+  html += row('◊™◊ê◊®◊ô◊ö', gi('evstart'));
+  html += row('◊û◊ô◊ß◊ï◊ù', gi('venue'));
+  html += row('◊ß◊î◊ô◊ú◊î ◊ô◊î◊ï◊ì◊ô◊™', gv('jewishcommunity'));
+  html += row('◊ê◊ô◊®◊ï◊¢ ◊ó◊ï◊ñ◊®', recurringLabel());
+  html += row('◊°◊ï◊í ◊õ◊†◊ô◊°◊î', entryLabel());
+  html += row('◊ë◊û◊ï◊°◊ì ◊û◊û◊©◊ú◊™◊ô', gv('govprox'));
+  html += row('◊ê◊ô◊©◊ô◊ù ◊ë◊õ◊ô◊®◊ô◊ù', gv('vip'));
+  html += row('◊î◊§◊í◊†◊ï◊™ ◊¶◊§◊ï◊ô◊ï◊™', gv('protest'));
+  var roleVal = gv('eventrole') === '◊ê◊ó◊®' ? (gi('eventrole_other') || '◊ê◊ó◊®') : gv('eventrole');
+  html += row('◊™◊§◊ß◊ô◊ì ◊ë◊ê◊ô◊®◊ï◊¢', roleVal);
   html += '</table>';
 
   document.getElementById('reviewCard').innerHTML = html;
@@ -716,10 +878,11 @@ function buildReview() {
 function submitForm() {
   var ref = 'SEC-' + Date.now().toString(36).toUpperCase().slice(-8);
   var score = calcScore();
-  var level = score <= 3 ? 'נמוכה' : score <= 7 ? 'בינונית' : 'גבוהה';
+  var level = score <= 3 ? '◊†◊û◊ï◊õ◊î' : score <= 7 ? '◊ë◊ô◊†◊ï◊†◊ô◊™' : '◊í◊ë◊ï◊î◊î';
 
   var data = {
     ref: ref,
+    formType: 'event',
     timestamp: new Date().toISOString(),
     status: 'new',
     score: score,
@@ -770,7 +933,7 @@ function submitForm() {
       existing.push(data);
       localStorage.setItem('securitySubmissions', JSON.stringify(existing));
       console.error('Firebase error:', err);
-      alert('⚠️ שגיאה בחיבור ל-Firebase.\nהנתונים נשמרו בדפדפן כגיבוי.\n\nשגיאה: ' + err.message);
+      alert('‚ö†Ô∏è ◊©◊í◊ô◊ê◊î ◊ë◊ó◊ô◊ë◊ï◊® ◊ú-Firebase.\n◊î◊†◊™◊ï◊†◊ô◊ù ◊†◊©◊û◊®◊ï ◊ë◊ì◊§◊ì◊§◊ü ◊õ◊í◊ô◊ë◊ï◊ô.\n\n◊©◊í◊ô◊ê◊î: ' + err.message);
       showSuccess(ref);
     });
 }
@@ -780,6 +943,111 @@ function showSuccess(ref) {
   document.getElementById('reviewCard').style.display = 'none';
   document.getElementById('step4Nav').style.display = 'none';
   document.getElementById('successDiv').classList.add('show');
+}
+
+/* =========================================================
+   ◊ò◊ï◊§◊° ◊§◊í◊ô◊©◊î ‚Äî ◊ï◊ï◊ú◊ô◊ì◊¶◊ô◊î, ◊¶◊ô◊ï◊ü ◊ï◊©◊ú◊ô◊ó◊î
+   ========================================================= */
+function calcMeetingScore() {
+  var s = 0;
+  var acq = gv('macq');
+  if (acq === '◊î◊ô◊õ◊®◊ï◊™ ◊§◊í◊ô◊©◊î ◊®◊ê◊©◊ï◊†◊î ◊¢◊ì ◊©◊ú◊ô◊©◊ô◊™') s += 4;
+  else if (acq === '◊†◊§◊í◊©◊†◊ï ◊ë◊¢◊ë◊®') s += 2;
+  var loc = gv('mloc');
+  if (loc === '◊û◊ï◊°◊ì ◊û◊û◊©◊ú◊™◊ô') s += 2;
+  else if (loc === '◊û◊°◊¢◊ì◊î' || loc === '◊ë◊ô◊™ ◊ß◊§◊î') s += 1;
+  return Math.min(s, 10);
+}
+
+function validateMeeting() {
+  var ok = true;
+  var firstErr = null;
+  function req(id, fid) {
+    var el = document.getElementById(id);
+    var fw = document.getElementById(fid);
+    if (!fw) return;
+    if (!el || !el.value.trim()) { fw.classList.add('error'); ok = false; if (!firstErr) firstErr = fw; }
+    else { fw.classList.remove('error'); }
+  }
+  function reqRadio(name) {
+    var checked = document.querySelector('input[name="'+name+'"]:checked');
+    var errEl = document.getElementById('err_' + name);
+    var rg = document.getElementById('rg_' + name);
+    if (!checked) { if (errEl) errEl.classList.add('show'); if (rg) { rg.classList.add('error'); if (!firstErr) firstErr = rg; } ok = false; }
+    else { if (errEl) errEl.classList.remove('show'); if (rg) rg.classList.remove('error'); }
+  }
+  req('m_personalid', 'mf_personalid');
+  req('m_personname', 'mf_personname');
+  req('m_personrole', 'mf_personrole');
+  reqRadio('macq');
+  if (gv('macq') === '◊û◊ï◊õ◊® ◊ï◊û◊î◊ô◊û◊ü ◊¢◊ú ◊ô◊ì◊ô') req('m_acqby', 'mf_acqby');
+  req('m_address', 'mf_address');
+  reqRadio('mloc');
+  if (gv('mloc') === '◊ê◊ó◊®') req('m_loc_other', 'mf_loc_other');
+
+  if (!ok && firstErr) {
+    firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    firstErr.classList.add('err-shake');
+    setTimeout(function() { firstErr.classList.remove('err-shake'); }, 400);
+  }
+  return ok;
+}
+
+function submitMeeting() {
+  if (!validateMeeting()) return;
+  var ref = 'MTG-' + Date.now().toString(36).toUpperCase().slice(-8);
+  var score = calcMeetingScore();
+  var level = score <= 3 ? '◊†◊û◊ï◊õ◊î' : score <= 7 ? '◊ë◊ô◊†◊ï◊†◊ô◊™' : '◊í◊ë◊ï◊î◊î';
+
+  var data = {
+    ref: ref,
+    formType: 'meeting',
+    timestamp: new Date().toISOString(),
+    status: 'new',
+    score: score,
+    level: level,
+    personalid: gi('m_personalid'),
+    meetPersonName: gi('m_personname'),
+    meetPersonRole: gi('m_personrole'),
+    meetAcq: gv('macq'),
+    meetAcqBy: gi('m_acqby'),
+    meetAddress: gi('m_address'),
+    meetLocType: gv('mloc'),
+    meetLocOther: gi('m_loc_other'),
+    meetNotes: gi('m_notes')
+  };
+
+  if (!FIREBASE_URL || FIREBASE_URL.includes('YOUR-PROJECT')) {
+    var existing = JSON.parse(localStorage.getItem('securitySubmissions') || '[]');
+    existing.push(data);
+    localStorage.setItem('securitySubmissions', JSON.stringify(existing));
+    showMeetingSuccess(ref);
+    return;
+  }
+
+  document.getElementById('overlay').classList.add('show');
+
+  saveToFirebase(ref, data)
+    .then(function() {
+      document.getElementById('overlay').classList.remove('show');
+      showMeetingSuccess(ref);
+    })
+    .catch(function(err) {
+      document.getElementById('overlay').classList.remove('show');
+      var existing = JSON.parse(localStorage.getItem('securitySubmissions') || '[]');
+      existing.push(data);
+      localStorage.setItem('securitySubmissions', JSON.stringify(existing));
+      console.error('Firebase error:', err);
+      alert('‚ö†Ô∏è ◊©◊í◊ô◊ê◊î ◊ë◊ó◊ô◊ë◊ï◊® ◊ú-Firebase.\n◊î◊†◊™◊ï◊†◊ô◊ù ◊†◊©◊û◊®◊ï ◊ë◊ì◊§◊ì◊§◊ü ◊õ◊í◊ô◊ë◊ï◊ô.\n\n◊©◊í◊ô◊ê◊î: ' + err.message);
+      showMeetingSuccess(ref);
+    });
+}
+
+function showMeetingSuccess(ref) {
+  document.getElementById('mRefBox').textContent = ref;
+  document.querySelector('#meetingFlow .card').style.display = 'none';
+  document.getElementById('meetingNav').style.display = 'none';
+  document.getElementById('mSuccessDiv').classList.add('show');
 }
 </script>
 </body>
