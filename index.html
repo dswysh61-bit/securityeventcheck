@@ -75,6 +75,23 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
 .tc-card h3{font-size:18px;color:var(--navy2);margin-bottom:6px}
 .tc-card p{font-size:12px;color:var(--muted);line-height:1.5}
 .tc-hint{text-align:center;font-size:12px;color:var(--subtle);margin-bottom:1rem}
+/* ===== המשך / עריכה לפי אסמכתא ===== */
+.resume-box{max-width:520px;margin:1.5rem auto 0;background:white;border:1px dashed var(--border);border-radius:12px;padding:1.25rem;text-align:center}
+.resume-box .rb-title{font-size:13px;font-weight:600;color:var(--navy2);margin-bottom:4px}
+.resume-box .rb-sub{font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.5}
+.resume-row{display:flex;gap:8px}
+.resume-row input{flex:1;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:'Heebo',sans-serif;direction:ltr;text-align:center}
+.resume-row button{background:var(--navy2);color:white;border:none;border-radius:8px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Heebo',sans-serif;white-space:nowrap}
+.resume-err{display:block;font-size:11px;color:var(--red);margin-top:6px;min-height:14px}
+/* ===== כפתור שמירת טיוטה צף ===== */
+.draft-fab{position:fixed;bottom:20px;left:20px;z-index:40;background:#0f2744;color:white;border:none;border-radius:30px;padding:11px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Heebo',sans-serif;box-shadow:0 4px 14px rgba(15,39,68,.3)}
+.draft-fab:hover{background:#1a3a5c}
+/* ===== באנר מצב עריכה ===== */
+.edit-banner{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:10px 16px;margin-bottom:1rem;font-size:12px;color:#1e40af;line-height:1.5;display:none}
+.edit-banner.show{display:block}
+.summary-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.summary-actions button{padding:9px 18px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Heebo',sans-serif;border:1px solid var(--border);background:white;color:var(--navy2)}
+.summary-actions .sa-wa{background:#dcfce7;color:#15803d;border-color:#86efac}
 </style>
 </head>
 <body>
@@ -107,7 +124,18 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
       <p>טופס קצר לפגישה אישית — פרטי האדם, רמת היכרות, מיקום והערות.</p>
     </div>
   </div>
+  <div class="resume-box">
+    <div class="rb-title">כבר התחלת טופס?</div>
+    <div class="rb-sub">הזן מספר אסמכתא כדי להמשיך טיוטה שנשמרה או לעדכן טופס קיים.</div>
+    <div class="resume-row">
+      <input id="resumeRef" type="text" placeholder="SEC-XXXXXXXX / MTG-XXXXXXXX">
+      <button onclick="resumeByRef()">המשך / ערוך</button>
+    </div>
+    <span class="resume-err" id="resumeErr"></span>
+  </div>
 </div>
+
+<button class="draft-fab" id="draftFab" onclick="saveDraft()" style="display:none">💾 שמור טיוטה</button>
 
 <!-- ============================================================ -->
 <!-- ===== זרימת אירוע (טופס מלא) ===== -->
@@ -127,6 +155,10 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
 <div class="fb-config-banner" id="configBanner">
   ⚠️ <strong>Firebase לא מוגדר עדיין.</strong> הטופס יעבוד אך הנתונים לא יישמרו לשרת.<br>
   כדי לחבר: ערוך את משתנה <code>FIREBASE_URL</code> בתחילת הקובץ.
+</div>
+
+<div class="edit-banner" id="editBannerEvent">
+  ✏️ אתה עורך טופס קיים — אסמכתא <strong id="editRefEvent"></strong>. שינויים שתשלח יעדכנו את אותה בקשה.
 </div>
 
 <!-- ===== STEP 0 — פרטי ארגון ===== -->
@@ -195,6 +227,12 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
         <label>תפקיד</label>
         <input id="role" type="text" placeholder="תפקיד / תואר...">
       </div>
+    </div>
+
+    <div class="section-title">משתתפים נוספים</div>
+    <div class="field">
+      <label>מספרי זיהוי / שמות של משתתפים נוספים (כאשר כל הצוות מגיע לאותו אירוע)</label>
+      <textarea id="participants" rows="2" placeholder="שורה לכל משתתף — מספר זיהוי ושם. השאר ריק אם אתה מגיע לבד..."></textarea>
     </div>
   </div>
   <div class="nav">
@@ -526,6 +564,10 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
     <p style="color:#64748b;font-size:13px;margin-bottom:12px">מספר אסמכתא לאירועך:</p>
     <div class="ref-box" id="refBox"></div>
     <p style="font-size:12px;color:#94a3b8;margin-top:10px">שמור את המספר לתקשורת עם הצוות.</p>
+    <div class="summary-actions">
+      <button onclick="copySummary('event')">📋 העתק סיכום</button>
+      <button class="sa-wa" onclick="shareSummary('event')">💬 שלח סיכום בוואטסאפ</button>
+    </div>
     <button onclick="location.reload()" style="margin-top:20px;padding:8px 20px;border:1px solid #e2e8f0;border-radius:8px;background:white;cursor:pointer;font-family:'Heebo',sans-serif;font-size:13px;color:#64748b">הגש טופס נוסף</button>
   </div>
 </div>
@@ -538,6 +580,9 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
 <!-- ============================================================ -->
 <div id="meetingFlow" style="display:none">
   <div class="container">
+    <div class="edit-banner" id="editBannerMeeting">
+      ✏️ אתה עורך טופס קיים — אסמכתא <strong id="editRefMeeting"></strong>. שינויים שתשלח יעדכנו את אותה בקשה.
+    </div>
     <div class="card">
       <div class="section-title">פרטי פגישה</div>
       <div class="grid2">
@@ -555,6 +600,15 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
           <label><span class="req">*</span>תפקיד האדם</label>
           <input id="m_personrole" type="text" placeholder="תפקיד / תואר...">
           <span class="err-msg">שדה חובה</span>
+        </div>
+        <div class="field" id="mf_date">
+          <label><span class="req">*</span>תאריך הפגישה</label>
+          <input id="m_date" type="date">
+          <span class="err-msg">שדה חובה</span>
+        </div>
+        <div class="field">
+          <label>שעת הפגישה</label>
+          <input id="m_time" type="time">
         </div>
       </div>
 
@@ -616,6 +670,12 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
         </div>
       </div>
 
+      <div class="section-title">משתתפים נוספים</div>
+      <div class="field">
+        <label>מספרי זיהוי / שמות של משתתפים נוספים (כאשר כל הצוות מגיע לאותה פגישה)</label>
+        <textarea id="m_participants" rows="2" placeholder="שורה לכל משתתף — מספר זיהוי ושם. השאר ריק אם אתה מגיע לבד..."></textarea>
+      </div>
+
       <div class="section-title">הערות</div>
       <div class="field">
         <label>הערות לגבי האדם שנפגשים איתו</label>
@@ -633,6 +693,10 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
       <p style="color:#64748b;font-size:13px;margin-bottom:12px">מספר אסמכתא לפגישה:</p>
       <div class="ref-box" id="mRefBox"></div>
       <p style="font-size:12px;color:#94a3b8;margin-top:10px">שמור את המספר לתקשורת עם הצוות.</p>
+      <div class="summary-actions">
+        <button onclick="copySummary('meeting')">📋 העתק סיכום</button>
+        <button class="sa-wa" onclick="shareSummary('meeting')">💬 שלח סיכום בוואטסאפ</button>
+      </div>
       <button onclick="location.reload()" style="margin-top:20px;padding:8px 20px;border:1px solid #e2e8f0;border-radius:8px;background:white;cursor:pointer;font-family:'Heebo',sans-serif;font-size:13px;color:#64748b">הגש טופס נוסף</button>
     </div>
   </div>
@@ -645,9 +709,23 @@ window.addEventListener('DOMContentLoaded', function() {
   }
 });
 
+/* ===== מצב עריכה / טיוטה ===== */
+var editingRef = null;    // אסמכתא שנטענה לעריכה (null = טופס חדש)
+var editingData = null;   // הנתונים המקוריים שנטענו (לשימור שדות מנהל)
+var lastSubmitted = null; // הנתונים האחרונים שנשלחו (לסיכום/שיתוף)
+
+function clearEditing() {
+  editingRef = null;
+  editingData = null;
+  document.getElementById('editBannerEvent').classList.remove('show');
+  document.getElementById('editBannerMeeting').classList.remove('show');
+}
+
 /* ===== בחירת סוג טופס ===== */
 function chooseType(t) {
+  clearEditing();
   document.getElementById('typeChooser').style.display = 'none';
+  document.getElementById('draftFab').style.display = 'block';
   if (t === 'event') {
     document.getElementById('eventFlow').style.display = 'block';
     document.getElementById('meetingFlow').style.display = 'none';
@@ -666,9 +744,123 @@ function backToChooser() {
   document.getElementById('eventFlow').style.display = 'none';
   document.getElementById('meetingFlow').style.display = 'none';
   document.getElementById('typeChooser').style.display = 'block';
+  document.getElementById('draftFab').style.display = 'none';
+  clearEditing();
   document.getElementById('pageTitleH').textContent = 'טופס הערכת אבטחה';
   document.getElementById('pageSubH').textContent = 'בחר את סוג הטופס המתאים: אירוע (טופס מלא) או פגישה (טופס קצר).';
   window.scrollTo(0, 0);
+}
+
+/* ===== הודעה צפה קצרה ===== */
+function formToast(msg, color) {
+  var t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:' + (color || '#0f2744') + ';color:#fff;padding:12px 22px;border-radius:10px;font-size:13px;font-weight:600;z-index:9999;font-family:Heebo,sans-serif;box-shadow:0 4px 16px rgba(0,0,0,.25);max-width:90%;text-align:center;line-height:1.5';
+  document.body.appendChild(t);
+  setTimeout(function () { t.remove(); }, 4000);
+}
+
+/* ===== המשך / עריכה לפי אסמכתא ===== */
+function fetchByRef(ref) {
+  if (!FIREBASE_URL || FIREBASE_URL.includes('YOUR-PROJECT')) {
+    var raw = JSON.parse(localStorage.getItem('securitySubmissions') || '[]');
+    var found = raw.filter(function (s) { return (s.ref || s._fbKey) === ref; })[0];
+    return Promise.resolve(found || null);
+  }
+  return fetch(FIREBASE_URL + '/submissions/' + encodeURIComponent(ref) + '.json')
+    .then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); });
+}
+
+function resumeByRef() {
+  var errEl = document.getElementById('resumeErr');
+  var ref = (document.getElementById('resumeRef').value || '').trim().toUpperCase();
+  errEl.textContent = '';
+  if (!ref) { errEl.textContent = 'יש להזין מספר אסמכתא.'; return; }
+  errEl.textContent = 'טוען...';
+  fetchByRef(ref)
+    .then(function (data) {
+      if (!data) { errEl.textContent = 'לא נמצאה בקשה עם אסמכתא זו.'; return; }
+      errEl.textContent = '';
+      openForEditing(ref, data);
+    })
+    .catch(function (err) { errEl.textContent = 'שגיאה בטעינה: ' + err.message; });
+}
+
+function openForEditing(ref, data) {
+  editingRef = ref;
+  editingData = data;
+  var type = data.formType === 'meeting' ? 'meeting' : 'event';
+  document.getElementById('typeChooser').style.display = 'none';
+  document.getElementById('draftFab').style.display = 'block';
+  if (type === 'meeting') {
+    document.getElementById('eventFlow').style.display = 'none';
+    document.getElementById('meetingFlow').style.display = 'block';
+    document.getElementById('pageTitleH').textContent = 'עריכת טופס פגישה';
+    document.getElementById('pageSubH').textContent = 'טוען את הפרטים שנשמרו — השלם או עדכן ושלח מחדש.';
+    populateMeeting(data);
+    document.getElementById('editRefMeeting').textContent = ref;
+    document.getElementById('editBannerMeeting').classList.add('show');
+  } else {
+    document.getElementById('eventFlow').style.display = 'block';
+    document.getElementById('meetingFlow').style.display = 'none';
+    document.getElementById('pageTitleH').textContent = 'עריכת טופס אירוע';
+    document.getElementById('pageSubH').textContent = 'טוען את הפרטים שנשמרו — השלם או עדכן ושלח מחדש.';
+    populateEvent(data);
+    document.getElementById('editRefEvent').textContent = ref;
+    document.getElementById('editBannerEvent').classList.add('show');
+    cur = 0; showStep(0);
+  }
+  window.scrollTo(0, 0);
+}
+
+/* ===== עזרי מילוי טופס ===== */
+function setVal(id, v) { var el = document.getElementById(id); if (el) el.value = (v == null ? '' : v); }
+function restoreRadio(name, val) {
+  if (!val) return;
+  var input = document.querySelector('input[name="' + name + '"][value="' + val + '"]');
+  if (input) { var opt = input.closest('.radio-opt'); if (opt) opt.click(); }
+}
+function setChecks(name, arr) {
+  arr = arr || [];
+  document.querySelectorAll('input[name="' + name + '"]').forEach(function (c) {
+    c.checked = arr.indexOf(c.value) !== -1;
+  });
+}
+
+function populateEvent(d) {
+  ['org','personalid','invitelink','fname','lname','email','phone','role','orgknown_detail',
+   'evname','evstart','evend','evstarttime','evendtime','venue',
+   'vip_detail','vetting_detail','entrytype_other','eventrole_other','extra','participants']
+    .forEach(function (id) { setVal(id, d[id]); });
+  setVal('evcat', d.evcat); setVal('evtype', d.evtype); setVal('recurring', d.recurring);
+  setVal('entrytype', d.entrytype); handleEntryType(d.entrytype || '');
+  restoreRadio('orgknown', d.orgknown);
+  restoreRadio('outdoor', d.outdoor);
+  restoreRadio('jewishcommunity', d.jewishcommunity);
+  restoreRadio('govprox', d.govprox);
+  restoreRadio('vetted', d.vetted);
+  restoreRadio('advertised', d.advertised);
+  restoreRadio('advloc', d.advloc);
+  restoreRadio('vip', d.vip);
+  restoreRadio('protest', d.protest);
+  restoreRadio('eventrole', d.eventrole);
+  setChecks('advchan', d.advchan);
+  setChecks('security', d.security);
+}
+
+function populateMeeting(d) {
+  setVal('m_personalid', d.personalid);
+  setVal('m_personname', d.meetPersonName);
+  setVal('m_personrole', d.meetPersonRole);
+  setVal('m_date', d.meetDate);
+  setVal('m_time', d.meetTime);
+  setVal('m_acqby', d.meetAcqBy);
+  setVal('m_address', d.meetAddress);
+  setVal('m_loc_other', d.meetLocOther);
+  setVal('m_participants', d.participants);
+  setVal('m_notes', d.meetNotes);
+  restoreRadio('macq', d.meetAcq);
+  restoreRadio('mloc', d.meetLocType);
 }
 
 function saveToFirebase(ref, data) {
@@ -875,20 +1067,15 @@ function buildReview() {
   document.getElementById('step4Nav').style.display = 'flex';
 }
 
-function submitForm() {
-  var ref = 'SEC-' + Date.now().toString(36).toUpperCase().slice(-8);
+function collectEventData() {
   var score = calcScore();
-  var level = score <= 3 ? 'נמוכה' : score <= 7 ? 'בינונית' : 'גבוהה';
-
-  var data = {
-    ref: ref,
+  return {
     formType: 'event',
-    timestamp: new Date().toISOString(),
-    status: 'new',
     score: score,
-    level: level,
+    level: score <= 3 ? 'נמוכה' : score <= 7 ? 'בינונית' : 'גבוהה',
     org: gi('org'),
     personalid: gi('personalid'),
+    participants: gi('participants'),
     invitelink: gi('invitelink'),
     orgknown: gv('orgknown'),
     orgknown_detail: gi('orgknown_detail'),
@@ -911,31 +1098,71 @@ function submitForm() {
     advchan: Array.from(document.querySelectorAll('input[name="advchan"]:checked')).map(function(c) { return c.value; }),
     security: Array.from(document.querySelectorAll('input[name="security"]:checked')).map(function(c) { return c.value; })
   };
+}
+
+/* שמירה סופית או טיוטה — משותף לאירוע ולפגישה */
+function finalizeAndSave(data, isDraft, onDone) {
+  var prefix = data.formType === 'meeting' ? 'MTG-' : 'SEC-';
+  var ref = editingRef || (prefix + Date.now().toString(36).toUpperCase().slice(-8));
+  data.ref = ref;
+  var now = new Date().toISOString();
+  if (editingData) {
+    data.timestamp = editingData.timestamp || now;
+    data.lastUpdated = now;
+    if (editingData.manualScore != null) data.manualScore = editingData.manualScore;
+    if (editingData.notes) data.notes = editingData.notes;
+    data.status = isDraft ? 'draft' : (editingData.status && editingData.status !== 'draft' ? editingData.status : 'new');
+  } else {
+    data.timestamp = now;
+    data.status = isDraft ? 'draft' : 'new';
+  }
+  lastSubmitted = data;
+
+  function afterSave() {
+    if (isDraft) {
+      editingRef = ref;
+      editingData = data;
+      var bId = data.formType === 'meeting' ? 'editBannerMeeting' : 'editBannerEvent';
+      var rId = data.formType === 'meeting' ? 'editRefMeeting' : 'editRefEvent';
+      document.getElementById(rId).textContent = ref;
+      document.getElementById(bId).classList.add('show');
+      if (navigator.clipboard) navigator.clipboard.writeText(ref).catch(function(){});
+      formToast('💾 הטיוטה נשמרה: ' + ref + ' (הועתק). שלח מספר זה כדי שיוכלו להשלים את הטופס.');
+    } else if (onDone) { onDone(ref); }
+  }
 
   if (!FIREBASE_URL || FIREBASE_URL.includes('YOUR-PROJECT')) {
-    var existing = JSON.parse(localStorage.getItem('securitySubmissions') || '[]');
-    existing.push(data);
-    localStorage.setItem('securitySubmissions', JSON.stringify(existing));
-    showSuccess(ref);
+    var raw = JSON.parse(localStorage.getItem('securitySubmissions') || '[]');
+    var idx = raw.findIndex(function(s) { return (s.ref || s._fbKey) === ref; });
+    if (idx >= 0) raw[idx] = data; else raw.push(data);
+    localStorage.setItem('securitySubmissions', JSON.stringify(raw));
+    afterSave();
     return;
   }
 
   document.getElementById('overlay').classList.add('show');
-
   saveToFirebase(ref, data)
-    .then(function() {
-      document.getElementById('overlay').classList.remove('show');
-      showSuccess(ref);
-    })
+    .then(function() { document.getElementById('overlay').classList.remove('show'); afterSave(); })
     .catch(function(err) {
       document.getElementById('overlay').classList.remove('show');
-      var existing = JSON.parse(localStorage.getItem('securitySubmissions') || '[]');
-      existing.push(data);
-      localStorage.setItem('securitySubmissions', JSON.stringify(existing));
+      var raw = JSON.parse(localStorage.getItem('securitySubmissions') || '[]');
+      raw.push(data);
+      localStorage.setItem('securitySubmissions', JSON.stringify(raw));
       console.error('Firebase error:', err);
       alert('⚠️ שגיאה בחיבור ל-Firebase.\nהנתונים נשמרו בדפדפן כגיבוי.\n\nשגיאה: ' + err.message);
-      showSuccess(ref);
+      afterSave();
     });
+}
+
+/* שמירת טיוטה — ללא וולידציה מלאה, לפי הטופס הפעיל */
+function saveDraft() {
+  var isMeetingFlow = document.getElementById('meetingFlow').style.display !== 'none';
+  var data = isMeetingFlow ? collectMeetingData() : collectEventData();
+  finalizeAndSave(data, true, null);
+}
+
+function submitForm() {
+  finalizeAndSave(collectEventData(), false, showSuccess);
 }
 
 function showSuccess(ref) {
@@ -979,6 +1206,7 @@ function validateMeeting() {
   req('m_personalid', 'mf_personalid');
   req('m_personname', 'mf_personname');
   req('m_personrole', 'mf_personrole');
+  req('m_date', 'mf_date');
   reqRadio('macq');
   if (gv('macq') === 'מוכר ומהימן על ידי') req('m_acqby', 'mf_acqby');
   req('m_address', 'mf_address');
@@ -993,22 +1221,18 @@ function validateMeeting() {
   return ok;
 }
 
-function submitMeeting() {
-  if (!validateMeeting()) return;
-  var ref = 'MTG-' + Date.now().toString(36).toUpperCase().slice(-8);
+function collectMeetingData() {
   var score = calcMeetingScore();
-  var level = score <= 3 ? 'נמוכה' : score <= 7 ? 'בינונית' : 'גבוהה';
-
-  var data = {
-    ref: ref,
+  return {
     formType: 'meeting',
-    timestamp: new Date().toISOString(),
-    status: 'new',
     score: score,
-    level: level,
+    level: score <= 3 ? 'נמוכה' : score <= 7 ? 'בינונית' : 'גבוהה',
     personalid: gi('m_personalid'),
+    participants: gi('m_participants'),
     meetPersonName: gi('m_personname'),
     meetPersonRole: gi('m_personrole'),
+    meetDate: gi('m_date'),
+    meetTime: gi('m_time'),
     meetAcq: gv('macq'),
     meetAcqBy: gi('m_acqby'),
     meetAddress: gi('m_address'),
@@ -1016,31 +1240,11 @@ function submitMeeting() {
     meetLocOther: gi('m_loc_other'),
     meetNotes: gi('m_notes')
   };
+}
 
-  if (!FIREBASE_URL || FIREBASE_URL.includes('YOUR-PROJECT')) {
-    var existing = JSON.parse(localStorage.getItem('securitySubmissions') || '[]');
-    existing.push(data);
-    localStorage.setItem('securitySubmissions', JSON.stringify(existing));
-    showMeetingSuccess(ref);
-    return;
-  }
-
-  document.getElementById('overlay').classList.add('show');
-
-  saveToFirebase(ref, data)
-    .then(function() {
-      document.getElementById('overlay').classList.remove('show');
-      showMeetingSuccess(ref);
-    })
-    .catch(function(err) {
-      document.getElementById('overlay').classList.remove('show');
-      var existing = JSON.parse(localStorage.getItem('securitySubmissions') || '[]');
-      existing.push(data);
-      localStorage.setItem('securitySubmissions', JSON.stringify(existing));
-      console.error('Firebase error:', err);
-      alert('⚠️ שגיאה בחיבור ל-Firebase.\nהנתונים נשמרו בדפדפן כגיבוי.\n\nשגיאה: ' + err.message);
-      showMeetingSuccess(ref);
-    });
+function submitMeeting() {
+  if (!validateMeeting()) return;
+  finalizeAndSave(collectMeetingData(), false, showMeetingSuccess);
 }
 
 function showMeetingSuccess(ref) {
@@ -1048,6 +1252,65 @@ function showMeetingSuccess(ref) {
   document.querySelector('#meetingFlow .card').style.display = 'none';
   document.getElementById('meetingNav').style.display = 'none';
   document.getElementById('mSuccessDiv').classList.add('show');
+}
+
+/* =========================================================
+   סיכום לשיתוף פנימי (העתקה / וואטסאפ)
+   ========================================================= */
+function buildSummaryText(d) {
+  if (!d) return '';
+  var L = [];
+  if (d.formType === 'meeting') {
+    L.push('סיכום פגישה — ' + (d.ref || ''));
+    L.push('רמת אבטחה: ' + (d.level || '—') + ' (ציון ' + (d.score || 0) + '/10)');
+    L.push('');
+    L.push('מספר זיהוי: ' + (d.personalid || '—'));
+    L.push('שם האדם: ' + (d.meetPersonName || '—'));
+    L.push('תפקיד: ' + (d.meetPersonRole || '—'));
+    L.push('תאריך: ' + (d.meetDate || '—') + (d.meetTime ? ' ' + d.meetTime : ''));
+    L.push('רמת היכרות: ' + (d.meetAcq || '—'));
+    if (d.meetAcqBy) L.push('מוכר על ידי: ' + d.meetAcqBy);
+    L.push('כתובת: ' + (d.meetAddress || '—'));
+    L.push('מיקום: ' + (d.meetLocType === 'אחר' ? (d.meetLocOther || 'אחר') : (d.meetLocType || '—')));
+    if (d.participants) L.push('משתתפים נוספים: ' + d.participants);
+    if (d.meetNotes) L.push('הערות: ' + d.meetNotes);
+  } else {
+    L.push('סיכום אירוע — ' + (d.ref || ''));
+    L.push('רמת אבטחה: ' + (d.level || '—') + ' (ציון ' + (d.score || 0) + '/10)');
+    L.push('');
+    L.push('בחסות: ' + (d.org || '—'));
+    L.push('מספר זיהוי: ' + (d.personalid || '—'));
+    L.push('איש קשר: ' + ((d.fname || '') + ' ' + (d.lname || '')).trim());
+    if (d.phone) L.push('טלפון: ' + d.phone);
+    L.push('שם האירוע: ' + (d.evname || '—'));
+    L.push('תאריך: ' + (d.evstart || '—') + (d.evend && d.evend !== d.evstart ? ' — ' + d.evend : ''));
+    L.push('מיקום: ' + (d.venue || '—'));
+    L.push('קטגוריה: ' + (d.evcat || '—'));
+    L.push('אישים בכירים: ' + (d.vip || '—'));
+    L.push('הפגנות צפויות: ' + (d.protest || '—'));
+    if (d.participants) L.push('משתתפים נוספים: ' + d.participants);
+    if (d.extra) L.push('מידע נוסף: ' + d.extra);
+  }
+  return L.join('\n');
+}
+
+function copySummary() {
+  var text = buildSummaryText(lastSubmitted);
+  if (!text) { formToast('אין סיכום זמין', '#dc2626'); return; }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(
+      function () { formToast('📋 הסיכום הועתק'); },
+      function () { formToast('לא ניתן להעתיק אוטומטית', '#dc2626'); }
+    );
+  } else {
+    formToast('לא ניתן להעתיק בדפדפן זה', '#dc2626');
+  }
+}
+
+function shareSummary() {
+  var text = buildSummaryText(lastSubmitted);
+  if (!text) { formToast('אין סיכום זמין', '#dc2626'); return; }
+  window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
 }
 </script>
 </body>
