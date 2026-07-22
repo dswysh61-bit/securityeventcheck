@@ -106,7 +106,7 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
 
 <div class="page-header">
   <h1 id="pageTitleH">טופס הערכת אבטחה</h1>
-  <p id="pageSubH">בחר את סוג הטופס המתאים: אירוע (טופס מלא) או פגישה (טופס קצר).</p>
+  <p id="pageSubH">בחר את סוג הטופס המתאים: אירוע, פגישה או חבילה.</p>
 </div>
 
 <!-- ===== בורר סוג טופס ===== -->
@@ -122,6 +122,11 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
       <div class="ic">🤝</div>
       <h3>פגישה</h3>
       <p>טופס קצר לפגישה אישית — פרטי האדם, רמת היכרות, מיקום והערות.</p>
+    </div>
+    <div class="tc-card" onclick="chooseType('package')">
+      <div class="ic">📦</div>
+      <h3>חבילה</h3>
+      <p>טופס קצר לרישום חבילה נכנסת — על שם מי, תיאור התכולה ומועד הגעה משוער.</p>
     </div>
   </div>
   <div class="resume-box">
@@ -262,9 +267,10 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
         <input id="evend" type="date">
         <span class="err-msg">שדה חובה</span>
       </div>
-      <div class="field">
-        <label>שעת התחלה</label>
+      <div class="field" id="f_evstarttime">
+        <label><span class="req">*</span>שעת התחלה</label>
         <input id="evstarttime" type="time">
+        <span class="err-msg">שדה חובה</span>
       </div>
       <div class="field">
         <label>שעת סיום</label>
@@ -606,9 +612,10 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
           <input id="m_date" type="date">
           <span class="err-msg">שדה חובה</span>
         </div>
-        <div class="field">
-          <label>שעת הפגישה</label>
+        <div class="field" id="mf_time">
+          <label><span class="req">*</span>שעת הפגישה</label>
           <input id="m_time" type="time">
+          <span class="err-msg">שדה חובה</span>
         </div>
       </div>
 
@@ -702,6 +709,57 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
   </div>
 </div><!-- /meetingFlow -->
 
+<!-- ============================================================ -->
+<!-- ===== זרימת חבילה (טופס קצר) ===== -->
+<!-- ============================================================ -->
+<div id="packageFlow" style="display:none">
+  <div class="container">
+    <div class="edit-banner" id="editBannerPackage">
+      ✏️ אתה עורך רישום חבילה קיים — אסמכתא <strong id="editRefPackage"></strong>. שינויים שתשלח יעדכנו את אותה בקשה.
+    </div>
+    <div class="card">
+      <div class="section-title">פרטי חבילה</div>
+      <div class="field" id="pf_recipient">
+        <label><span class="req">*</span>על שם מי החבילה</label>
+        <input id="p_recipient" type="text" placeholder="שם הנמען...">
+        <span class="err-msg">שדה חובה</span>
+      </div>
+      <div class="field" style="margin-top:14px" id="pf_desc">
+        <label><span class="req">*</span>תיאור התכולה — מה יש בחבילה</label>
+        <textarea id="p_desc" rows="3" placeholder="תאר את תכולת החבילה..."></textarea>
+        <span class="err-msg">שדה חובה</span>
+      </div>
+      <div class="field" style="margin-top:14px" id="pf_date">
+        <label><span class="req">*</span>מתי אמורה להגיע</label>
+        <input id="p_date" type="date">
+        <span class="err-msg">שדה חובה</span>
+      </div>
+      <div class="section-title">הערות</div>
+      <div class="field">
+        <label>הערות נוספות</label>
+        <textarea id="p_notes" rows="2" placeholder="כל מידע רלוונטי לגבי החבילה..."></textarea>
+      </div>
+    </div>
+    <div class="nav" id="packageNav">
+      <button class="btn-prev" onclick="backToChooser()">→ חזרה לבחירה</button>
+      <span class="step-ind">טופס חבילה</span>
+      <button class="btn-next" id="pSubmitBtn" onclick="submitPackage()" style="background:#16a34a">שלח טופס ✓</button>
+    </div>
+    <div class="success" id="pSuccessDiv">
+      <div class="success-icon">✓</div>
+      <h2 style="font-size:20px;margin-bottom:8px">הטופס נשלח בהצלחה!</h2>
+      <p style="color:#64748b;font-size:13px;margin-bottom:12px">מספר אסמכתא לחבילה:</p>
+      <div class="ref-box" id="pRefBox"></div>
+      <p style="font-size:12px;color:#94a3b8;margin-top:10px">שמור את המספר לתקשורת עם הצוות.</p>
+      <div class="summary-actions">
+        <button onclick="copySummary('package')">📋 העתק סיכום</button>
+        <button class="sa-wa" onclick="shareSummary('package')">💬 שלח סיכום בוואטסאפ</button>
+      </div>
+      <button onclick="location.reload()" style="margin-top:20px;padding:8px 20px;border:1px solid #e2e8f0;border-radius:8px;background:white;cursor:pointer;font-family:'Heebo',sans-serif;font-size:13px;color:#64748b">הגש טופס נוסף</button>
+    </div>
+  </div>
+</div><!-- /packageFlow -->
+
 <script>
 window.addEventListener('DOMContentLoaded', function() {
   if (!FIREBASE_URL || FIREBASE_URL.includes('YOUR-PROJECT')) {
@@ -719,6 +777,7 @@ function clearEditing() {
   editingData = null;
   document.getElementById('editBannerEvent').classList.remove('show');
   document.getElementById('editBannerMeeting').classList.remove('show');
+  document.getElementById('editBannerPackage').classList.remove('show');
 }
 
 /* ===== בחירת סוג טופס ===== */
@@ -729,12 +788,20 @@ function chooseType(t) {
   if (t === 'event') {
     document.getElementById('eventFlow').style.display = 'block';
     document.getElementById('meetingFlow').style.display = 'none';
+    document.getElementById('packageFlow').style.display = 'none';
     document.getElementById('pageTitleH').textContent = 'טופס הערכת רמת אבטחה לאירוע';
     document.getElementById('pageSubH').textContent = 'אנא מלא את הפרטים הבאים. המידע ישמש להערכת רמת האבטחה הנדרשת לאירועך.';
     cur = 0; showStep(0);
+  } else if (t === 'package') {
+    document.getElementById('eventFlow').style.display = 'none';
+    document.getElementById('meetingFlow').style.display = 'none';
+    document.getElementById('packageFlow').style.display = 'block';
+    document.getElementById('pageTitleH').textContent = 'טופס חבילה';
+    document.getElementById('pageSubH').textContent = 'טופס קצר לרישום חבילה נכנסת.';
   } else {
     document.getElementById('eventFlow').style.display = 'none';
     document.getElementById('meetingFlow').style.display = 'block';
+    document.getElementById('packageFlow').style.display = 'none';
     document.getElementById('pageTitleH').textContent = 'טופס פגישה';
     document.getElementById('pageSubH').textContent = 'טופס קצר לתיעוד פגישה אישית והערכת רמת ההיכרות.';
   }
@@ -743,11 +810,12 @@ function chooseType(t) {
 function backToChooser() {
   document.getElementById('eventFlow').style.display = 'none';
   document.getElementById('meetingFlow').style.display = 'none';
+  document.getElementById('packageFlow').style.display = 'none';
   document.getElementById('typeChooser').style.display = 'block';
   document.getElementById('draftFab').style.display = 'none';
   clearEditing();
   document.getElementById('pageTitleH').textContent = 'טופס הערכת אבטחה';
-  document.getElementById('pageSubH').textContent = 'בחר את סוג הטופס המתאים: אירוע (טופס מלא) או פגישה (טופס קצר).';
+  document.getElementById('pageSubH').textContent = 'בחר את סוג הטופס המתאים: אירוע, פגישה או חבילה.';
   window.scrollTo(0, 0);
 }
 
@@ -789,20 +857,31 @@ function resumeByRef() {
 function openForEditing(ref, data) {
   editingRef = ref;
   editingData = data;
-  var type = data.formType === 'meeting' ? 'meeting' : 'event';
+  var type = data.formType === 'meeting' ? 'meeting' : (data.formType === 'package' ? 'package' : 'event');
   document.getElementById('typeChooser').style.display = 'none';
   document.getElementById('draftFab').style.display = 'block';
   if (type === 'meeting') {
     document.getElementById('eventFlow').style.display = 'none';
     document.getElementById('meetingFlow').style.display = 'block';
+    document.getElementById('packageFlow').style.display = 'none';
     document.getElementById('pageTitleH').textContent = 'עריכת טופס פגישה';
     document.getElementById('pageSubH').textContent = 'טוען את הפרטים שנשמרו — השלם או עדכן ושלח מחדש.';
     populateMeeting(data);
     document.getElementById('editRefMeeting').textContent = ref;
     document.getElementById('editBannerMeeting').classList.add('show');
+  } else if (type === 'package') {
+    document.getElementById('eventFlow').style.display = 'none';
+    document.getElementById('meetingFlow').style.display = 'none';
+    document.getElementById('packageFlow').style.display = 'block';
+    document.getElementById('pageTitleH').textContent = 'עריכת רישום חבילה';
+    document.getElementById('pageSubH').textContent = 'טוען את הפרטים שנשמרו — השלם או עדכן ושלח מחדש.';
+    populatePackage(data);
+    document.getElementById('editRefPackage').textContent = ref;
+    document.getElementById('editBannerPackage').classList.add('show');
   } else {
     document.getElementById('eventFlow').style.display = 'block';
     document.getElementById('meetingFlow').style.display = 'none';
+    document.getElementById('packageFlow').style.display = 'none';
     document.getElementById('pageTitleH').textContent = 'עריכת טופס אירוע';
     document.getElementById('pageSubH').textContent = 'טוען את הפרטים שנשמרו — השלם או עדכן ושלח מחדש.';
     populateEvent(data);
@@ -861,6 +940,13 @@ function populateMeeting(d) {
   setVal('m_notes', d.meetNotes);
   restoreRadio('macq', d.meetAcq);
   restoreRadio('mloc', d.meetLocType);
+}
+
+function populatePackage(d) {
+  setVal('p_recipient', d.pkgRecipient);
+  setVal('p_desc', d.pkgDesc);
+  setVal('p_date', d.pkgDate);
+  setVal('p_notes', d.pkgNotes);
 }
 
 function saveToFirebase(ref, data) {
@@ -957,6 +1043,7 @@ function validateStep(s) {
     req('evname', 'f_evname');
     req('evstart', 'f_evstart');
     req('evend', 'f_evend');
+    req('evstarttime', 'f_evstarttime');
     req('venue', 'f_venue');
     var ec = document.getElementById('evcat');
     var fw = document.getElementById('f_evcat');
@@ -1102,7 +1189,7 @@ function collectEventData() {
 
 /* שמירה סופית או טיוטה — משותף לאירוע ולפגישה */
 function finalizeAndSave(data, isDraft, onDone) {
-  var prefix = data.formType === 'meeting' ? 'MTG-' : 'SEC-';
+  var prefix = data.formType === 'meeting' ? 'MTG-' : (data.formType === 'package' ? 'PKG-' : 'SEC-');
   var ref = editingRef || (prefix + Date.now().toString(36).toUpperCase().slice(-8));
   data.ref = ref;
   var now = new Date().toISOString();
@@ -1122,8 +1209,8 @@ function finalizeAndSave(data, isDraft, onDone) {
     if (isDraft) {
       editingRef = ref;
       editingData = data;
-      var bId = data.formType === 'meeting' ? 'editBannerMeeting' : 'editBannerEvent';
-      var rId = data.formType === 'meeting' ? 'editRefMeeting' : 'editRefEvent';
+      var bId = data.formType === 'meeting' ? 'editBannerMeeting' : (data.formType === 'package' ? 'editBannerPackage' : 'editBannerEvent');
+      var rId = data.formType === 'meeting' ? 'editRefMeeting' : (data.formType === 'package' ? 'editRefPackage' : 'editRefEvent');
       document.getElementById(rId).textContent = ref;
       document.getElementById(bId).classList.add('show');
       if (navigator.clipboard) navigator.clipboard.writeText(ref).catch(function(){});
@@ -1156,8 +1243,10 @@ function finalizeAndSave(data, isDraft, onDone) {
 
 /* שמירת טיוטה — ללא וולידציה מלאה, לפי הטופס הפעיל */
 function saveDraft() {
-  var isMeetingFlow = document.getElementById('meetingFlow').style.display !== 'none';
-  var data = isMeetingFlow ? collectMeetingData() : collectEventData();
+  var data;
+  if (document.getElementById('packageFlow').style.display !== 'none') data = collectPackageData();
+  else if (document.getElementById('meetingFlow').style.display !== 'none') data = collectMeetingData();
+  else data = collectEventData();
   finalizeAndSave(data, true, null);
 }
 
@@ -1207,6 +1296,7 @@ function validateMeeting() {
   req('m_personname', 'mf_personname');
   req('m_personrole', 'mf_personrole');
   req('m_date', 'mf_date');
+  req('m_time', 'mf_time');
   reqRadio('macq');
   if (gv('macq') === 'מוכר ומהימן על ידי') req('m_acqby', 'mf_acqby');
   req('m_address', 'mf_address');
@@ -1255,6 +1345,54 @@ function showMeetingSuccess(ref) {
 }
 
 /* =========================================================
+   טופס חבילה — וולידציה ושליחה
+   ========================================================= */
+function validatePackage() {
+  var ok = true;
+  var firstErr = null;
+  function req(id, fid) {
+    var el = document.getElementById(id);
+    var fw = document.getElementById(fid);
+    if (!fw) return;
+    if (!el || !el.value.trim()) { fw.classList.add('error'); ok = false; if (!firstErr) firstErr = fw; }
+    else { fw.classList.remove('error'); }
+  }
+  req('p_recipient', 'pf_recipient');
+  req('p_desc', 'pf_desc');
+  req('p_date', 'pf_date');
+  if (!ok && firstErr) {
+    firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    firstErr.classList.add('err-shake');
+    setTimeout(function() { firstErr.classList.remove('err-shake'); }, 400);
+  }
+  return ok;
+}
+
+function collectPackageData() {
+  return {
+    formType: 'package',
+    score: 0,
+    level: '—',
+    pkgRecipient: gi('p_recipient'),
+    pkgDesc: gi('p_desc'),
+    pkgDate: gi('p_date'),
+    pkgNotes: gi('p_notes')
+  };
+}
+
+function submitPackage() {
+  if (!validatePackage()) return;
+  finalizeAndSave(collectPackageData(), false, showPackageSuccess);
+}
+
+function showPackageSuccess(ref) {
+  document.getElementById('pRefBox').textContent = ref;
+  document.querySelector('#packageFlow .card').style.display = 'none';
+  document.getElementById('packageNav').style.display = 'none';
+  document.getElementById('pSuccessDiv').classList.add('show');
+}
+
+/* =========================================================
    סיכום לשיתוף פנימי (העתקה / וואטסאפ)
    ========================================================= */
 function buildSummaryText(d) {
@@ -1274,6 +1412,13 @@ function buildSummaryText(d) {
     L.push('מיקום: ' + (d.meetLocType === 'אחר' ? (d.meetLocOther || 'אחר') : (d.meetLocType || '—')));
     if (d.participants) L.push('משתתפים נוספים: ' + d.participants);
     if (d.meetNotes) L.push('הערות: ' + d.meetNotes);
+  } else if (d.formType === 'package') {
+    L.push('סיכום חבילה — ' + (d.ref || ''));
+    L.push('');
+    L.push('על שם: ' + (d.pkgRecipient || '—'));
+    L.push('תיאור התכולה: ' + (d.pkgDesc || '—'));
+    L.push('תאריך הגעה משוער: ' + (d.pkgDate || '—'));
+    if (d.pkgNotes) L.push('הערות: ' + d.pkgNotes);
   } else {
     L.push('סיכום אירוע — ' + (d.ref || ''));
     L.push('רמת אבטחה: ' + (d.level || '—') + ' (ציון ' + (d.score || 0) + '/10)');
