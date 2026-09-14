@@ -177,9 +177,13 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
         <span class="err-msg">שדה חובה</span>
       </div>
       <div class="field" id="f_personalid">
-        <label><span class="req">*</span>מספר זיהוי אישי</label>
-        <input id="personalid" type="text" placeholder="ממולא על ידי כל עובד...">
+        <label><span class="req">*</span>מספר זיהוי של מי שממלא</label>
+        <input id="personalid" type="text" placeholder="מ. זיהוי של העובד הממלא...">
         <span class="err-msg">שדה חובה</span>
+      </div>
+      <div class="field" id="f_goerId">
+        <label>מספר זיהוי של מי שהולך</label>
+        <input id="goerId" type="text" placeholder="מ. זיהוי של מי שיוצא לאירוע...">
       </div>
       <div class="field" style="grid-column:1/-1">
         <label>קישור הזמנה (אם זמין)</label>
@@ -593,9 +597,13 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-h
       <div class="section-title">פרטי פגישה</div>
       <div class="grid2">
         <div class="field" id="mf_personalid">
-          <label><span class="req">*</span>מספר זיהוי אישי</label>
-          <input id="m_personalid" type="text" placeholder="ממולא על ידי כל עובד...">
+          <label><span class="req">*</span>מספר זיהוי של מי שממלא</label>
+          <input id="m_personalid" type="text" placeholder="מ. זיהוי של העובד הממלא...">
           <span class="err-msg">שדה חובה</span>
+        </div>
+        <div class="field" id="mf_goerId">
+          <label>מספר זיהוי של מי שהולך</label>
+          <input id="m_goerId" type="text" placeholder="מ. זיהוי של מי שהולך לפגישה...">
         </div>
         <div class="field" id="mf_personname">
           <label><span class="req">*</span>שם האדם</label>
@@ -907,7 +915,7 @@ function setChecks(name, arr) {
 }
 
 function populateEvent(d) {
-  ['org','personalid','invitelink','fname','lname','email','phone','role','orgknown_detail',
+  ['org','personalid','goerId','invitelink','fname','lname','email','phone','role','orgknown_detail',
    'evname','evstart','evend','evstarttime','evendtime','venue',
    'vip_detail','vetting_detail','entrytype_other','eventrole_other','extra','participants']
     .forEach(function (id) { setVal(id, d[id]); });
@@ -929,6 +937,7 @@ function populateEvent(d) {
 
 function populateMeeting(d) {
   setVal('m_personalid', d.personalid);
+  setVal('m_goerId', d.goerId);
   setVal('m_personname', d.meetPersonName);
   setVal('m_personrole', d.meetPersonRole);
   setVal('m_date', d.meetDate);
@@ -1131,7 +1140,8 @@ function buildReview() {
   html += '<div style="font-size:12px;font-weight:600;color:#0f2744;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em">סיכום פרטים</div>';
   html += '<table style="width:100%;border-collapse:collapse">';
   html += row('בחסות', gi('org'));
-  html += row('מספר זיהוי אישי', gi('personalid'));
+  html += row('מספר זיהוי של מי שממלא', gi('personalid'));
+  html += row('מספר זיהוי של מי שהולך', gi('goerId'));
   html += row('מארגן', gv('orgknown'));
   if (gv('orgknown') === 'ידוע ומוכר') html += row('פירוט מארגן', gi('orgknown_detail'));
   html += row('איש קשר', (gi('fname') + ' ' + gi('lname')).trim());
@@ -1162,6 +1172,7 @@ function collectEventData() {
     level: score <= 3 ? 'נמוכה' : score <= 7 ? 'בינונית' : 'גבוהה',
     org: gi('org'),
     personalid: gi('personalid'),
+    goerId: gi('goerId'),
     participants: gi('participants'),
     invitelink: gi('invitelink'),
     orgknown: gv('orgknown'),
@@ -1318,6 +1329,7 @@ function collectMeetingData() {
     score: score,
     level: score <= 3 ? 'נמוכה' : score <= 7 ? 'בינונית' : 'גבוהה',
     personalid: gi('m_personalid'),
+    goerId: gi('m_goerId'),
     participants: gi('m_participants'),
     meetPersonName: gi('m_personname'),
     meetPersonRole: gi('m_personrole'),
@@ -1402,7 +1414,8 @@ function buildSummaryText(d) {
     L.push('סיכום פגישה — ' + (d.ref || ''));
     L.push('רמת אבטחה: ' + (d.level || '—') + ' (ציון ' + (d.score || 0) + '/10)');
     L.push('');
-    L.push('מספר זיהוי: ' + (d.personalid || '—'));
+    L.push('מספר זיהוי ממלא: ' + (d.personalid || '—'));
+    if (d.goerId) L.push('מספר זיהוי מי שהולך: ' + d.goerId);
     L.push('שם האדם: ' + (d.meetPersonName || '—'));
     L.push('תפקיד: ' + (d.meetPersonRole || '—'));
     L.push('תאריך: ' + (d.meetDate || '—') + (d.meetTime ? ' ' + d.meetTime : ''));
@@ -1424,7 +1437,8 @@ function buildSummaryText(d) {
     L.push('רמת אבטחה: ' + (d.level || '—') + ' (ציון ' + (d.score || 0) + '/10)');
     L.push('');
     L.push('בחסות: ' + (d.org || '—'));
-    L.push('מספר זיהוי: ' + (d.personalid || '—'));
+    L.push('מספר זיהוי ממלא: ' + (d.personalid || '—'));
+    if (d.goerId) L.push('מספר זיהוי מי שהולך: ' + d.goerId);
     L.push('איש קשר: ' + ((d.fname || '') + ' ' + (d.lname || '')).trim());
     if (d.phone) L.push('טלפון: ' + d.phone);
     L.push('שם האירוע: ' + (d.evname || '—'));
