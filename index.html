@@ -844,7 +844,11 @@ function fetchByRef(ref) {
     return Promise.resolve(found || null);
   }
   return fetch(FIREBASE_URL + '/submissions/' + encodeURIComponent(ref) + '.json')
-    .then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); });
+    .then(function (res) {
+      if (res.status === 401 || res.status === 403) return null; // לא טיוטה / אין הרשאה – מתייחסים כלא נמצא
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    });
 }
 
 function resumeByRef() {
@@ -1199,9 +1203,17 @@ function collectEventData() {
 }
 
 /* שמירה סופית או טיוטה — משותף לאירוע ולפגישה */
+/* חלק אקראי באסמכתא – כדי שאי אפשר יהיה לנחש אסמכתאות של אחרים */
+function randomRefPart(n) {
+  var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', out = '', a = new Uint32Array(n);
+  crypto.getRandomValues(a);
+  for (var i = 0; i < n; i++) out += chars.charAt(a[i] % chars.length);
+  return out;
+}
+
 function finalizeAndSave(data, isDraft, onDone) {
   var prefix = data.formType === 'meeting' ? 'MTG-' : (data.formType === 'package' ? 'PKG-' : 'SEC-');
-  var ref = editingRef || (prefix + Date.now().toString(36).toUpperCase().slice(-8));
+  var ref = editingRef || (prefix + Date.now().toString(36).toUpperCase().slice(-8) + '-' + randomRefPart(16));
   data.ref = ref;
   var now = new Date().toISOString();
   if (editingData) {
